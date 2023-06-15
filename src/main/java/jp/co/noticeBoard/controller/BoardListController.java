@@ -26,12 +26,12 @@ import jp.co.noticeBoard.dto.PageDto;
 import jp.co.noticeBoard.entitiy.TblOrder;
 import jp.co.noticeBoard.form.OrderListForm;
 import jp.co.noticeBoard.service.LoginService;
-import jp.co.noticeBoard.service.OrderListService;
+import jp.co.noticeBoard.service.BoardListService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
 @RequestMapping("/BO/orderList")
-public class OrderListController {
+public class BoardListController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
@@ -42,7 +42,7 @@ public class OrderListController {
 	private MessageSource messageSource;
 
 	@Autowired
-	private OrderListService orderListService;
+	private BoardListService orderListService;
 
 	/**
 	 * 掲示文一覧（初期表示）
