@@ -8,15 +8,13 @@
     <!-- 管理者情報取得 -->
     <select id="getUserInfo" resultType="jp.co.noticeBoard.dto.UserDto">
         SELECT
-<!--         M_MANAGE_USER.user_id AS userId, -->
-        M_MANAGE_USER.password AS password,
-        M_MANAGE_USER.name AS name,
-        M_MANAGE_USER.user_no AS userNo
+        t_user.user_pass AS password,
+        t_user.user_name AS name
         FROM
-        M_MANAGE_USER
+        t_user
         WHERE
-        M_MANAGE_USER.user_id= #{account} AND
-        M_MANAGE_USER.delete_flag=0
+        t_user.user_id= #{account} AND
+        t_user.delete_flg=0
     </select>
 
 </mapper>

@@ -25,13 +25,13 @@ import jp.co.noticeBoard.dto.OrderListSearchDto;
 import jp.co.noticeBoard.dto.PageDto;
 import jp.co.noticeBoard.entitiy.TblOrder;
 import jp.co.noticeBoard.form.OrderListForm;
+import jp.co.noticeBoard.service.BoardListService;
 import jp.co.noticeBoard.service.LoginService;
-import jp.co.noticeBoard.service.OrderListService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
-@RequestMapping("/BO/orderList")
-public class OrderListController {
+@RequestMapping("/BO/boardList")
+public class BoardListController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
@@ -42,7 +42,7 @@ public class OrderListController {
 	private MessageSource messageSource;
 
 	@Autowired
-	private OrderListService orderListService;
+	private BoardListService orderListService;
 
 	/**
 	 * 掲示文一覧（初期表示）
@@ -82,7 +82,7 @@ public class OrderListController {
 		    sessionManager.setSesOrderListSearchInfo(orderListForm);
 		    logger.error(messageSource.getMessage("E00009", new Object[]{}, locale));
 		
-		    return "views/admin_order_list";
+		    return "views/board_list";
 		}
 		
 		//ページング情報取得
@@ -108,7 +108,7 @@ public class OrderListController {
 		//画面表示_ページング
 		model.addAttribute("pager",pageDto);
 
-		return "views/admin_order_list";
+		return "views/board_list";
 
 	}
 
@@ -152,7 +152,7 @@ public class OrderListController {
 			if (!messageList.isEmpty()) {
 				sessionManager.setSesOrderListSearchInfo(orderListForm);
 				model.addAttribute("messageList", messageList);
-				return "views/admin_order_list";
+				return "views/board_list";
 			}
 		}
 		//検索条件DTO生成
@@ -166,7 +166,7 @@ public class OrderListController {
 			sessionManager.setSesOrderListSearchInfo(orderListForm);
             logger.error(messageSource.getMessage("E00009", new Object[]{}, locale));
 
-			return "views/admin_order_list";
+			return "views/board_list";
 		}
 
 		//ページング情報取得
@@ -192,7 +192,7 @@ public class OrderListController {
 		//画面表示_ページング
 		model.addAttribute("pager", pageDto);
 
-		return "views/admin_order_list";
+		return "views/board_list";
 	}
 
 	/**

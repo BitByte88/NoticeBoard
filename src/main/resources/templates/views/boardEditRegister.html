@@ -98,7 +98,7 @@
 </form>
 </th:block>
 <th:block th:if="${'2' == registerFlg}">
-<form id="backForm" name="backForm" th:action="@{/BO/orderDetail/}" method="post">
+<form id="backForm" name="backForm" th:action="@{/BO/boardDetail/}" method="post">
   <input type="hidden" name="intoOrderNo" id="intoOrderNo" th:value="${orderDetailList[0].boardId}"/>
  </form>
 </th:block>

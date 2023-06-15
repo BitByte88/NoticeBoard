@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import jp.co.noticeBoard.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import jp.co.noticeBoard.dto.BoardCommentDto;
 import jp.co.noticeBoard.dto.BoardDeleteDto;
 import jp.co.noticeBoard.dto.OrderDetailDto;
-import jp.co.noticeBoard.dto.OrderDetailUpdateDto;
 import jp.co.noticeBoard.service.BoardDetailService;
+import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
@@ -52,12 +51,14 @@ public class BoardDetailController {
 	@RequestMapping("")
 	public String boardDetail(HttpServletRequest request, Model model, Locale locale) throws Exception {
 
-		//エラーメッセージリスト
-		List<String> messageList = new ArrayList<>();
 
-		//注文状況一覧画面から遷移用、注文番号取得
-		String orderNo = request.getParameter("intoOrderNo");
 
+        //エラーメッセージリスト
+        List<String> messageList = new ArrayList<>();
+
+        //注文状況一覧画面から遷移用、注文番号取得
+        String orderNo = request.getParameter("intoOrderNo");
+        
 		//コメント登録用 掲示文No取得処理
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();
@@ -69,31 +70,41 @@ public class BoardDetailController {
 			}
 		}
 
-		//注文Noチェック
-		if(orderNo.isEmpty()||orderNo.equals("")){
-		    String labelOrderNo = messageSource.getMessage("label.orderNo", new Object[]{}, locale);
-		    messageList.add(messageSource.getMessage("E00001", new Object[]{labelOrderNo}, locale));
-		    model.addAttribute("messageList", messageList);
-		    logger.error(messageSource.getMessage("E00001", new Object[]{labelOrderNo}, locale));
-		    return "redirect:/BO/orderList/";
-		}
+        //掲示板情報リスト取得
+        List<OrderDetailDto> orderDetailList = new ArrayList<OrderDetailDto>();
+        orderDetailList = boardDetailService.getOrderDetailList(orderNo);
 
-		//注文詳細リスト取得
-		List<OrderDetailDto> orderDetailList = new ArrayList<OrderDetailDto>();
-		orderDetailList = boardDetailService.getOrderDetailList(orderNo);
+        if(orderDetailList.size()==0){
+            return "redirect:/error";
+        }
 
-		if (orderDetailList.size() == 0) {
-			return "redirect:/error";
-		}
+        model.addAttribute("orderDetailList", orderDetailList);
+        
+        // ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
+        if (sessionManager.getSesUserInfo().getName().equals(orderDetailList.get(0).getRegisterUserId())) {
+        	model.addAttribute("displayEditButtonFlg", "1");
+        }
 
-		//現在時間格納
-		sessionManager.setSesTime();
+        //現在時間格納
+        sessionManager.setSesTime();
 
-		if (messageList.size() != 0) {
-			model.addAttribute("messageList", messageList);
-		}
+        if(!orderNo.isEmpty()) {
+    		// コメントリスと取得
+    		List<BoardCommentDto> boardCommentList = new ArrayList<BoardCommentDto>();
+    		boardCommentList = boardDetailService.getCommentList(orderNo);
+    		
+    		// コメントリスト格納
+    		model.addAttribute("boardCommentList", boardCommentList);
+    		
+    		// 閲覧数カウントアップ
+        	boardDetailService.updateViewCount(orderNo);
+        }
 
-		return "views/admin_order_detail";
+        if(messageList.size()!=0){
+            model.addAttribute("messageList", messageList);
+        }
+
+        return "views/board_detail";
 
 	}
 
@@ -111,18 +122,17 @@ public class BoardDetailController {
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
 
-        return "redirect:/BO/orderList/search";
+        return "redirect:/BO/boardList/search";
     }
 
 	/**
 	 * 注文詳細表示（更新）
-	 * @param updateDto 更新情報
 	 * @param model モデル
 	 * @param locale　ロケール
 	 * @return 画面パス
 	 */
 	@RequestMapping("/update")
-	public String orderupdate(HttpServletRequest request, @ModelAttribute OrderDetailUpdateDto updateDto, Model model, Locale locale,
+	public String orderupdate(HttpServletRequest request, Model model, Locale locale, 
 			RedirectAttributes redirectAttributes) throws Exception {
 
 		List<String> messageList = new ArrayList<>();
@@ -171,7 +181,7 @@ public class BoardDetailController {
 	        params.put("orderNo", deleteDto.getBoardId());
 	        redirectAttributes.addFlashAttribute("params", params);
 
-	        return "redirect:/BO/orderDetail/";
+	        return "redirect:/BO/boardDetail/";
     	}
 
 		//削除対象設定
@@ -186,7 +196,7 @@ public class BoardDetailController {
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
 
-        return "redirect:/BO/orderList/search";
+        return "redirect:/BO/boardList/search";
     }
 
 	/**

@@ -95,7 +95,7 @@ public class LoginController {
             sessionManager.setSesTime();
 
 
-            return "redirect:/BO/orderList";
+            return "redirect:/BO/boardList";
         }
 
 

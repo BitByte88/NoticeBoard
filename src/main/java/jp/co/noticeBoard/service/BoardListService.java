@@ -20,9 +20,9 @@ import jp.co.noticeBoard.entitiy.TblOrder;
 import jp.co.noticeBoard.form.OrderListForm;
 
 @Service
-public class OrderListService {
+public class BoardListService {
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderListService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BoardListService.class);
 
     //１ページあたりの最大件数
     @Value("${list.max.count}")
