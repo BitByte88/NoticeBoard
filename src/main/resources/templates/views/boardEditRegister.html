@@ -1,0 +1,197 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:data-provide="http://www.w3.org/1999/xhtml">
+
+<header th:replace="layout/Header :: Header"></header>
+<body>
+<!-- 新規 -->
+<th:block th:if="${'1' == registerFlg}">
+<div class="wrapper">
+  <div class="main">
+    <h2 class="page-title"><strong><th:block th:text="#{label.orderDetail.boardtitleWriteHeader}"></th:block></strong></h2>
+    <section class="main-section error-message" th:if="!${messageList == null or #lists.isEmpty(messageList)}">
+      <i class="ico-error"></i>
+      <th:block  th:each="message : ${messageList}">
+        <p><span th:text="${message}"/></p>
+      </th:block>
+    </section>
+     <section class="main-section">
+      <table class="form-table" style="width:100%;">
+      	<tbody>
+      		<colgroup>
+          		<col style="width:5%;">
+          		<col style="width:50%;">
+        	</colgroup>
+     	 	<tr class="form-table-row">
+          		<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtitle}"/></th>
+          		<td class="form-table-td"><textarea rows="1" name="TitleTextArea"></textarea></td>
+        	</tr>
+       	<tbody>
+      </table>
+    </section><!--/.main-section-->
+      <section class="main-section gray-top-border">
+      <table class="form-table" style="width:100%;">
+        <tbody>
+        <tr class="form-table-row">
+          <th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
+        </tr>
+        <tr class="form-table-row">
+          <td class="form-table-td"><textarea rows="5" name="ContentTextArea"></textarea></td>
+        </tr>
+        </tbody>
+      </table>
+      </section><!--/.main-section-->
+    <section class="main-section gray-top-border buttons buttons-4">
+      <p class="section-block center"><button class="bt bt-gray btn_modal" th:value="createModal"><th:block th:text="#{btn.orderDetail.register}"/></button></p>
+      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+    </section><!--/.main-section-->
+</div><!--/.main-->
+</th:block>
+<!-- 修正 -->
+<th:block th:if="${'2' == registerFlg}">
+<div class="wrapper">
+  <div class="main">
+    <h2 class="page-title"><strong><th:block th:text="#{label.orderDetail.boardtitleUpdateHeader}"></th:block></strong></h2>
+    <section class="main-section error-message" th:if="!${messageList == null or #lists.isEmpty(messageList)}">
+      <i class="ico-error"></i>
+      <th:block  th:each="message : ${messageList}">
+        <p><span th:text="${message}"/></p>
+      </th:block>
+    </section>
+    <section class="main-section">
+      <table class="form-table" style="width:100%;">
+      	<tbody>
+      		<colgroup>
+          		<col style="width:5%;">
+          		<col style="width:50%;">
+        	</colgroup>
+     	 	<tr class="form-table-row">
+          		<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtitle}"/></th>
+          		<td class="form-table-td"><textarea rows="1" name="TitleTextArea"><th:block th:text="${orderDetailList[0].boardTitle}"/></textarea></td>
+        	</tr>
+       	<tbody>
+      </table>
+    </section><!--/.main-section-->
+    <section class="main-section gray-top-border">
+    	<table class="form-table" style="width:100%;">
+        	<tbody>
+        	<tr class="form-table-row">
+          		<th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
+        	</tr>
+        	<tr class="form-table-row">
+          		<td class="form-table-td"><textarea rows="5" name="ContentTextArea"><th:block th:text="${orderDetailList[0].boardContent}"/></textarea></td>
+        	</tr>
+        	</tbody>
+      	</table>	
+    </section><!--/.main-section-->
+    <section class="main-section gray-top-border">
+    </section><!--/.main-section-->
+    <section class="main-section gray-top-border buttons buttons-4">
+      <p class="section-block center"><button class="bt bt-gray btn_modal" th:value="updateModal"><th:block th:text="#{btn.orderDetail.update}"/></button></p>
+      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+    </section><!--/.main-section-->
+  </div><!--/.main-->
+</th:block>
+<th:block th:if="${'1' == registerFlg}">
+<form id="backForm" name="backForm" th:action="@{/BO/boardDetail/returnBoardList}" method="post">
+	<input type="hidden" name="restorationJudgment" id="restorationJudgment" th:value="restoration">
+</form>
+</th:block>
+<th:block th:if="${'2' == registerFlg}">
+<form id="backForm" name="backForm" th:action="@{/BO/orderDetail/}" method="post">
+  <input type="hidden" name="intoOrderNo" id="intoOrderNo" th:value="${orderDetailList[0].boardId}"/>
+ </form>
+</th:block>
+
+  <div class="overlay" id="cancelModal" style="display:none">
+    <div class="modal">
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.cancel}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_cancel"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="cancelModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+
+  <div class="overlay" id="returnModal" style="display:none">
+    <div class="modal">
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.return}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_return"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="returnModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+
+  <div class="overlay" id="createModal" style="display:none">
+    <div class="modal">
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.update}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="createModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+  <div class="overlay" id="updateModal" style="display:none">
+    <div class="modal">
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.update}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="updateModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+</div>
+<th:block th:if="${'1' == registerFlg}">
+<form id="updateForm" th:action="@{/BO/boardEditRegister/toConfirm}" method="post" th:object="${updateDto}">
+  <input type="hidden" name="boardId"/>
+  <input type="hidden" name="boardTitle"/>
+  <input type="hidden" name="boardContent"/>
+</form>
+</th:block>
+<th:block th:if="${'2' == registerFlg}">
+<form id="updateForm" th:action="@{/BO/boardEditRegister/toConfirm}" method="post" th:object="${updateDto}">
+  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
+  <input type="hidden" name="boardTitle" th:value="${orderDetailList[0].boardTitle}"/>
+  <input type="hidden" name="boardContent" th:value="${orderDetailList[0].boardContent}"/>
+</form>
+</th:block>
+<footer th:replace="layout/Footer :: Footer"></footer>
+</body>
+<script>
+       /* 「戻る」ボタン */
+  $('.btn_back').click(function() {
+      $("#backForm").submit();
+  });
+  
+      /* 「更新」ボタン */
+  $('.btn_update').click(function() {
+      var boardTitle = $("[name='TitleTextArea']").val();
+      $("[name='boardTitle']").val(boardTitle);
+      var boardContent = $("[name='ContentTextArea']").val();
+      $("[name='boardContent']").val(boardContent);
+      $("#updateForm").submit();
+  });
+
+      /* 「モーダル」処理 */
+  $('.btn_modal').click(function() {
+      var modal = $(this).val();
+      $("#" + modal ).show();
+
+  });
+
+      /* 「モーダル」終了処理 */
+  $('.btn_modalExit').click(function() {
+      var modal = $(this).val();
+      $('#'+ modal ).hide();
+     });
+
+</script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:data-provide="http://www.w3.org/1999/xhtml">
+
+<head>
+  <meta charset="UTF-8">
+
+</head>
+<body>
+
+<header th:replace="layout/Header :: Header"></header>
+<div class="wrapper">
+
+
+  <div class="main">
+    <h2 class="page-title"><strong><th:block th:text="#{label.orderReturnFinish.title}"/></strong></h2>
+    <section class="main-section gray-border-box">
+      <h3 class="section-title center"><th:block th:text="#{label.orderReturnFinish.content}"/></h3>
+      <p class="section-block center"><th:block th:text="#{label.orderList.orderNo}"/>：<span th:text="${orderNo}"/></p>
+    </section><!--/.main-section-->
+
+
+    <section class="main-section gray-top-border buttons buttons-4">
+      <p class="section-block center"><button class="bt bt-gray btn_orderList"><th:block th:text="#{btn.back.orderList}"/></button></p>
+    </section><!--/.main-section-->
+  </div><!--/.main-->
+
+</div><!--/.wrapper-->
+<form id="orderListAction" th:action="@{/BO/orderList}" method="post">
+</form>
+<footer th:replace="layout/Footer :: Footer"></footer>
+</body>
+<script>
+       /* 「注文状況一覧」ボタン */
+  $('.btn_orderList').click(function() {
+            $('#orderListAction').submit();
+  });
+</script>
+</html>

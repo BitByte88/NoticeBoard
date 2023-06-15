@@ -1,0 +1,223 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:data-provide="http://www.w3.org/1999/xhtml">
+
+<header th:replace="layout/Header :: Header"></header>
+
+<body>
+<div class="wrapper">
+  <div class="main">
+    <h2 class="page-title"><strong><th:block th:text="#{label.orderDetail.boardtitleDetailHeader}"></th:block></strong></h2>
+    <section class="main-section error-message" th:if="!${messageList == null or #lists.isEmpty(messageList)}">
+      <i class="ico-error"></i>
+      <th:block  th:each="message : ${messageList}">
+        <p><span th:text="${message}"/></p>
+      </th:block>
+    </section>
+
+    <section class="main-section">
+      <table class="form-table" style="width:100%;">
+        <colgroup>
+          <col style="width:10%;">
+          <col style="width:40%;">
+          <col style="width:14%;">
+        </colgroup>
+        <tbody>
+        <tr class="form-table-row">
+          <th class="form-table-th"><th:block th:text="#{label.orderDetail.boardNo}"/></th>
+          <td class="form-table-td"><th:block  th:text="${orderDetailList[0].boardId}"/></td>
+       	</tr>
+       	<tr class="form-table-row">
+	      <th class="form-table-th"><th:block th:text="#{label.orderList.orderDate}"></th:block></th>
+	      <td class="form-table-td"><th:block th:text="${orderDetailList[0].registerDate}"/></td>
+	      <th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtCreator}"/></th>
+	      <td class="form-table-td"><th:block th:text="${orderDetailList[0].registerUserId}"/></td>
+	    </tr>
+	         <tr class="form-table-row">
+          		<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtitle}"/></th>
+          		<td class="form-table-td"><th:block th:text="${orderDetailList[0].boardTitle}"/></td>
+        	</tr>
+        </tbody>
+      </table>
+    </section><!--/.main-section-->
+      <table class="form-table" style="width:100%;">
+        <colgroup>
+          <col style="width:12%;">
+          <col style="width:20%;">
+          <col style="width:14%;">
+          <col style="width:20%;">
+          <col style="width:16%;">
+          <col style="width:8%;">
+          <col style="width:10%;">
+        </colgroup>
+      </table>
+      <section class="main-section gray-top-border">
+      <table class="form-table" style="width:100%;">
+        <tbody>
+        <tr class="form-table-row">
+          <th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
+        </tr>
+        <tr class="form-table-row">
+          <td class="form-table-td"><th:block th:text="${orderDetailList[0].boardContent}"/></td>
+        </tr>
+        </tbody>
+      </table>	
+      </section><!--/.main-section-->
+      <section class="main-section gray-top-border">
+      <table class="form-table" style="width:100%;">
+      	<tbody>
+      		<tr class="form-table-row">
+          		<th class="form-table-th"><th:block th:text="#{label.orderDetail.comment}"/></th>
+        	</tr>
+        </table>
+        <table class="border-table">
+        	<thead>
+          		<tr>
+          			<th class="border-table-th"><div th:text="#{label.orderDetail.boardtCreator}"/></th>
+            		<td width="70%" th class="border-table-th"><div th:text="#{label.orderDetail.note}"/></th></td>
+            		<th class="border-table-th"><div th:text="#{label.orderList.orderDate}"/></a></th>
+          		</tr>
+          		<tr th:each="comment,index: ${boardCommentList}">
+		            <td th:text="${comment.commentRegisterUserId}" class="border-table-td"></td>
+		            <td th:text="${comment.commentContent}" class="border-table-td" ></td>
+		            <td th:text="${comment.commentRegisterDate}" class="border-table-td"></td>
+        </tr>
+        </thead>
+        </table>
+        </section><!--/.main-section-->
+        <section class="main-section gray-top-border">
+        <table class="form-table" style="width:100%;">
+       		<tr class="form-table-row">
+        		<td class="form-table-td">
+          			<textarea rows="3" name="commentTextArea"></textarea>
+          			<button class="bt bt-green btn_comment"><th:block th:text="#{btn.orderDetail.save}"/></button>
+          		</td>
+        	</tr>
+        </tbody>
+      </table>
+    </section><!--/.main-section-->
+    <section class="main-section gray-top-border buttons buttons-4">
+    	<th:block th:if="${'1' == displayEditButtonFlg}">
+      <p class="section-block center"><button class="bt bt-gray btn_modal" th:value="deleteModal"><th:block th:text="#{btn.orderDetail.delete}"/></button></p>
+      <p class="section-block center"><button class="bt bt-gray btn_modal" th:value="updateModal"><th:block th:text="#{btn.orderDetail.update}"/></button></p>
+      </th:block>
+      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+    </section><!--/.main-section-->
+  </div><!--/.main-->
+
+<form id="backForm" name="backForm" th:action="@{/BO/boardDetail/returnBoardList}" method="post">
+  <input type="hidden" name="restorationJudgment" id="restorationJudgment">
+</form>
+
+  <div class="overlay" id="cancelModal" style="display:none">
+    <div class="modal">
+
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.cancel}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_cancel"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="cancelModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+
+  <div class="overlay" id="returnModal" style="display:none">
+    <div class="modal">
+
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.return}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_return"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="returnModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+
+  <div class="overlay" id="updateModal" style="display:none">
+    <div class="modal">
+
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.update}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="updateModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+  <footer th:replace="layout/Footer :: Footer"></footer>
+</div>
+
+ <div class="overlay" id="deleteModal" style="display:none">
+    <div class="modal">
+
+      <section class="modal-section modal-text">
+        <p><th:block th:text="#{btn.orderDetail.delete}"/><th:block th:text="#{label.orderDetail.modal.delete}"/></p>
+      </section>
+      <section class="modal-section buttons">
+        <p class="section-block center"><button class="bt bt-green btn_delete"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="deleteModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      </section>
+    </div>
+  </div>
+  <footer th:replace="layout/Footer :: Footer"></footer>
+</div>
+
+<form id="updateForm" th:action="@{/BO/boardDetail/update}" method="post" th:object="${updateDto}">
+  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
+</form>
+
+<form id="deleteForm" th:action="@{/BO/boardDetail/delete}" method="post" th:object="${deleteDto}">
+  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
+  <input type="hidden" name="RegisterUserId" th:value="${orderDetailList[0].registerUserId}"/>
+  <input type="hidden" name="restorationJudgment" id="restorationJudgment">
+</form>
+
+<form id="commentForm" th:action="@{/BO/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
+  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
+  <input type="hidden" name="commentContent"/>
+</form>
+
+</body>
+<script>
+       /* 「戻る」ボタン */
+  $('.btn_back').click(function() {
+      $("[name='restorationJudgment']").val("restoration");
+      $("#backForm").submit();
+  });
+
+      /* 「更新」ボタン */
+  $('.btn_update').click(function() {
+      $("#updateForm").submit();
+  });
+
+      /* 「削除」ボタン */
+  $('.btn_delete').click(function() {
+      $("[name='restorationJudgment']").val("restoration");
+      $("#deleteForm").submit();
+  });
+
+      /* 「コメント登録」ボタン */
+  $('.btn_comment').click(function() {
+      var commentContent = $("[name='commentTextArea']").val();
+      $("[name='commentContent']").val(commentContent);
+      $("#commentForm").submit();
+  });
+
+      /* 「モーダル」処理 */
+  $('.btn_modal').click(function() {
+      var modal = $(this).val();
+      $("#" + modal ).show();
+
+  });
+
+      /* 「モーダル」終了処理 */
+  $('.btn_modalExit').click(function() {
+      var modal = $(this).val();
+      $('#'+ modal ).hide();
+     });
+
+</script>
+</html>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.noticeBoard.dao.mapper.OrderListMapper">
+
+    <resultMap id="OrderMap" type="jp.co.noticeBoard.entitiy.TblOrder">
+        <id column="board_id" jdbcType="INTEGER" property="boardId" />
+        <id column="board_title" jdbcType="VARCHAR" property="boardTitle" />
+        <id column="board_content" jdbcType="VARCHAR" property="boardContent" />
+        <id column="view_number" jdbcType="INTEGER" property="viewCount" />
+        <id column="register_user_id" jdbcType="VARCHAR" property="registerUserId" />
+        <id column="register_date" jdbcType="TIMESTAMP" property="registerDate" />
+        <id column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <id column="update_user_date" jdbcType="TIMESTAMP" property="updateUserDate" />
+        <id column="delete_flag" jdbcType="VARCHAR" property="deleteFlag" />
+    </resultMap>
+
+    <!-- 掲示文件数取得 -->
+    <select id="getOrderListCount" resultType="Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        t_board
+        <where>
+           	<if test="orderListSearchDto.searchType!=null and !orderListSearchDto.searchType.equals('') and orderListSearchDto.searchType.equals('title')">
+            	t_board.board_title LIKE CONCAT('%', #{orderListSearchDto.searchKeyword}, '%')
+            	AND
+            </if>
+           	<if test="orderListSearchDto.searchType!=null and !orderListSearchDto.searchType.equals('') and orderListSearchDto.searchType.equals('content')">
+            	t_board.board_content LIKE CONCAT('%', #{orderListSearchDto.searchKeyword}, '%')
+            	AND
+            </if>
+           	<if test="orderListSearchDto.searchType!=null and !orderListSearchDto.searchType.equals('') and orderListSearchDto.searchType.equals('registerUserId')">
+            	t_board.register_user_id LIKE CONCAT('%', #{orderListSearchDto.searchKeyword}, '%')
+            	AND
+            </if>
+            t_board.delete_flag != 1
+        </where>
+    </select>
+
+    <!-- 掲示文情報取得 -->
+    <select id="getOrderList" resultMap="OrderMap">
+        SELECT
+        t_board.board_id,
+        t_board.board_title,
+        t_board.board_content,
+        t_board.view_number,
+        t_board.register_user_id,
+        t_board.register_date,
+        t_board.delete_flag
+        FROM
+        t_board
+        <where>
+           	<if test="orderListSearchDto.searchType!=null and !orderListSearchDto.searchType.equals('') and orderListSearchDto.searchType.equals('title')">
+            	t_board.board_title LIKE CONCAT('%', #{orderListSearchDto.searchKeyword}, '%')
+            	AND
+            </if>
+           	<if test="orderListSearchDto.searchType!=null and !orderListSearchDto.searchType.equals('') and orderListSearchDto.searchType.equals('content')">
+            	t_board.board_content LIKE CONCAT('%', #{orderListSearchDto.searchKeyword}, '%')
+            	AND
+            </if>
+           	<if test="orderListSearchDto.searchType!=null and !orderListSearchDto.searchType.equals('') and orderListSearchDto.searchType.equals('registerUserId')">
+            	t_board.register_user_id LIKE CONCAT('%', #{orderListSearchDto.searchKeyword}, '%')
+            	AND
+            </if>
+            t_board.delete_flag != 1
+        </where>
+        ORDER BY
+        t_board.register_date desc
+
+        LIMIT
+        #{limit}
+        OFFSET
+        #{orderListSearchDto.offset}
+    </select>
+</mapper>

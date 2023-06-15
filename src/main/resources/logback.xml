@@ -1,0 +1,34 @@
+<configuration>
+    <!-- デフォルト設定読み込み -->
+    <include resource="org/springframework/boot/logging/logback/default.xml" />
+
+    <property name="LOG_PATH" value="/usr/local/apache-tomcat-9.0.37/logs" />
+    <property name="FILENAME_BASE" value="server-management" />
+    <property name="PATTERN" value="%date %level [%thread] %logger{10} [%file:%line] %msg%n" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="STANDARD" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${FILENAME_BASE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${FILENAME_BASE}-%d{yyyyMMdd}-%i.gz</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf8</charset>
+            <pattern>${PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework.web.client.RestTemplate" level="DEBUG" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STANDARD" />
+    </root>
+</configuration>
