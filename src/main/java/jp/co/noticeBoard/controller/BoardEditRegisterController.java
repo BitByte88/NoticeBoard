@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import jp.co.noticeBoard.service.LoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import jp.co.noticeBoard.dto.OrderDetailDto;
+import jp.co.noticeBoard.service.BoardDetailService;
 import jp.co.noticeBoard.service.BoardEditRegisterService;
-import jp.co.noticeBoard.service.OrderDetailService;
+import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
@@ -39,7 +39,7 @@ public class BoardEditRegisterController {
     private MessageSource messageSource;
 
     @Autowired
-    private OrderDetailService orderDetailService;
+    private BoardDetailService boardDetailService;
 
     @Autowired
     private BoardEditRegisterService boardEditRegisterService;
@@ -80,7 +80,6 @@ public class BoardEditRegisterController {
         //現在時間格納
         sessionManager.setSesTime();
 
-        
         model.addAttribute("orderDetailList", orderDetailList);
 
         if(messageList.size()!=0){
@@ -102,7 +101,6 @@ public class BoardEditRegisterController {
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
 
-    	
     	String orderNo = request.getParameter("intoOrderNo");
     	
 		//コメント登録用 掲示文No取得処理
@@ -122,7 +120,7 @@ public class BoardEditRegisterController {
 
     	//注文詳細リスト取得
         List<OrderDetailDto> BoardUpdateList = new ArrayList<OrderDetailDto>();
-        BoardUpdateList = orderDetailService.getOrderDetailList(orderNo);
+        BoardUpdateList = boardDetailService.getOrderDetailList(orderNo);
 
     	// 新規作成の場合
     	if ( orderNo == null || orderNo.equals(""))
@@ -201,11 +199,12 @@ public class BoardEditRegisterController {
 
             model.addAttribute("registerFlg", "1");
             model.addAttribute("orderDetailList", BoardUpdateList);
+
         //修正の場合
         } else {
         	//注文詳細リスト取得
             List<OrderDetailDto> BoardUpdateList = new ArrayList<OrderDetailDto>();
-            BoardUpdateList = orderDetailService.getOrderDetailList(orderNo);
+            BoardUpdateList = boardDetailService.getOrderDetailList(orderNo);
             
             if(BoardUpdateList.size()==0){
                 return "redirect:/error";
@@ -239,11 +238,6 @@ public class BoardEditRegisterController {
 
 
         List<String> messageList = new ArrayList<>();
-
-        //注文Noリダイレクト
-        Map<String,Object> params = new HashMap<>();
-        params.put("updateDto", updateDto);
-        redirectAttributes.addFlashAttribute("params", params);
         
         //新規の場合
         if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
@@ -262,7 +256,7 @@ public class BoardEditRegisterController {
     		boardEditRegisterService.updateBoard(updateDto);
     	}
 
-        //Map<String,Object> params = new HashMap<>();
+        Map<String,Object> params = new HashMap<>();
         String restorationJudgment = request.getParameter("restorationJudgment");
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
