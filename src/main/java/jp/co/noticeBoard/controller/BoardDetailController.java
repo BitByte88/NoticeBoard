@@ -104,7 +104,7 @@ public class BoardDetailController {
             model.addAttribute("messageList", messageList);
         }
 
-        return "views/admin_order_detail";
+        return "views/board_detail";
 
 	}
 
@@ -122,7 +122,7 @@ public class BoardDetailController {
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
 
-        return "redirect:/BO/orderList/search";
+        return "redirect:/BO/boardList/search";
     }
 
 	/**
@@ -196,7 +196,7 @@ public class BoardDetailController {
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
 
-        return "redirect:/BO/orderList/search";
+        return "redirect:/BO/boardList/search";
     }
 
 	/**

@@ -25,7 +25,7 @@
               <p><span th:text="${message}"/></p>
           </th:block>
       </section>
-      <form id="searchForm" th:action="@{/BO/orderList/search}" method="post">
+      <form id="searchForm" th:action="@{/BO/boardList/search}" method="post">
       <section class="main-section">
           <input type="hidden" name="offset" th:value="${session.SesOrderSearchInfo.offset}"/>
           <table class="form-table" style="width:100%;">

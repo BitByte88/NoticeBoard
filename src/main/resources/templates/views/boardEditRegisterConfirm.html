@@ -73,12 +73,7 @@
     </div>
 <th:block th:if="${'1' == registerFlg}">
 <form id="backForm" name="backForm" th:action="@{/BO/boardEditRegister/returnBoardEdit}" method="post">
-<th:block th:if="${orderDetailList[0].boardTitle != null}">
-	<input type="hidden" name="boardTitle" id="boardTitle" th:value="${orderDetailList[0].boardTitle"/>
-</th:block>
-<th:block th:if="${orderDetailList[0].boardContent != null}">
-	<input type="hidden" name="boardContent" id="boardContent" th:value="${orderDetailList[0].boardContent"/>
-</th:block>
+
 </form>
 </th:block>    
 <th:block th:if="${'2' == registerFlg}">

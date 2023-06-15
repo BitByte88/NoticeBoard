@@ -25,12 +25,12 @@ import jp.co.noticeBoard.dto.OrderListSearchDto;
 import jp.co.noticeBoard.dto.PageDto;
 import jp.co.noticeBoard.entitiy.TblOrder;
 import jp.co.noticeBoard.form.OrderListForm;
-import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.BoardListService;
+import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
-@RequestMapping("/BO/orderList")
+@RequestMapping("/BO/boardList")
 public class BoardListController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);

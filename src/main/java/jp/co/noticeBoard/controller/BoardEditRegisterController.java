@@ -217,11 +217,6 @@ public class BoardEditRegisterController {
     		model.addAttribute("orderDetailList", BoardUpdateList);
         }
 
-        //注文Noリダイレクト
-        Map<String,Object> params = new HashMap<>();
-        params.put("orderNo", updateDto.getBoardId());
-        redirectAttributes.addFlashAttribute("params", params);
-
         return "views/boardEditRegisterConfirm";
 
     }
@@ -261,7 +256,7 @@ public class BoardEditRegisterController {
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
 
-        return "redirect:/BO/orderList";
+        return "redirect:/BO/boardList";
 
     }
 }
