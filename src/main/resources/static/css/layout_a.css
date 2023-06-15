@@ -481,6 +481,29 @@ input[type='checkbox']:checked + .checkbox {
   width: 320px;
 }
 
+input[type="email"] {
+  width: 200px;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  font-size: 1.4rem;
+  border: solid 1px #cccccc;
+  border-radius: 5px;
+}
+
+.hide {
+  display: none;
+}
+
+.failure-message .success-message {
+  font-size: 0.8rem;
+}
+
+.btn_join:disabled{
+  color: #FFF;
+  background: #AAA;
+}
+
+
 .portal-menu {
   display: -webkit-box;
   display: -ms-flexbox;
