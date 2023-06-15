@@ -125,11 +125,11 @@ public class BoardEditRegisterController {
     	// 新規作成の場合
     	if ( orderNo == null || orderNo.equals(""))
     	{
-			/*  		String Title = request.getParameter("boardTitle");
+    				String Title = request.getParameter("boardTitle");
 			  		String Content = request.getParameter("boardContent");
 			  		BoardUpdateList.get(0).setBoardTitle(Title);
 			  		BoardUpdateList.get(0).setBoardContent(Content);
-			*/  		model.addAttribute("registerFlg", "1");
+			  		model.addAttribute("registerFlg", "1");
     		model.addAttribute("orderDetailList", BoardUpdateList);
     		return "views/boardEditRegister";
     	}
