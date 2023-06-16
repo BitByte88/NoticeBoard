@@ -184,19 +184,6 @@ public class BoardDetailController {
         return "redirect:/boardList";
     }
 
-	/**
-	 * 掲示文新規作成
-	 * @param model モデル
-	 * @return 画面パス
-	 */
-	@RequestMapping("/write")
-	public String boardwrite(Model model, RedirectAttributes redirectAttributes) throws Exception {
-
-		model.addAttribute("registerFlg", "1");
-
-		return "views/board_EditRegister";
-
-	}
 
     /**
      * コメント登録

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import jp.co.noticeBoard.dto.BoardListDto;
@@ -71,9 +72,9 @@ public class BoardListController {
 		
 		//検索条件DTO生成
 		boardListsearchDto = boardListService.getSearchDto(boardListForm);
-		//条件に合わせた注文の件数を取得する。
+		//条件に合わせた掲示文の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
-		//検索した注文件数が０の場合
+		//検索した件数が０の場合
 		if (count == 0) {
 		    messageList.add(messageSource.getMessage("E00009", new Object[]{}, locale));
 		    model.addAttribute("messageList", messageList);
@@ -153,6 +154,7 @@ public class BoardListController {
 				return "views/board_list";
 			}
 		}
+
 		//検索条件DTO生成
 		boardListsearchDto = boardListService.getSearchDto(boardListForm);
 		//条件に合わせた掲示文の件数を取得する。
@@ -191,5 +193,19 @@ public class BoardListController {
 		model.addAttribute("pager", pageDto);
 
 		return "views/board_list";
+	}
+	
+	/**
+	 * 掲示文新規作成
+	 * @param model モデル
+	 * @return 画面パス
+	 */
+	@RequestMapping("/write")
+	public String boardwrite(Model model, RedirectAttributes redirectAttributes) throws Exception {
+
+		model.addAttribute("registerFlg", "1");
+
+		return "views/board_EditRegister";
+
 	}
 }

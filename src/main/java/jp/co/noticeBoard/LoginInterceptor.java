@@ -36,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         } else {
             try {
                 String contextPath = request.getContextPath();
-                response.sendRedirect(contextPath+"/returnLogin");
+                response.sendRedirect(contextPath+"/boardList");
             } catch (IOException e) {
                 e.printStackTrace();
             }

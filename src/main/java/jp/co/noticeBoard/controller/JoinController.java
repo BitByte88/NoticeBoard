@@ -1,13 +1,19 @@
 package jp.co.noticeBoard.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import jp.co.noticeBoard.dto.UserJoinDto;
 import jp.co.noticeBoard.form.JoinForm;
 import jp.co.noticeBoard.service.JoinService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -41,8 +47,12 @@ public class JoinController {
     public String join(@ModelAttribute("joinForm") JoinForm joinForm, Model model) throws Exception {
 
         UserJoinDto userJoinDto = new UserJoinDto();
+        
+		//画面引数パスワードをSHA-256アルゴリズムでハッシュ化する。
+		String hashPassword = joinService.getHash(joinForm.getPassword());
+        
         userJoinDto.setUserId(joinForm.getUserId());
-        userJoinDto.setPassword(joinForm.getPassword());
+        userJoinDto.setPassword(hashPassword);
         userJoinDto.setName(joinForm.getName());
         userJoinDto.setUserBirthday(joinForm.getBirthday());
         userJoinDto.setGender(joinForm.getGender());
@@ -53,7 +63,7 @@ public class JoinController {
 
         model.addAttribute("joinForm", userJoinDto);
 
-        return "redirect:/BO/portal";
+        return "redirect:/login";
 
     }
 

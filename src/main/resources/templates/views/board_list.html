@@ -18,7 +18,7 @@
 
 <div class="wrapper">
   <div class="main">
-    <h2 class="page-title"><strong><div th:text="#{label.orderList.title}"></div></strong></h2>
+    <h2 class="page-title"><strong><div th:text="#{label.boardList.title}"></div></strong></h2>
       <section class="main-section error-message" th:if="!${messageList == null or #lists.isEmpty(messageList)}">
           <i class="ico-error"></i>
           <th:block  th:each="message : ${messageList}">
@@ -31,7 +31,7 @@
           <table class="form-table" style="width:100%;">
           	<tbody>
               <tr class="form-table-row">
-              	<th class="form-table-th">	
+              	<th class="form-table-th">
                   <td width="5%">
 					<select name="searchType">
 						<option value="title">タイトル</option>
@@ -40,7 +40,7 @@
 					</select>
 					</td>
 					</th>
-					<td width="30%">
+					<td width="20%">
 						<input type="text" name="searchKeyword" maxlength="128"><p class="section-block center">
 					</td>
 					<td width="5%">
@@ -86,16 +86,14 @@
       <table class="border-table table-hover board-table">
         <thead>
           <tr>
-            <td width="5%" class="border-table-th"><div th:text="#{label.orderList.No}"/></a></th></td>
-            <td width="50%" class="border-table-th"><div th:text="#{label.orderList.ordererName}"/></th></td>
-            <th class="border-table-th"><div th:text="#{label.orderList.contactNameKana}"/></th>
-            <th class="border-table-th"><div th:text="#{label.orderList.orderDate}"/></a></th>
-            <th class="border-table-th"><div th:text="#{label.orderList.viewcount}"/></a></th>
+            <td width="75%" class="border-table-th"><div th:text="#{label.boardList.boardtitle}"/></th></td>
+            <th width="10%" class="border-table-th"><div th:text="#{label.boardList.registerName}"/></th>
+            <th width="10%" class="border-table-th"><div th:text="#{label.boardList.registerDate}"/></a></th>
+            <th width="5%" class="border-table-th"><div th:text="#{label.boardList.viewcount}"/></a></th>
           </tr>
         </thead>
         <tbody>
         <tr th:each="order,index: ${boardList}" th:data-list-id="${order.boardId}" onclick="toNoticeDetail(this)">
-            <td th:text="${order.boardId}" class="border-table-td"></td>
             <td th:text="${order.boardTitle}" class="border-table-td" ></td>
             <td th:text="${order.registerUserId}" class="border-table-td"></td>
             <td th:text="${order.registerDate}" class="border-table-td"></td>
@@ -140,7 +138,7 @@
         </div>
         <div class="table-control-right">
         <th:block th:if="${session.SesUserInfo != null}">
-			<button class="bt bt-green btn_write" onClick="location.href='/boardDetail/write'">
+			<button class="bt bt-green btn_write" onClick="location.href='/boardList/write'">
 				<div th:text="#{btn.orderList.write}"/>
 			</button>
 		</th:block>

@@ -21,7 +21,6 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> notLoadList = new ArrayList<>();
-        notLoadList.add("/boardList");
         notLoadList.add("/login");
         notLoadList.add("/returnLogin");
         notLoadList.add("/logout");

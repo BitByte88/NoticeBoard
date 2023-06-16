@@ -36,7 +36,7 @@ CREATE TABLE `t_user` (
   `user_id` varchar(18) NOT NULL,
   `user_pass` varchar(100) NOT NULL,
   `user_name` varchar(30) NOT NULL,
-  `user_birthday` timestamp NOT NULL,
+  `user_birthday` varchar(8) NOT NULL,
   `user_gender` varchar(2) NOT NULL,
   `user_mail` varchar(50) NOT NULL,
   `join_reason` varchar(2) NOT NULL,

@@ -16,7 +16,9 @@
         user_gender,
         user_mail,
         join_reason,
-        delete_flg
+        delete_flg,
+        register_user_id,
+        register_date
         )
         values
         (
@@ -27,7 +29,9 @@
         #{gender},
         #{mail},
         #{joinReason},
-        '0'
+        '0',
+        #{userId},
+        now()
         )
     </insert>
 

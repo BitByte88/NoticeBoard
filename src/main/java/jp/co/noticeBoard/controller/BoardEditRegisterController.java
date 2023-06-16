@@ -63,7 +63,7 @@ public class BoardEditRegisterController {
 		if (boardNo == null || boardNo.equals(""))
 		{
 			model.addAttribute("registerFlg", "1");
-			return "views/board_EditRegisterConfirm";
+			return "views/board_EditRegister";
 		} else {
 			model.addAttribute("registerFlg", "2");
 		}
@@ -85,7 +85,7 @@ public class BoardEditRegisterController {
 		    model.addAttribute("messageList", messageList);
 		}
 		*/
-        return "views/board_EditRegisterConfirm";
+        return "views/board_EditRegister";
 
     }
 
@@ -139,19 +139,15 @@ public class BoardEditRegisterController {
     }
 
     /**
-     * 登録・修正 確認画面へ
+     * 登録・修正処理を行う。
      * @param updateDto 更新情報
      * @param model モデル
      * @param locale　ロケール
      * @return 画面パス
      */
-    @RequestMapping("/toConfirm")
-    public String toBoardEditRegisterConfirm(@ModelAttribute BoardDetailDto updateDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
+    @RequestMapping("/toProcess")
+    public String toBoardEditRegisterProcess(HttpServletRequest request, @ModelAttribute BoardDetailDto updateDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
 
-
-        //一覧画面から遷移用、注文番号取得
-        String boardNo = updateDto.getBoardId();
-        
         List<String> messageList = new ArrayList<>();
 
         //タイトル入力チェック
@@ -181,48 +177,9 @@ public class BoardEditRegisterController {
         	return "redirect:/boardEditRegister/returnBoardEdit";
         }
 
-        //新規の場合
-        if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
-        	List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
-        	
-        	BoardUpdateList.add(updateDto);
-
-            model.addAttribute("registerFlg", "1");
-            model.addAttribute("boardDetailList", BoardUpdateList);
-
-        //修正の場合
-        } else {
-        	//注文詳細リスト取得
-            List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
-            BoardUpdateList = boardDetailService.getBoardDetailList(boardNo);
-            
-            if(BoardUpdateList.size()==0){
-                return "redirect:/error";
-            }
-
-            BoardUpdateList.get(0).setBoardTitle(updateDto.getBoardTitle());
-            BoardUpdateList.get(0).setBoardContent(updateDto.getBoardContent());
-    		
-    		model.addAttribute("registerFlg", "2");
-    		model.addAttribute("boardDetailList", BoardUpdateList);
-        }
-
-        return "views/board_EditRegisterConfirm";
-
-    }
-
-    /**
-     * 登録・修正処理を行う。
-     * @param updateDto 更新情報
-     * @param model モデル
-     * @param locale　ロケール
-     * @return 画面パス
-     */
-    @RequestMapping("/toProcess")
-    public String toBoardEditRegisterProcess(HttpServletRequest request, @ModelAttribute BoardDetailDto updateDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
-
-
-        List<String> messageList = new ArrayList<>();
+        if(sessionManager.getSesUserInfo() == null)
+        	return "views/admin_login";
+        
         
         //新規の場合
         if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
