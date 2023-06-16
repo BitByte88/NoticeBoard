@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jp.co.noticeBoard.dao.mapper.OrderDetailMapper;
-import jp.co.noticeBoard.dto.OrderDetailDto;
+import jp.co.noticeBoard.dao.mapper.BoardDetailMapper;
+import jp.co.noticeBoard.dto.BoardDetailDto;
 
 @Service
 public class BoardEditRegisterService {
@@ -15,26 +15,26 @@ public class BoardEditRegisterService {
 	private static final Logger logger = LoggerFactory.getLogger(BoardDetailService.class);
 
     @Autowired
-    private OrderDetailMapper orderDetailMapper;
+    private BoardDetailMapper orderDetailMapper;
 
 
     /**
      * 掲示板を登録する。
      *
-     * @param  orderDetailDtoList 注文詳細情報リスト
+     * @param  BoardDetailDto 注文詳細情報リスト
      * @return エラーメッセージリスト
      */
-    public void registerBoard(OrderDetailDto boardDto) throws Exception {
+    public void registerBoard(BoardDetailDto boardDto) throws Exception {
     	orderDetailMapper.registerBoard(boardDto);
     }
 
     /**
      * 掲示板を更新する。
      *
-     * @param orderNo 注文No
+     * @param BoardDetailDto 注文No
      * @return エラーメッセージリスト
      */
-    public void updateBoard(OrderDetailDto boardDto) throws Exception {
+    public void updateBoard(BoardDetailDto boardDto) throws Exception {
         orderDetailMapper.updateBoard(boardDto);
 
     }

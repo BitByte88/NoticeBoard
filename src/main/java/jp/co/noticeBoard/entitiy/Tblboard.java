@@ -3,9 +3,9 @@ package jp.co.noticeBoard.entitiy;
 import java.util.Date;
 
 import lombok.Data;
-/*注文テーブル*/
+/*掲示文テーブル*/
 @Data
-public class TblOrder {
+public class Tblboard {
 
 	private Integer boardId;
 	private String boardTitle;

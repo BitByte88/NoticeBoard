@@ -22,7 +22,7 @@ public class PageDto {
 
 
     /*
-     * 注文件数
+     * 掲示文件数
      */
     private Integer count;
     /*

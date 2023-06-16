@@ -1,21 +1,22 @@
 package jp.co.noticeBoard.dao.mapper;
 
-import jp.co.noticeBoard.dto.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import jp.co.noticeBoard.dto.UserDto;
+
 /**
- * 管理者ログインMapperクラス.
+ * ログインMapperクラス.
  */
 
 @Mapper
 public interface LoginMapper {
 
     /**
-     * 管理者情報を取得する。
+     * ユーザー情報を取得する。
      *
      *
-     * @param account 管理者アカウント
+     * @param account アカウント
      */
     UserDto getUserInfo(@Param("account") String account);
 

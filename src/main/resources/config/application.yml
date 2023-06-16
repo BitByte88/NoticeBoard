@@ -1,14 +1,9 @@
 spring:
-  #  profiles:
-  #    active: development
   datasource:
-    url: jdbc:mysql://localhost:3306/schema
+    url: jdbc:mysql://localhost:3306/schema?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: Password123!
     driverClassName: com.mysql.cj.jdbc.Driver
-  mail:
-    host: 172.21.1.101
-    port: 25
 
   messages:
     basename: message/message
@@ -17,11 +12,11 @@ spring:
     suffix: .html
 
 # Spring Security
-miwa.security.https: false
+notice.security.https: false
 
 
-#注文状況一覧の１ページあたりの最大件数
-list.max.count : 10
+#一覧の１ページあたりの最大件数
+list.max.count : 15
 
 #ページャの数字ボタン数
 pager.btn.count : 3

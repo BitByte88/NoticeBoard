@@ -1,15 +1,18 @@
 package jp.co.noticeBoard;
 
 import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import jp.co.noticeBoard.dto.UserDto;
-import jp.co.noticeBoard.service.SessionManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import jp.co.noticeBoard.dto.UserDto;
+import jp.co.noticeBoard.service.SessionManager;
 
 
 
@@ -33,7 +36,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         } else {
             try {
                 String contextPath = request.getContextPath();
-                response.sendRedirect(contextPath+"/BO/returnLogin");
+                response.sendRedirect(contextPath+"/returnLogin");
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -32,10 +32,10 @@ public class Const {
     //時刻フォーマット
     public static final String TIME_FORMAT  = "HH:MM";
 
-    // セッション「管理者情報」のキー
+    // セッション「ユーザー情報」のキー
     public static final String SES_USER_INFO = "SesUserInfo";
-    //セッション「注文状況検索条件」のキー
-    public static final String SES_ORDER_SEARCH_INFO ="SesOrderSearchInfo";
+    //セッション「掲示文検索条件」のキー
+    public static final String SES_SEARCH_INFO ="SesSearchInfo";
     //セッション「現在時間」のキー
     public static final String SES_TIME = "SesTime";
 }

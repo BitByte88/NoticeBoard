@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
+<script th:inline="javascript">
+	function toNoticeDetail(noticeRow) {
+		var orderNo = $(noticeRow).data("list-id");
+		$("#intoOrderNo").val(orderNo);
+        $("#detailForm").submit();
+	}
+</script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=yes">
+</head>
+
+<Header th:replace="layout/Header :: Header"></Header>
+<body>
+
+<div class="wrapper">
+  <div class="main">
+    <h2 class="page-title"><strong><div th:text="#{label.orderList.title}"></div></strong></h2>
+      <section class="main-section error-message" th:if="!${messageList == null or #lists.isEmpty(messageList)}">
+          <i class="ico-error"></i>
+          <th:block  th:each="message : ${messageList}">
+              <p><span th:text="${message}"/></p>
+          </th:block>
+      </section>
+      <form id="searchForm" th:action="@{/BO/boardList/search}" method="post">
+      <section class="main-section">
+          <input type="hidden" name="offset" th:value="${session.SesOrderSearchInfo.offset}"/>
+          <table class="form-table" style="width:100%;">
+          	<tbody>
+              <tr class="form-table-row">
+              	<th class="form-table-th">	
+                  <td width="5%">
+					<select name="searchType">
+						<option value="title">タイトル</option>
+						<option value="registerUserId">作成者</option>
+						<option value="content">内容</option>
+					</select>
+					</td>
+					</th>
+					<td width="30%">
+						<input type="text" name="searchKeyword" maxlength="128"><p class="section-block center">
+					</td>
+					<td width="5%">
+						<button class="bt bt-green btn_search">
+							<div th:text="#{btn.orderList.search}"/>
+						</button>
+					</td>
+              </tr>
+       		<tbody>
+      	</table>
+      </section>
+      </form>
+    <section class="main-section gray-top-border" >
+      <div class="table-control" th:if="!${orderList == null or #lists.isEmpty(orderList)}">
+
+          <div class="table-control-left">
+              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(orderList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
+          <div class="table-control-center">
+              <ul class="pager">
+                  <th block th:if="${pager.currentPage != 1}">
+                    <li class="pager-item" ><button class="bt bt-pager" name="sign" th:value="1"><div th:text="#{btn.paging.first}"/></button></li>
+                    <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage - 1}"><div th:text="#{btn.paging.prev}"/></button></li>
+                  </th>
+                  <th:block th:if="${pager.totalPage < pager.btnCount}">
+                      <li class="pager-item" th:each="num: ${#numbers.sequence(1,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                  </th:block>
+                  <th:block th:unless="${pager.totalPage < pager.btnCount}">
+                      <th:block th:if="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
+                          <li class="pager-item" th:each="num: ${#numbers.sequence(pager.currentPage,pager.currentPage+ pager.btnCount - 1)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                      </th:block>
+                      <th:block th:unless="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
+                          <li class="pager-item" th:each="num: ${#numbers.sequence(pager.totalPage - pager.btnCount + 1 ,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                      </th:block>
+                  </th:block>
+                  <th block th:if="${pager.currentPage != pager.totalPage}">
+                  <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage + 1}"><div th:text="#{btn.paging.next}"/></button></li>
+                  <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.totalPage}"><div th:text="#{btn.paging.last}"/></button></li>
+                  </th>
+              </ul>
+          </div>
+        <div class="table-control-right"></div>
+      </div><!--/.table-control-->
+      <table class="border-table table-hover board-table">
+        <thead>
+          <tr>
+            <td width="5%" class="border-table-th"><div th:text="#{label.orderList.No}"/></a></th></td>
+            <td width="50%" class="border-table-th"><div th:text="#{label.orderList.ordererName}"/></th></td>
+            <th class="border-table-th"><div th:text="#{label.orderList.contactNameKana}"/></th>
+            <th class="border-table-th"><div th:text="#{label.orderList.orderDate}"/></a></th>
+            <th class="border-table-th"><div th:text="#{label.orderList.viewcount}"/></a></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order,index: ${orderList}" th:data-list-id="${order.boardId}" onclick="toNoticeDetail(this)">
+            <td th:text="${order.boardId}" class="border-table-td"></td>
+            <td th:text="${order.boardTitle}" class="border-table-td" ></td>
+            <td th:text="${order.registerUserId}" class="border-table-td"></td>
+            <td th:text="${order.registerDate}" class="border-table-td"></td>
+            <td th:text="${order.viewCount}" class="border-table-td"></td>
+        </tr>
+        <div th:if="${orderList == null or #lists.isEmpty(orderList)}">
+            <tr style="height:35px;" th:each="num: ${#numbers.sequence(1,4)}">
+                <td  class="border-table-td center"></td>
+                <td  class="border-table-td"></td>
+                <td  class="border-table-td center"></td>
+                <td class="border-table-td"></td>
+            </tr>
+       	</div>
+        </tbody>
+      </table>
+
+      <div class="table-control" th:if="!${orderList == null or #lists.isEmpty(orderList)}">
+          <div class="table-control-left">
+              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(orderList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
+          <div class="table-control-center">
+          <ul class="pager">
+              <th block th:if="${pager.currentPage != 1}">
+              <li class="pager-item" ><button class="bt bt-pager" name="sign" th:value="1"><div th:text="#{btn.paging.first}"/></button></li>
+              <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage - 1}"><div th:text="#{btn.paging.prev}"/></button></li>
+              </th>
+              <th:block th:if="${pager.totalPage < pager.btnCount}">
+                  <li class="pager-item" th:each="num: ${#numbers.sequence(1,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+              </th:block>
+              <th:block th:unless="${pager.totalPage < pager.btnCount}">
+                  <th:block th:if="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
+                      <li class="pager-item" th:each="num: ${#numbers.sequence(pager.currentPage,pager.currentPage+ pager.btnCount - 1)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                  </th:block>
+                  <th:block th:unless="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
+                      <li class="pager-item" th:each="num: ${#numbers.sequence(pager.totalPage - pager.btnCount + 1 ,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                  </th:block>
+              </th:block>
+              <th block th:if="${pager.currentPage != pager.totalPage}">
+              <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage + 1}"><div th:text="#{btn.paging.next}"/></button></li>
+              <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.totalPage}"><div th:text="#{btn.paging.last}"/></button></li>
+              </th>
+          </ul>
+        </div>
+        <div class="table-control-right">
+			<button class="bt bt-green btn_write" onClick="location.href='/BO/boardDetail/write'">
+				<div th:text="#{btn.orderList.write}"/>
+			</button></div>
+      </div><!--/.table-control-->
+    </section><!--/.main-section-->
+  </div><!--/.main-->
+</div>
+<form id="detailForm" name="detailForm" th:action="@{/BO/boardDetail}" method="post">
+    <input type="hidden" name="intoOrderNo" id="intoOrderNo">
+</form>
+
+<script type="text/javascript">
+              /* 「検索」ボタン */
+              $('.btn_search').click(function() {
+                statusSetting();
+                $("input[name='offset']").val(0);
+                 $("#searchForm").submit();
+              });
+
+              /* 「ページング」ボタン */
+              $('.bt-pager').click(function(){
+              if($(this).attr('name')=="sign"){
+                var clickPage = $(this).val();
+              }else{
+                var clickPage = $(this).get(0).innerText;
+              }
+              var maxCount = [[${@environment.getProperty('list.max.count')}]]
+              var offset = (clickPage-1)*maxCount;
+              $("input[name='offset']").val(offset);
+              statusSetting();
+               $("#searchForm").submit();
+              });
+
+              function statusSetting(){
+              var checkValue= [];
+                 $("input[name='statusCheck']:checked").each(function(i){
+                 checkValue.push($(this).val());
+                 });
+                 $("input[name='status']").val(checkValue);
+              };
+
+</script>
+<footer th:replace="layout/Footer :: Footer"></footer>
+</html>

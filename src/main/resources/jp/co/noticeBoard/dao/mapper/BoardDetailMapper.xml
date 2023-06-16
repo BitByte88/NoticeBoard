@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.noticeBoard.dao.mapper.BoardDetailMapper">
+
+    <resultMap id="boardDetailMap" type="jp.co.noticeBoard.dto.BoardDetailDto">
+        <id column="board_id" jdbcType="INTEGER" property="boardId" />
+        <id column="board_title" jdbcType="VARCHAR" property="boardTitle" />
+        <id column="board_content" jdbcType="VARCHAR" property="boardContent" />
+        <id column="view_number" jdbcType="INTEGER" property="viewCount" />
+        <id column="register_user_id" jdbcType="VARCHAR" property="registerUserId" />
+        <id column="register_date" jdbcType="TIMESTAMP" property="registerDate" />
+        <id column="update_user_id" jdbcType="VARCHAR" property="updateUserId" />
+        <id column="update_user_date" jdbcType="TIMESTAMP" property="updateUserDate" />
+        <id column="delete_flag" jdbcType="VARCHAR" property="deleteFlag" />
+    </resultMap>
+    
+    <resultMap id="boardCommentMap" type="jp.co.noticeBoard.dto.BoardCommentDto">
+        <id column="board_id" jdbcType="INTEGER" property="boardId" />
+        <id column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+        <id column="register_user_id" jdbcType="VARCHAR" property="commentRegisterUserId" />
+        <id column="register_date" jdbcType="TIMESTAMP" property="commentRegisterDate" />
+    </resultMap>
+
+    <!-- 掲示文詳細情報取得 -->
+    <select id="getBoardDetailList" resultMap="boardDetailMap">
+        SELECT
+        t_board.board_id,
+        t_board.board_title,
+        t_board.board_content,
+        t_board.view_number,
+        t_board.register_user_id,
+        DATE_FORMAT(t_board.register_date,'%Y/%m/%d %H:%i') as register_date
+        FROM
+        t_board
+        WHERE
+        t_board.board_id = #{boardNo} AND
+        t_board.delete_flag != 1
+    </select>
+
+    <!-- コメント情報取得 -->
+    <select id="getCommentList" resultMap="boardCommentMap">
+        SELECT
+        t_comment.board_id,
+        t_comment.comment_content,
+        t_comment.register_user_id,
+        DATE_FORMAT(t_comment.register_date,'%Y/%m/%d %H:%i') as register_date
+        FROM
+        t_comment
+        WHERE
+        t_comment.board_id = #{boardNo} AND
+        t_comment.delete_flag != 1
+        ORDER BY
+        t_comment.register_date asc
+    </select>
+
+    <!-- 閲覧数カウントアップ -->
+    <update id="updateViewCount">
+        UPDATE t_board
+        SET
+        t_board.view_number = view_number + 1
+        WHERE
+        t_board.board_id = #{boardNo}
+    </update>
+
+    <!-- コメント登録 -->
+    <insert id="commentUpdate">
+    	INSERT INTO t_comment
+    	(
+    		board_id,
+    		comment_content,
+    		register_user_id,
+    		register_date,
+    		delete_flag
+    	) VALUE (
+    		 #{commentDto.boardId},
+    		 #{commentDto.commentContent},
+    	   	 #{commentDto.commentRegisterUserId},
+    		 NOW(),
+    		 '0'
+    	);
+    </insert>
+    
+     <!-- 掲示文登録 -->
+    <insert id="registerBoard">
+    	INSERT INTO t_board
+    	(
+    		board_title,
+    		board_content,
+    		register_user_id,
+    		register_date,
+    		delete_flag
+    	) VALUE (
+    		#{updateDto.boardTitle},
+    		#{updateDto.boardContent},
+    	   	#{updateDto.registerUserId},
+    		NOW(),
+    		'0'
+    	);
+    </insert>
+    
+     <!-- 掲示文更新 -->
+    <update id="updateBoard">
+    	UPDATE t_board
+    	SET
+    	t_board.board_title =  #{updateDto.boardTitle},
+    	t_board.board_content  =  #{updateDto.boardContent},
+    	t_board.update_user_id =  #{updateDto.updateUserId},
+    	t_board.update_date = now()
+    	WHERE
+    	t_board.board_id =  #{updateDto.boardId}
+    </update>
+
+    <!-- 掲示文削除 -->
+    <update id="deleteBoard">
+    	UPDATE t_board
+    	SET
+    	t_board.update_user_id =  #{deleteDto.RegisterUserId},
+    	t_board.update_date = now(),
+    	t_board.delete_flag = '1'
+    	WHERE
+    	t_board.board_id =  #{deleteDto.boardId}
+    </update>
+
+</mapper>

@@ -20,130 +20,127 @@ import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
-@RequestMapping("/BO")
+@RequestMapping("/login")
 public class LoginController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-    @Autowired
-    private SessionManager sessionManager;
+	@Autowired
+	private SessionManager sessionManager;
 
-    @Autowired
-    private MessageSource messageSource;
+	@Autowired
+	private MessageSource messageSource;
 
-    @Autowired
-    private LoginService loginService;
+	@Autowired
+	private LoginService loginService;
+	
+		/**
+		* ログイン（初期表示）
+		*
+		* @return 画面パス
+		*/
+		@RequestMapping("")
+			public String login() throws Exception {
+			 sessionManager.clearUserInfo();
+			 return "views/admin_login";
+			}
+			
 
-    /**
-     * 管理者ログイン（初期表示）
-     *
-     * @return 画面パス
-     */
-    @RequestMapping("")
-    public String login() throws Exception {
-        sessionManager.clearUserInfo();
-        return "views/admin_login";
-    }
+	/**
+	 * ログイン
+	 *
+	 * @param model    モデル
+	 * @param loginForm ログイン画面のForm
+	 * @param locale   リクエストヘッダーのAccept-Language
+	 * @return 画面パス
+	 */
+	@RequestMapping("/process")
+	public String login(Locale locale, Model model, @ModelAttribute LoginForm loginForm) throws Exception {
 
-    /**
-     * 管理者ログイン
-     *
-     * @param model    モデル
-     * @param loginForm ログイン画面のForm
-     * @param locale   リクエストヘッダーのAccept-Language
-     * @return 画面パス
-     */
-    @RequestMapping("/login")
-    public String login(Locale locale, Model model,@ModelAttribute LoginForm loginForm) throws Exception {
-        // エラーメッセージリスト
-        List<String> messageList = new ArrayList<>();
-        // ID,PASSWORDチェック
-        messageList =loginService.loginInputCheck(loginForm,locale);
-        if(!messageList.isEmpty()) {
-            model.addAttribute("messageList", messageList);
-            return "views/admin_login";
-        } else
-        {
-            //画面引数アカウントを引数として設定し管理者ユーザ情報を取得する。
-            UserDto userdto = loginService.getUserInfo(loginForm.getAccount());
+		// エラーメッセージリスト
+		List<String> messageList = new ArrayList<>();
 
-            //アカウント存在チェック
-            if(userdto==null){
-                messageList.add( messageSource.getMessage("E09995", new Object[] {}, locale));
-                logger.error(messageSource.getMessage("E09995", new Object[] {}, locale));
-                model.addAttribute("messageList", messageList);
-                return "views/admin_login";
-            }
+		// ID,PASSWORDチェック
+		messageList = loginService.loginInputCheck(loginForm, locale);
+		if (!messageList.isEmpty()) {
+			model.addAttribute("messageList", messageList);
+			return "views/admin_login";
+		} else {
+			//画面引数アカウントを引数として設定しユーザ情報を取得する。
+			UserDto userdto = loginService.getUserInfo(loginForm.getAccount());
 
-            //画面引数パスワードをSHA-256アルゴリズムでハッシュ化する。
-            String hashPassword = loginService.getHash(loginForm.getPassword());
+			//アカウント存在チェック
+			if (userdto == null) {
+				messageList.add(messageSource.getMessage("E09995", new Object[] {}, locale));
+				logger.error(messageSource.getMessage("E09995", new Object[] {}, locale));
+				model.addAttribute("messageList", messageList);
+				return "views/admin_login";
+			}
 
-            //パスワード一致チェック
-            if(!hashPassword.equals(userdto.getPassword())){
-                messageList.add( messageSource.getMessage("E09995", new Object[] {}, locale));
-                logger.error(messageSource.getMessage("E09995", new Object[] {}, locale));
-                model.addAttribute("messageList",messageList);
-                return "views/admin_login";
-            }
+			//画面引数パスワードをSHA-256アルゴリズムでハッシュ化する。
+			String hashPassword = loginService.getHash(loginForm.getPassword());
 
-            //セッション格納
-            UserDto sesUserDto = userdto;
-            sesUserDto.setPassword("");
-            //ログイン情報
-            sessionManager.setSesUserInfo(sesUserDto);
-            //現在時間
-            sessionManager.setSesTime();
+			//パスワード一致チェック
+			if (!hashPassword.equals(userdto.getPassword())) {
+				messageList.add(messageSource.getMessage("E09995", new Object[] {}, locale));
+				logger.error(messageSource.getMessage("E09995", new Object[] {}, locale));
+				model.addAttribute("messageList", messageList);
+				return "views/admin_login";
+			}
 
+			//セッション格納
+			UserDto sesUserDto = userdto;
+			sesUserDto.setPassword("");
+			//ログイン情報
+			sessionManager.setSesUserInfo(sesUserDto);
+			//現在時間
+			sessionManager.setSesTime();
 
-            return "redirect:/BO/boardList";
-        }
+			return "redirect:/boardList";
+		}
 
+	}
 
+	/**
+	 * ポータル（初期表示）
+	 *
+	 * @return 画面パス
+	 */
+	@RequestMapping("/portal")
+	public String portal() {
 
+		return "views/admin_portal";
+	}
 
-    }
+	/**
+	 * ログアウト
+	 *
+	 * @return 画面パス
+	 */
+	@RequestMapping("/logout")
+	public String logout(Model model) {
+		List<String> messageList = new ArrayList<>();
+		if ((List<String>) model.asMap().get("messageList") != null) {
+			messageList.addAll((List<String>) model.asMap().get("messageList"));
+		}
+		sessionManager.clearUserInfo();
+		return "redirect:/boardList";
+	}
 
-    /**
-     * 管理者ポータル（初期表示）
-     *
-     * @return 画面パス
-     */
-    @RequestMapping("/portal")
-    public String portal() {
-
-
-        return "views/admin_portal";
-    }
-
-    /**
-     * 管理者ログアウト
-     *
-     * @return 画面パス
-     */
-    @RequestMapping("/logout")
-    public String logout(Model model) {
-        List<String> messageList = new ArrayList<>();
-        if ((List<String>)model.asMap().get("messageList") != null) {
-            messageList.addAll((List<String>)model.asMap().get("messageList"));
-        }
-        sessionManager.clearUserInfo();
-        return "views/admin_login";
-    }
-
-    /**
-     * セッションタイムアウト     *
-     * @param model モデル
-     * @return 画面パス
-     */
-    @RequestMapping(value = "/returnLogin")
-    public String returnLogin(Model model,RedirectAttributes redirectAttributes) throws Exception {
-        // エラーメッセージリスト
-        List<String> messageList = new ArrayList<>();
-        messageList.add(messageSource.getMessage("E09999", null, null));
-        model.addAttribute("messageList", messageList);
-        logger.error(messageSource.getMessage("E09999", null, null));
-        redirectAttributes.addFlashAttribute("messageList", messageList);
-        return "redirect:/BO/logout";
-    }
+	/**
+	 * セッションタイムアウト     *
+	 * @param model モデル
+	 * @return 画面パス
+	 */
+	@RequestMapping(value = "/returnLogin")
+	public String returnLogin(Model model, RedirectAttributes redirectAttributes) throws Exception {
+		// エラーメッセージリスト
+		List<String> messageList = new ArrayList<>();
+		messageList.add(messageSource.getMessage("E09999", null, null));
+		model.addAttribute("messageList", messageList);
+		logger.error(messageSource.getMessage("E09999", null, null));
+		redirectAttributes.addFlashAttribute("messageList", messageList);
+		return "redirect:/logout";
+	}
 
 }

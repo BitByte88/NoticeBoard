@@ -6,7 +6,7 @@ import lombok.Data;
 public class LoginForm {
 
     /**
-     * 管理者ID.
+     * アカウント
      */
     private String account;
     /**

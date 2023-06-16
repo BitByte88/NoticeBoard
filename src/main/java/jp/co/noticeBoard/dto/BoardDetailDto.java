@@ -3,7 +3,7 @@ package jp.co.noticeBoard.dto;
 import lombok.Data;
 
 @Data
-public class OrderDetailDto {
+public class BoardDetailDto {
 
     /**
      *掲示文番号

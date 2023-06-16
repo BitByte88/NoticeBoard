@@ -20,7 +20,7 @@
       </th:block>
     </section>
     <section class="login-section">
-      <form id="loginForm" th:action="@{/BO/login}" method="post" th:object="${loginForm}">
+      <form id="loginForm" th:action="@{/login/process}" method="post" th:object="${loginForm}">
       <ul class="login-form">
         <li class="login-form-item">
           <div class="login-form-item-name"><div th:text="#{label.login.account}"/></div>

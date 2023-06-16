@@ -12,7 +12,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${miwa.security.https}")
+    @Value("${notice.security.https}")
     /** httpsの場合 true or httpの場合 false */
     private Boolean secure;
 
