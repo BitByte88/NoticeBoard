@@ -33,7 +33,7 @@
 
     <!-- ID 重複チェック -->
     <select id="idCheck" parameterType="String" resultType="int">
-        SELECT COUNT(id) FROM T_USER
+        SELECT COUNT(user_id) FROM T_USER
         WHERE user_id= #{userId}
     </select>
 

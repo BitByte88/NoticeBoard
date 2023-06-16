@@ -23,8 +23,8 @@ public class JoinService {
     }
 
     public int idCheck(String userId) {
-        int checkedId = joinMapper.idCheck(userId);
-        return checkedId;
+        int cnt = joinMapper.idCheck(userId);
+        return cnt;
     }
 
 

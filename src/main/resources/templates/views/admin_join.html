@@ -45,7 +45,7 @@
                             <input type="text" name="birthday" id="join-birthday" placeholder=" ex) 19800101"
                                    maxlength="8" pattern="\d*">
                             <div class="failure-message-BDay hide">生年月日を確認してください</div>
-                            <div class="success-message-BDay hide">OK</div>
+                            <div class="success-message-BDay hide" id="BdayOK">OK</div>
                         </div>
                     </li>
                     <li class="login-form-item">
@@ -61,13 +61,17 @@
                         <div class="login-form-item-data">
                             <input type="email" name="mail" id="join-mail" placeholder="abc@mail.com" >
                             <div class="failure-message-mail hide">メール形式で入力してください</div>
-                            <div class="success-message-mail hide">OK</div>
+                            <div class="success-message-mail hide" id="mailOK">OK</div>
                         </div>
                     </li>
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.joinReason}"/></div>
                         <div class="login-form-item-data">
-                            <input type="text" name="joinReason" id="join-joinReason">
+                            <select class="joinReason select" name="joinReason" id="join-joinReason" >
+                                <option value="0">なし</option>
+                                <option value="1">111</option>
+                                <option value="2">222</option>
+                            </select>
                         </div>
                     </li>
                     <li class="login-form-item">
@@ -92,6 +96,10 @@
 </body>
 <!-- SCRIPTS -->
 <script th:inline="javascript">
+
+
+
+
 
 /* 登録内容確認時の変更*/
 $(function() {
@@ -162,6 +170,9 @@ $(function() {
   let eljoinReason = document.querySelector('#join-joinReason')
   let elJoinCKbutton = document.querySelector('#btn_join_ck')
 
+  let elBdayOK = document.getElementById("BdayOK");
+  let elmailOK = document.getElementById("mailOK");
+
   /* 各メッセージの変数定義 */
   let elFailuremessage = document.querySelector('.failure-message')
   let elDuplicatemessage = document.querySelector('.duplicate-message')
@@ -195,15 +206,16 @@ $(function() {
   elInputName.addEventListener('keyup', button)
   elInputBirthday.addEventListener('keyup', button)
   elInputMail.addEventListener('keyup', button)
-  eljoinReason.addEventListener('keyup', button)
+
 
   function button() {
     switch (!(elInputJoinUserId.value && elInputPassword.value &&
-              elInputName.value && elInputBirthday.value && elInputMail.value)) {
+              elInputName.value && elInputBirthday.value && elInputMail.value )) {
       case true : elJoinCKbutton.disabled = true; break;
       case false : elJoinCKbutton.disabled = false; break
     }
   }
+
 
 
   /* メールの有効性検証 */
@@ -218,6 +230,9 @@ $(function() {
     else {
       elSuccessmessageMail.classList.add('hide')
       elFailuremessageMail.classList.remove('hide')
+      alert("正しいメール形式を入力してください");
+      elInputMail.value='';
+      elInputMail.focus()
   　}
   }
 
@@ -225,6 +240,8 @@ $(function() {
   function isMailRegExp(value) {
     return elMailRegExp.test(value)
   }
+
+
 
   /* 生年月日8文字チェック */
   function validateBirthdate(birthdate) {
@@ -257,35 +274,48 @@ $(function() {
   elInputBirthday.onkeyup = function () {
     if (validateBirthdate(elInputBirthday.value)) {
       elSuccessmessageBDay.classList.remove('hide')
-      elFailuremessageMail.classList.add('hide')
+      elFailuremessageBDay.classList.add('hide')
     }
     else {
       elSuccessmessageBDay.classList.add('hide')
       elFailuremessageBDay.classList.remove('hide')
+      alert("正しい生年月日を入力してください");
+      elInputBirthday.value='';
+      elInputBirthday.focus()
   　}
   }
 
-/* ID重複チェック */
 
-$(document).on("click", "#btn_join_bk", function(){
+/* ID重複チェック */
 $(document).ready(function() {
   $('#join-userId').on('input', function() {
     var userId = $('#join-userId').val();
 
     $.ajax({
-      url: '/join/idCheck',
+      url: 'http://localhost:8080/join/idCheck',
       method: 'POST',
       data: { userId: userId },
-      success: function(checkedId) {
-        if (checkedId==0) {
+      success: function(cnt) {
+        if (cnt==0) {
           $('#message').text('ID OK').css('color', 'green');
         } else {
           $('#message').text('ID NG').css('color', 'red');
+          alert("既に使用中のIDです");
+          $('#join-userId').val('');
         }
-      }
+      },
+      error:function(xhr, status, error) {
+           console.log(xhr); // エラーメッセージ出力
+           console.log(status); // STATUSコード出力
+           console.log(error);
+           alert("ERROR");
+       }
     });
   });
 });
+
+
+
 
 </script>
 </html>

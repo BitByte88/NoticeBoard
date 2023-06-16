@@ -60,8 +60,8 @@ public class JoinController {
     @PostMapping("/idCheck")
     @ResponseBody
     public int idCheck(@RequestParam("userId") String userId) {
-        int checkedId = joinService.idCheck(userId);
-        return checkedId;
+        int cnt = joinService.idCheck(userId);
+        return cnt;
 
     }
 }
