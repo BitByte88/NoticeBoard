@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import jp.co.noticeBoard.dao.mapper.OrderListMapper;
-import jp.co.noticeBoard.dto.OrderListDto;
-import jp.co.noticeBoard.dto.OrderListSearchDto;
+import jp.co.noticeBoard.dao.mapper.BoardListMapper;
+import jp.co.noticeBoard.dto.BoardListDto;
+import jp.co.noticeBoard.dto.BoardListSearchDto;
 import jp.co.noticeBoard.dto.PageDto;
-import jp.co.noticeBoard.entitiy.TblOrder;
-import jp.co.noticeBoard.form.OrderListForm;
+import jp.co.noticeBoard.entitiy.Tblboard;
+import jp.co.noticeBoard.form.BoardListForm;
 
 @Service
 public class BoardListService {
@@ -33,28 +33,28 @@ public class BoardListService {
     private Integer btnCount;
 
     @Autowired
-    private OrderListMapper orderListMapper;
+    private BoardListMapper boardListMapper;
 
     /**
      * 掲示文一覧初期設定
      *
      * @return 注文状況検索条件Form
      */
-    public OrderListForm initOrderList(){
+    public BoardListForm initBoardList(){
     	// TODO 初期値設定
-        OrderListForm orderListForm = new OrderListForm();
+        BoardListForm boardListForm = new BoardListForm();
 
-        return orderListForm;
+        return boardListForm;
     }
 
 
     /**
      * 掲示文条件チェック
      *
-     * @param orderListForm 掲示文条件Form
+     * @param boardListForm 掲示文条件Form
      * @return エラーメッセージリスト
      */
-    public List<String> searchInputCheck(OrderListForm orderListForm, Locale locale) throws Exception {
+    public List<String> searchInputCheck(BoardListForm boardListForm, Locale locale) throws Exception {
 
         // エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
@@ -76,15 +76,15 @@ public class BoardListService {
 
     /**
      * 検索条件DTO生成
-     * @param orderListForm 掲示文検索条件Form
+     * @param boardListForm 掲示文検索条件Form
      * @return 掲示文一覧検索条件Dto
      */
-    public OrderListSearchDto getSearchDto(OrderListForm orderListForm) throws Exception {
+    public BoardListSearchDto getSearchDto(BoardListForm boardListForm) throws Exception {
 
-        OrderListSearchDto dto = new OrderListSearchDto();
-        dto.setOffset(orderListForm.getOffset());
-        dto.setSearchType(orderListForm.getSearchType());
-        dto.setSearchKeyword(orderListForm.getSearchKeyword());
+        BoardListSearchDto dto = new BoardListSearchDto();
+        dto.setOffset(boardListForm.getOffset());
+        dto.setSearchType(boardListForm.getSearchType());
+        dto.setSearchKeyword(boardListForm.getSearchKeyword());
 
         return dto;
     }
@@ -94,21 +94,21 @@ public class BoardListService {
     /**
      * 掲示文件数取得.
      *
-     * @param orderListSearchDto 掲示文検索変数
+     * @param boardListSearchDto 掲示文検索変数
      * @return 件数
      */
-    public Integer getOrderListCount(OrderListSearchDto orderListSearchDto) {
-        return orderListMapper.getOrderListCount(orderListSearchDto);
+    public Integer getBoardListCount(BoardListSearchDto boardListSearchDto) {
+        return boardListMapper.getBoardListCount(boardListSearchDto);
     }
 
     /**
-     * 注文情報取得.
+     * 掲示文情報取得.
      *
-     * @param orderListSearchDto　注文状況検索条件
-     * @return 注文リスト
+     * @param boardListSearchDto　注文状況検索条件
+     * @return 掲示文リスト
      */
-    public List<TblOrder> getOrderList(OrderListSearchDto orderListSearchDto) {
-        return orderListMapper.getOrderList(orderListSearchDto, limit);
+    public List<Tblboard> getBoardList(BoardListSearchDto boardListSearchDto) {
+        return boardListMapper.getBoardList(boardListSearchDto, limit);
     }
 
     /**
@@ -208,30 +208,30 @@ public class BoardListService {
     /**
      * 表示用文字列取得
 
-     * @param list    注文リスト
-     * @return 注文リスト
+     * @param list    掲示文リスト
+     * @return 掲示文リスト
      **/
 
-    public List<OrderListDto> orderListConversion(List<TblOrder> list,Locale locale){
+    public List<BoardListDto> boardListConversion(List<Tblboard> list,Locale locale){
 
-        List<OrderListDto> orderList = new ArrayList<>();
-        for (TblOrder order : list) {
-            OrderListDto dto = new OrderListDto();
+        List<BoardListDto> boardList = new ArrayList<>();
+        for (Tblboard board : list) {
+            BoardListDto dto = new BoardListDto();
 
             //日付フォーマット変換
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            String orderDate = dateFormat.format(order.getRegisterDate());
+            String boardDate = dateFormat.format(board.getRegisterDate());
 
-            dto.setBoardId(order.getBoardId());
-            dto.setBoardTitle(order.getBoardTitle());
-            dto.setBoardContent(order.getBoardContent());
-            dto.setRegisterUserId(order.getRegisterUserId());
-            dto.setRegisterDate(orderDate);
-            dto.setViewCount(order.getViewCount());
+            dto.setBoardId(board.getBoardId());
+            dto.setBoardTitle(board.getBoardTitle());
+            dto.setBoardContent(board.getBoardContent());
+            dto.setRegisterUserId(board.getRegisterUserId());
+            dto.setRegisterDate(boardDate);
+            dto.setViewCount(board.getViewCount());
             
-            orderList.add(dto);
+            boardList.add(dto);
         }
 
-        return orderList;
+        return boardList;
     }
 }

@@ -6,22 +6,22 @@ import lombok.Data;
 public class UserDto {
 
     /**
-     * 管理者番号
+     * ユーザー番号
      */
     private Integer userNo;
 
     /**
-     * 管理者アカウント
+     * アカウント
      */
     private String userId;
 
     /**
-     * 管理者パスワード
+     * パスワード
      */
     private String password;
 
     /**
-     * 管理者氏名
+     * 氏名
      */
     private String name;
 }

@@ -4,8 +4,7 @@
 
 <header th:replace="layout/Header :: Header"></header>
 <body>
-<!-- 新規 -->
-  <div class="wrapper">
+ <div class="wrapper">
   <div class="main">
   	<th:block th:if="${'1' == registerFlg}">
   	<h2 class="page-title"><strong><th:block th:text="#{label.orderDetail.boardTitleRegisterConfirmHeader}"></th:block></strong></h2>
@@ -48,7 +47,7 @@
         	</colgroup>
      	 	<tr class="form-table-row">
           		<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtitle}"/></th>
-          		<td class="form-table-td"><th:block th:text="${orderDetailList[0].boardTitle}"/></td>
+          		<td class="form-table-td"><th:block th:text="${boardDetailList[0].boardTitle}" name="boardTitle"/></td>
         	</tr>
        	<tbody>
       </table>
@@ -60,7 +59,7 @@
           <th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
         </tr>
         <tr class="form-table-row">
-          <td class="form-table-td"><th:block th:text="${orderDetailList[0].boardContent}" name="boardContent"/></td>
+          <td class="form-table-td"><th:block th:text="${boardDetailList[0].boardContent}" name="boardContent"/></td>
         </tr>
         </tbody>
       </table>
@@ -72,14 +71,14 @@
     </div><!--/.main-->
     </div>
 <th:block th:if="${'1' == registerFlg}">
-<form id="backForm" name="backForm" th:action="@{/BO/boardEditRegister/returnBoardEdit}" method="post">
-<input type="hidden" name="boardTitle" id="boardTitle"/>
-<input type="hidden" name="boardContent" id="boardContent"/>
+<form id="backForm" name="backForm" th:action="@{/boardEditRegister/returnBoardEdit}" method="post">
+<input type="hidden" name="boardTitle" id="boardTitle" th:value="${boardDetailList[0].boardTitle}">
+<input type="hidden" name="boardContent" id="boardContent" th:value="${boardDetailList[0].boardContent}">
 </form>
 </th:block>    
 <th:block th:if="${'2' == registerFlg}">
-<form id="backForm" name="backForm" th:action="@{/BO/boardEditRegister/returnBoardEdit}" method="post">
-  <input type="hidden" name="intoOrderNo" id="intoOrderNo" th:value="${orderDetailList[0].boardId}"/>
+<form id="backForm" name="backForm" th:action="@{/boardEditRegister/returnBoardEdit}" method="post">
+  <input type="hidden" name="intoOrderNo" id="intoOrderNo" th:value="${boardDetailList[0].boardId}">
 </form>
 </th:block>
 
@@ -120,19 +119,19 @@
   </div>
   <footer th:replace="layout/Footer :: Footer"></footer>
 
-<form id="updateForm" th:action="@{/BO/boardEditRegister/toProcess}" method="post" th:object="${updateDto}">
-  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
-  <input type="hidden" name="boardTitle" th:value="${orderDetailList[0].boardTitle}"/>
-  <input type="hidden" name="boardContent" th:value="${orderDetailList[0].boardContent}"/>
+<form id="updateForm" th:action="@{/boardEditRegister/toProcess}" method="post" th:object="${updateDto}">
+  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
+  <input type="hidden" name="boardTitle" th:value="${boardDetailList[0].boardTitle}"/>
+  <input type="hidden" name="boardContent" th:value="${boardDetailList[0].boardContent}"/>
 </form>
 </th:block>
 </body>
 <script>
        /* 「戻る」ボタン */
   $('.btn_back').click(function() {
-      var boardTitle = $("[name='boardContent']").val();
+      var boardTitle = $("[name='boardtitle']").val();
       $("[name='boardTitle']").val(boardTitle);
-      var boardContent = "${orderDetailList[0].boardContent}"
+      var boardContent = "${boardDetailList[0].boardContent}"
       $("[name='boardTitle']").val(boardContent);
       $("#backForm").submit();
   });

@@ -3,7 +3,7 @@ package jp.co.noticeBoard.form;
 import lombok.Data;
 
 @Data
-public class OrderListForm {
+public class BoardListForm {
 
 	
     /**

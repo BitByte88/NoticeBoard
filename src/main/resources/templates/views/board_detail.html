@@ -25,17 +25,17 @@
         <tbody>
         <tr class="form-table-row">
           <th class="form-table-th"><th:block th:text="#{label.orderDetail.boardNo}"/></th>
-          <td class="form-table-td"><th:block  th:text="${orderDetailList[0].boardId}"/></td>
+          <td class="form-table-td"><th:block  th:text="${boardDetailList[0].boardId}"/></td>
        	</tr>
        	<tr class="form-table-row">
 	      <th class="form-table-th"><th:block th:text="#{label.orderList.orderDate}"></th:block></th>
-	      <td class="form-table-td"><th:block th:text="${orderDetailList[0].registerDate}"/></td>
+	      <td class="form-table-td"><th:block th:text="${boardDetailList[0].registerDate}"/></td>
 	      <th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtCreator}"/></th>
-	      <td class="form-table-td"><th:block th:text="${orderDetailList[0].registerUserId}"/></td>
+	      <td class="form-table-td"><th:block th:text="${boardDetailList[0].registerUserId}"/></td>
 	    </tr>
 	         <tr class="form-table-row">
           		<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtitle}"/></th>
-          		<td class="form-table-td"><th:block th:text="${orderDetailList[0].boardTitle}"/></td>
+          		<td class="form-table-td"><th:block th:text="${boardDetailList[0].boardTitle}"/></td>
         	</tr>
         </tbody>
       </table>
@@ -58,7 +58,7 @@
           <th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
         </tr>
         <tr class="form-table-row">
-          <td class="form-table-td"><th:block th:text="${orderDetailList[0].boardContent}"/></td>
+          <td class="form-table-td"><th:block th:text="${boardDetailList[0].boardContent}"/></td>
         </tr>
         </tbody>
       </table>	
@@ -67,7 +67,7 @@
       <table class="form-table" style="width:100%;">
       	<tbody>
       		<tr class="form-table-row">
-          		<th class="form-table-th"><th:block th:text="#{label.orderDetail.comment}"/></th>
+          		<th class="form-table-th"><th:block th:text="#{label.Detail.comment}"/></th>
         	</tr>
         </table>
         <table class="border-table">
@@ -85,6 +85,7 @@
         </thead>
         </table>
         </section><!--/.main-section-->
+         <th:block th:if="${session.SesUserInfo != null}">
         <section class="main-section gray-top-border">
         <table class="form-table" style="width:100%;">
        		<tr class="form-table-row">
@@ -96,17 +97,27 @@
         </tbody>
       </table>
     </section><!--/.main-section-->
+    </th:block>
     <section class="main-section gray-top-border buttons buttons-4">
+    <th:block th:if="${session.SesUserInfo != null}">
     	<th:block th:if="${'1' == displayEditButtonFlg}">
-      <p class="section-block center"><button class="bt bt-gray btn_modal" th:value="deleteModal"><th:block th:text="#{btn.orderDetail.delete}"/></button></p>
-      <p class="section-block center"><button class="bt bt-gray btn_modal" th:value="updateModal"><th:block th:text="#{btn.orderDetail.update}"/></button></p>
-      </th:block>
+      		<p class="section-block center"><button class="bt bt-gray btn_modal" th:value="deleteModal"><th:block th:text="#{btn.orderDetail.delete}"/></button></p>
+      		<p class="section-block center"><button class="bt bt-gray btn_modal" th:value="updateModal"><th:block th:text="#{btn.Detail.update}"/></button></p>
+      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      	</th:block>
+      	<th:block th:if="${'1' != displayEditButtonFlg}">
+      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      	</th:block>
+    </th:block>
+    <th:block th:if="${session.SesUserInfo == null}">
       <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+     </th:block>
     </section><!--/.main-section-->
+
   </div><!--/.main-->
 
-<form id="backForm" name="backForm" th:action="@{/BO/boardDetail/returnBoardList}" method="post">
-  <input type="hidden" name="restorationJudgment" id="restorationJudgment">
+<form id="backForm" name="backForm" th:action="@{/boardDetail/returnBoardList}" method="post">
+<input type="hidden" name="restorationJudgment" id="restorationJudgment">
 </form>
 
   <div class="overlay" id="cancelModal" style="display:none">
@@ -137,7 +148,6 @@
 
   <div class="overlay" id="updateModal" style="display:none">
     <div class="modal">
-
       <section class="modal-section modal-text">
         <p><th:block th:text="#{btn.orderDetail.update}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
       </section>
@@ -165,18 +175,17 @@
   <footer th:replace="layout/Footer :: Footer"></footer>
 </div>
 
-<form id="updateForm" th:action="@{/BO/boardDetail/update}" method="post" th:object="${updateDto}">
-  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
+<form id="updateForm" th:action="@{/boardDetail/update}" method="post" th:object="${updateDto}">
+  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
 </form>
 
-<form id="deleteForm" th:action="@{/BO/boardDetail/delete}" method="post" th:object="${deleteDto}">
-  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
-  <input type="hidden" name="RegisterUserId" th:value="${orderDetailList[0].registerUserId}"/>
-  <input type="hidden" name="restorationJudgment" id="restorationJudgment">
+<form id="deleteForm" th:action="@{/boardDetail/delete}" method="post" th:object="${deleteDto}">
+  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
+  <input type="hidden" name="RegisterUserId" th:value="${boardDetailList[0].registerUserId}"/>
 </form>
 
-<form id="commentForm" th:action="@{/BO/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
-  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
+<form id="commentForm" th:action="@{/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
+  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
   <input type="hidden" name="commentContent"/>
 </form>
 
@@ -195,7 +204,6 @@
 
       /* 「削除」ボタン */
   $('.btn_delete').click(function() {
-      $("[name='restorationJudgment']").val("restoration");
       $("#deleteForm").submit();
   });
 

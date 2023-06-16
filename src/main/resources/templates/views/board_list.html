@@ -25,9 +25,9 @@
               <p><span th:text="${message}"/></p>
           </th:block>
       </section>
-      <form id="searchForm" th:action="@{/BO/boardList/search}" method="post">
+      <form id="searchForm" th:action="@{/boardList/search}" method="post">
       <section class="main-section">
-          <input type="hidden" name="offset" th:value="${session.SesOrderSearchInfo.offset}"/>
+          <input type="hidden" name="offset" th:value="${session.SesSearchInfo.offset}"/>
           <table class="form-table" style="width:100%;">
           	<tbody>
               <tr class="form-table-row">
@@ -54,10 +54,10 @@
       </section>
       </form>
     <section class="main-section gray-top-border" >
-      <div class="table-control" th:if="!${orderList == null or #lists.isEmpty(orderList)}">
+      <div class="table-control" th:if="!${boardList == null or #lists.isEmpty(boardList)}">
 
           <div class="table-control-left">
-              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(orderList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
+              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
           <div class="table-control-center">
               <ul class="pager">
                   <th block th:if="${pager.currentPage != 1}">
@@ -94,14 +94,14 @@
           </tr>
         </thead>
         <tbody>
-        <tr th:each="order,index: ${orderList}" th:data-list-id="${order.boardId}" onclick="toNoticeDetail(this)">
+        <tr th:each="order,index: ${boardList}" th:data-list-id="${order.boardId}" onclick="toNoticeDetail(this)">
             <td th:text="${order.boardId}" class="border-table-td"></td>
             <td th:text="${order.boardTitle}" class="border-table-td" ></td>
             <td th:text="${order.registerUserId}" class="border-table-td"></td>
             <td th:text="${order.registerDate}" class="border-table-td"></td>
             <td th:text="${order.viewCount}" class="border-table-td"></td>
         </tr>
-        <div th:if="${orderList == null or #lists.isEmpty(orderList)}">
+        <div th:if="${boardList == null or #lists.isEmpty(boardList)}">
             <tr style="height:35px;" th:each="num: ${#numbers.sequence(1,4)}">
                 <td  class="border-table-td center"></td>
                 <td  class="border-table-td"></td>
@@ -112,9 +112,9 @@
         </tbody>
       </table>
 
-      <div class="table-control" th:if="!${orderList == null or #lists.isEmpty(orderList)}">
+      <div class="table-control" th:if="!${boardList == null or #lists.isEmpty(boardList)}">
           <div class="table-control-left">
-              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(orderList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
+              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
           <div class="table-control-center">
           <ul class="pager">
               <th block th:if="${pager.currentPage != 1}">
@@ -139,14 +139,17 @@
           </ul>
         </div>
         <div class="table-control-right">
-			<button class="bt bt-green btn_write" onClick="location.href='/BO/boardDetail/write'">
+        <th:block th:if="${session.SesUserInfo != null}">
+			<button class="bt bt-green btn_write" onClick="location.href='/boardDetail/write'">
 				<div th:text="#{btn.orderList.write}"/>
-			</button></div>
+			</button>
+		</th:block>
+		</div>
       </div><!--/.table-control-->
     </section><!--/.main-section-->
   </div><!--/.main-->
 </div>
-<form id="detailForm" name="detailForm" th:action="@{/BO/boardDetail}" method="post">
+<form id="detailForm" name="detailForm" th:action="@{/boardDetail}" method="post">
     <input type="hidden" name="intoOrderNo" id="intoOrderNo">
 </form>
 

@@ -17,10 +17,10 @@ spring:
     suffix: .html
 
 # Spring Security
-miwa.security.https: false
+notice.security.https: false
 
 
-#注文状況一覧の１ページあたりの最大件数
+#一覧の１ページあたりの最大件数
 list.max.count : 10
 
 #ページャの数字ボタン数

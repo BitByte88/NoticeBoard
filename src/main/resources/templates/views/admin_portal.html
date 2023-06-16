@@ -17,28 +17,24 @@
     </section>
     <section class="portal-menu">
       <ul class="portal-menu-list">
-        <li class="portal-menu-list-item"><button class="bt bt-green btn_orderList"><div th:text="#{label.orderList.title}"/></button></li>
+        <li class="portal-menu-list-item"><button class="bt bt-green btn_boardList"><div th:text="#{label.orderList.title}"/></button></li>
         <li class="portal-menu-list-item"><button class="bt bt-green btn_detailList"><div th:text="#{label.detailList.title}"/></button></li>
       </ul>
     </section><!--/.portal-menu-->
   </div><!--/.main-->
 </div>
-<form id="orderListAction" th:action="@{/BO/boardList}" method="post">
+<form id="orderListAction" th:action="@{/boardList}" method="post">
 </form>
-<form id="detailListAction" th:action="@{/BO/detailList}" method="post">
+<form id="detailListAction" th:action="@{/detailList}" method="post">
 </form>
 
 <footer th:replace="layout/Footer :: Footer"></footer>
 </body>
 <script>
-       /* 「注文状況一覧」ボタン */
-  $('.btn_orderList').click(function() {
+       /* 「掲示板一覧」ボタン */
+  $('.btn_boardList').click(function() {
             $('#orderListAction').submit();
   });
 
-         /* 「明細一覧」ボタン */
-  $('.btn_detailList').click(function() {
-            $('#detailListAction').submit();
-  });
 </script>
 </html>

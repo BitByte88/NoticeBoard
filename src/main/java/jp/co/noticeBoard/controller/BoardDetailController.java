@@ -21,13 +21,13 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import jp.co.noticeBoard.dto.BoardCommentDto;
 import jp.co.noticeBoard.dto.BoardDeleteDto;
-import jp.co.noticeBoard.dto.OrderDetailDto;
+import jp.co.noticeBoard.dto.BoardDetailDto;
 import jp.co.noticeBoard.service.BoardDetailService;
 import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
-@RequestMapping("/BO/boardDetail")
+@RequestMapping("/boardDetail")
 public class BoardDetailController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
@@ -42,7 +42,7 @@ public class BoardDetailController {
 	private BoardDetailService boardDetailService;
 
 	/**
-	 * 注文詳細表示（初期表示）
+	 * 掲示文詳細表示（初期表示）
 	 *
 	 * @param model モデル
 	 * @param locale  ロケール
@@ -56,48 +56,52 @@ public class BoardDetailController {
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
 
-        //注文状況一覧画面から遷移用、注文番号取得
-        String orderNo = request.getParameter("intoOrderNo");
+        //一覧画面から遷移用、掲示文No取得
+        String boardNo = request.getParameter("intoOrderNo");
         
-		//コメント登録用 掲示文No取得処理
+		//コメントを登録した後、詳細画面再表示用 掲示文No取得処理
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
 			params = (Map<String, Object>) flashMap.get("params");
-			orderNo = (String) params.get("orderNo");
+			boardNo = (String) params.get("boardNo");
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
 		}
 
         //掲示板情報リスト取得
-        List<OrderDetailDto> orderDetailList = new ArrayList<OrderDetailDto>();
-        orderDetailList = boardDetailService.getOrderDetailList(orderNo);
+        List<BoardDetailDto> boardDetailList = new ArrayList<BoardDetailDto>();
+        boardDetailList = boardDetailService.getBoardDetailList(boardNo);
 
-        if(orderDetailList.size()==0){
+        if(boardDetailList.size()==0){
             return "redirect:/error";
         }
 
-        model.addAttribute("orderDetailList", orderDetailList);
+        model.addAttribute("boardDetailList", boardDetailList);
         
-        // ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
-        if (sessionManager.getSesUserInfo().getName().equals(orderDetailList.get(0).getRegisterUserId())) {
-        	model.addAttribute("displayEditButtonFlg", "1");
+        // ログイン中のみチェック
+        if(sessionManager.getSesUserInfo() != null) {
+
+        	// ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
+        	if (sessionManager.getSesUserInfo().getName().equals(boardDetailList.get(0).getRegisterUserId())) {
+        		model.addAttribute("displayEditButtonFlg", "1");
+        }
         }
 
         //現在時間格納
         sessionManager.setSesTime();
 
-        if(!orderNo.isEmpty()) {
+        if(!boardNo.isEmpty()) {
     		// コメントリスと取得
     		List<BoardCommentDto> boardCommentList = new ArrayList<BoardCommentDto>();
-    		boardCommentList = boardDetailService.getCommentList(orderNo);
+    		boardCommentList = boardDetailService.getCommentList(boardNo);
     		
     		// コメントリスト格納
     		model.addAttribute("boardCommentList", boardCommentList);
     		
     		// 閲覧数カウントアップ
-        	boardDetailService.updateViewCount(orderNo);
+        	boardDetailService.updateViewCount(boardNo);
         }
 
         if(messageList.size()!=0){
@@ -114,7 +118,7 @@ public class BoardDetailController {
 	 * @return 画面パス
 	 */
 	@RequestMapping("/returnBoardList")
-	public String orderDetailBackButton(HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+	public String boardDetailBackButton(HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
 
         //復員変数設定
         Map<String,Object> params = new HashMap<>();
@@ -122,17 +126,17 @@ public class BoardDetailController {
         params.put("restorationJudgment", restorationJudgment);
         redirectAttributes.addFlashAttribute("params", params);
 
-        return "redirect:/BO/boardList/search";
+        return "redirect:/boardList/search";
     }
 
 	/**
-	 * 注文詳細表示（更新）
+	 * 掲示文作成修正画面表示（更新）
 	 * @param model モデル
 	 * @param locale　ロケール
 	 * @return 画面パス
 	 */
 	@RequestMapping("/update")
-	public String orderupdate(HttpServletRequest request, Model model, Locale locale, 
+	public String boardupdate(HttpServletRequest request, Model model, Locale locale, 
 			RedirectAttributes redirectAttributes) throws Exception {
 
 		List<String> messageList = new ArrayList<>();
@@ -144,17 +148,17 @@ public class BoardDetailController {
 		}
 
         //注文詳細リスト取得
-        List<OrderDetailDto> BoardUpdateList = new ArrayList<OrderDetailDto>();
-        BoardUpdateList = boardDetailService.getOrderDetailList(boardId);
+        List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
+        BoardUpdateList = boardDetailService.getBoardDetailList(boardId);
 
         if(BoardUpdateList.size()==0){
             return "redirect:/error";
         }
 		
 		model.addAttribute("registerFlg", "2");
-		model.addAttribute("orderDetailList", BoardUpdateList);
+		model.addAttribute("boardDetailList", BoardUpdateList);
 
-		return "views/boardEditRegister";
+		return "views/board_EditRegister";
 
 	}
 
@@ -170,20 +174,6 @@ public class BoardDetailController {
 
         List<String> messageList = new ArrayList<>();
 
-        //作成者チェック
-    	// ログインユーザーと掲示文作成者が一致しない場合
-    	if(!sessionManager.getSesUserInfo().getName().equals(deleteDto.getRegisterUserId())) {
-    	
-    		messageList.add(messageSource.getMessage("E0006", new Object[]{}, locale));
-	        logger.error(messageSource.getMessage("E0006", new Object[]{}, locale));
-	        Map<String,Object> params = new HashMap<>();
-	        params.put("messageList", messageList);
-	        params.put("orderNo", deleteDto.getBoardId());
-	        redirectAttributes.addFlashAttribute("params", params);
-
-	        return "redirect:/BO/boardDetail/";
-    	}
-
 		//削除対象設定
 		deleteDto.setBoardId(deleteDto.getBoardId());
 		deleteDto.setRegisterUserId(sessionManager.getSesUserInfo().getName());
@@ -191,33 +181,20 @@ public class BoardDetailController {
         //削除処理
         boardDetailService.deleteBoard(deleteDto);
 
-        Map<String,Object> params = new HashMap<>();
-        String restorationJudgment = request.getParameter("restorationJudgment");
-        params.put("restorationJudgment", restorationJudgment);
-        redirectAttributes.addFlashAttribute("params", params);
-
-        return "redirect:/BO/boardList/search";
+        return "redirect:/boardList";
     }
 
 	/**
-	 * 掲示文登録
-	 * @param updateDto 更新情報
+	 * 掲示文新規作成
 	 * @param model モデル
-	 * @param locale　ロケール
 	 * @return 画面パス
 	 */
 	@RequestMapping("/write")
-	public String boardwrite(Model model, Locale locale,
-			RedirectAttributes redirectAttributes) throws Exception {
-
-		List<String> messageList = new ArrayList<>();
-
-		if (messageList.size() != 0) {
-			model.addAttribute("messageList", messageList);
-		}
+	public String boardwrite(Model model, RedirectAttributes redirectAttributes) throws Exception {
 
 		model.addAttribute("registerFlg", "1");
-		return "views/boardEditRegister";
+
+		return "views/board_EditRegister";
 
 	}
 
@@ -239,9 +216,9 @@ public class BoardDetailController {
 		    logger.error(messageSource.getMessage("E0007", new Object[]{}, locale));
 		    Map<String,Object> params = new HashMap<>();
 		    params.put("messageList", messageList);
-		    params.put("orderNo", commentDto.getBoardId());
+		    params.put("boardNo", commentDto.getBoardId());
 		    redirectAttributes.addFlashAttribute("params", params);
-		    return "redirect:/BO/boardDetail/";
+		    return "redirect:/boardDetail/";
 		}
 
 		//作成者名設定
@@ -250,12 +227,12 @@ public class BoardDetailController {
 		// コメント情報更新
 		boardDetailService.commentUpdate(commentDto);
 		
-		//注文Noリダイレクト
+		//掲示文Noリダイレクト
 		Map<String,Object> params = new HashMap<>();
-		params.put("orderNo", commentDto.getBoardId());
+		params.put("boardNo", commentDto.getBoardId());
 		redirectAttributes.addFlashAttribute("params", params);
 		
-        return "redirect:/BO/boardDetail/";
+        return "redirect:/boardDetail/";
 
     }
 

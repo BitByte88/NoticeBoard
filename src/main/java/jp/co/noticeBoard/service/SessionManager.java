@@ -15,7 +15,7 @@ import com.ibm.icu.util.Calendar;
 
 import jp.co.noticeBoard.common.Const;
 import jp.co.noticeBoard.dto.UserDto;
-import jp.co.noticeBoard.form.OrderListForm;
+import jp.co.noticeBoard.form.BoardListForm;
 
 /**
  * セッション変数管理.
@@ -34,7 +34,7 @@ public class SessionManager implements InitializingBean {
     /**
      * セッション情報「userInfo」を設定する。
      *
-     * @param userInfo セッション情報「管理者ログイン情報」
+     * @param userInfo セッション情報「ユーザーログイン情報」
      */
     public void setSesUserInfo(UserDto userInfo) {
         this.session.setAttribute(Const.SES_USER_INFO, userInfo);
@@ -63,21 +63,21 @@ public class SessionManager implements InitializingBean {
 
 
     /**
-     * セッション情報「orderListForm」を設定する。
+     * セッション情報「boardListForm」を設定する。
      *
-     * @param orderListForm セッション情報「注文状況一覧検索条件」
+     * @param boardListForm セッション情報「注文状況一覧検索条件」
      */
-    public void setSesOrderListSearchInfo(OrderListForm orderListForm) {
-        this.session.setAttribute(Const.SES_ORDER_SEARCH_INFO, orderListForm);
+    public void setSesOrderListSearchInfo(BoardListForm boardListForm) {
+        this.session.setAttribute(Const.SES_SEARCH_INFO, boardListForm);
     }
 
     /**
-     * セッション情報「orderListForm」を取得する。
+     * セッション情報「boardListForm」を取得する。
      *
      */
-    public OrderListForm getSesOrderListSearchInfo() {
-        OrderListForm orderListForm =(OrderListForm)this.session.getAttribute(Const.SES_ORDER_SEARCH_INFO);
-        return orderListForm;
+    public BoardListForm getSesOrderListSearchInfo() {
+        BoardListForm boardListForm =(BoardListForm)this.session.getAttribute(Const.SES_SEARCH_INFO);
+        return boardListForm;
     }
 
     /**

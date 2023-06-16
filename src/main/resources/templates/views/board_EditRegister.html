@@ -67,7 +67,7 @@
         	</colgroup>
      	 	<tr class="form-table-row">
           		<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtitle}"/></th>
-          		<td class="form-table-td"><textarea rows="1" name="TitleTextArea"><th:block th:text="${orderDetailList[0].boardTitle}"/></textarea></td>
+          		<td class="form-table-td"><textarea rows="1" name="TitleTextArea"><th:block th:text="${boardDetailList[0].boardTitle}"/></textarea></td>
         	</tr>
        	<tbody>
       </table>
@@ -79,7 +79,7 @@
           		<th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
         	</tr>
         	<tr class="form-table-row">
-          		<td class="form-table-td"><textarea rows="5" name="ContentTextArea"><th:block th:text="${orderDetailList[0].boardContent}"/></textarea></td>
+          		<td class="form-table-td"><textarea rows="5" name="ContentTextArea"><th:block th:text="${boardDetailList[0].boardContent}"/></textarea></td>
         	</tr>
         	</tbody>
       	</table>	
@@ -93,13 +93,13 @@
   </div><!--/.main-->
 </th:block>
 <th:block th:if="${'1' == registerFlg}">
-<form id="backForm" name="backForm" th:action="@{/BO/boardDetail/returnBoardList}" method="post">
+<form id="backForm" name="backForm" th:action="@{/boardDetail/returnBoardList}" method="post">
 	<input type="hidden" name="restorationJudgment" id="restorationJudgment" th:value="restoration">
 </form>
 </th:block>
 <th:block th:if="${'2' == registerFlg}">
-<form id="backForm" name="backForm" th:action="@{/BO/boardDetail/}" method="post">
-  <input type="hidden" name="intoOrderNo" id="intoOrderNo" th:value="${orderDetailList[0].boardId}"/>
+<form id="backForm" name="backForm" th:action="@{/boardDetail/}" method="post">
+  <input type="hidden" name="intoOrderNo" id="intoOrderNo" th:value="${boardDetailList[0].boardId}"/>
  </form>
 </th:block>
 
@@ -150,17 +150,17 @@
     </div>
 </div>
 <th:block th:if="${'1' == registerFlg}">
-<form id="updateForm" th:action="@{/BO/boardEditRegister/toConfirm}" method="post" th:object="${updateDto}">
+<form id="updateForm" th:action="@{/boardEditRegister/toConfirm}" method="post" th:object="${updateDto}">
   <input type="hidden" name="boardId"/>
   <input type="hidden" name="boardTitle"/>
   <input type="hidden" name="boardContent"/>
 </form>
 </th:block>
 <th:block th:if="${'2' == registerFlg}">
-<form id="updateForm" th:action="@{/BO/boardEditRegister/toConfirm}" method="post" th:object="${updateDto}">
-  <input type="hidden" name="boardId" th:value="${orderDetailList[0].boardId}"/>
-  <input type="hidden" name="boardTitle" th:value="${orderDetailList[0].boardTitle}"/>
-  <input type="hidden" name="boardContent" th:value="${orderDetailList[0].boardContent}"/>
+<form id="updateForm" th:action="@{/boardEditRegister/toConfirm}" method="post" th:object="${updateDto}">
+  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
+  <input type="hidden" name="boardTitle" th:value="${boardDetailList[0].boardTitle}"/>
+  <input type="hidden" name="boardContent" th:value="${boardDetailList[0].boardContent}"/>
 </form>
 </th:block>
 <footer th:replace="layout/Footer :: Footer"></footer>

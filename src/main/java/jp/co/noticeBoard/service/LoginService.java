@@ -1,9 +1,12 @@
 package jp.co.noticeBoard.service;
 
 
-import jp.co.noticeBoard.dto.UserDto;
-import jp.co.noticeBoard.form.LoginForm;
-import jp.co.noticeBoard.dao.mapper.LoginMapper;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import jp.co.noticeBoard.dao.mapper.LoginMapper;
+import jp.co.noticeBoard.dto.UserDto;
+import jp.co.noticeBoard.form.LoginForm;
 
 @Service
 public class LoginService {
@@ -28,15 +29,12 @@ public class LoginService {
     @Autowired
     private MessageSource messageSource;
 
-    @Autowired
-    private CommonService commonService;
-
 
     /**
-     * 管理者情報を取得する。
+     * ユーザー情報を取得する。
      *
-     * @param account    管理者アカウント
-     * @return 管理者情報
+     * @param account    アカウント
+     * @return ユーザー情報
      */
     public UserDto getUserInfo(String account) {
 
@@ -47,7 +45,7 @@ public class LoginService {
     /**
      * パスワードをSHA-256アルゴリズムでハッシュ化する。
      *
-     * @param password    管理者パスワード
+     * @param password    パスワード
      * @return ハッシュ化されたパスワード
      */
     public String getHash(String password) throws NoSuchAlgorithmException {
