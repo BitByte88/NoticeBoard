@@ -23,17 +23,23 @@
                 <div class="hdr">
                     <div class="hdr-wrapper">
                         <div class="logo">
-                            <img th:src="@{/img/logo_ipsg.png}" alt="IPSG" class="logo-image"/>
+                            <div onClick="location.href='/boardList'"><img th:src="@{/img/logo_ipsg.png}" alt="IPSG" class="logo-image"/></div>
                         </div>
                         <div class="title">
                             <h1>
-                            	<p>株式会社 IPSG Holdings</p>
+                                <div onClick="location.href='/boardList'">株式会社 IPSG Holdings</div>
                                 <br>
                             </h1>
                         </div>
-
-                        <div th:if="${session.SesUserInfo != null}">
-
+                        <div>
+                        <th:block th:if="${session.SesUserInfo == null}">
+                            <ul class="hdr-button">
+                            <li class="hdr-button-item">
+                            </li>
+                            <li class="hdr-button-item"><button class="bt bt-gray btn_login"><th:block th:text="#{btn.header.login}" /></button></li>
+                            </ul>
+                        </th:block>
+                        <th:block th:if="${session.SesUserInfo != null}">
                             <ul class="hdr-button">
                             <li class="hdr-button-item">
                                 <p><div th:text="${session.SesTime}"/></p>
@@ -41,6 +47,8 @@
                             </li>
                             <li class="hdr-button-item"><button class="bt bt-gray btn_logout"><th:block th:text="#{btn.header.logout}" /></button></li>
                         </ul>
+                        </th:block>
+                        </div>
                         </div>
                         <div th:unless="${session.SesUserInfo!=null}">
                             <ul class="hdr-button">
@@ -54,10 +62,15 @@
             </div>
 
         </body>
-        <form id="logoutAction" th:action="@{/BO/logout}" method="post">
-        </form>
+        <form id="loginAction" th:action="@{/login}" method="post"></form>
+        <form id="logoutAction" th:action="@{/login/logout}" method="post"></form>
         <script type="text/javascript">
-                 /* 「注文状況一覧」ボタン */
+              /* 「ログイン」ボタン */
+              $('.btn_login').click(function() {
+                 $('#loginAction').submit();
+              });
+
+              /* 「ログアウト」ボタン */
               $('.btn_logout').click(function() {
                  $('#logoutAction').submit();
               });
