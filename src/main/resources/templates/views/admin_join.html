@@ -50,11 +50,11 @@
                     </li>
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.gender}"/></div>
-                            <div class="login-form-item-data" id="join-gender">
-                                <label><input type="radio" name="gender" id="maleRadio" value="1" >男</label>
-                                <label><input type="radio" name="gender" id="femaleRadio" value="2">女</label>
-                                <label><input type="radio" name="gender" id="noneRadio" value="0" checked>非公開</label>
-                            </div>
+                        <div class="login-form-item-data" id="join-gender">
+                            <label><input type="radio" name="gender" id="maleRadio" value="1" >男</label>
+                            <label><input type="radio" name="gender" id="femaleRadio" value="2">女</label>
+                            <label><input type="radio" name="gender" id="noneRadio" value="0" checked>非公開</label>
+                        </div>
                     </li>
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.mail}"/></div>
@@ -75,11 +75,11 @@
                         </div>
                     </li>
                     <li class="login-form-item">
-                        <div><input type="button" class="bt bt-green btn_back" value="戻る" id="btn_login_bk"
-                                    onClick="location.href='/login'" ></div>
+                        <div><input type="button" class="bt bt-green btn_join" value="登録へ" id="btn_join_ck" disabled ></div>
                     </li>
                     <li class="login-form-item">
-                        <div><input type="button" class="bt bt-green btn_join" value="登録へ" id="btn_join_ck" disabled ></div>
+                        <div><input type="button" class="bt bt-green btn_back" value="戻る" id="btn_login_bk"
+                                    onClick="location.href='boardList'" ></div>
                     </li>
                 </ul>
             </form>
@@ -121,13 +121,15 @@ $(function() {
       $('#join-joinReason').attr("disabled", true);
       $('input[type="radio"]').prop('disabled', true);
 
+
   });
 
 
   /* 入力状態に戻り */
     $(document).on("click", "#btn_join_bk", function(){
+
       /* ボタンの属性を更新 */
-      $('#btn_join_bk').attr('onClick', 'location.href="BO"');
+      $('#btn_join_bk').attr('onClick', 'location.href="boardList"');
       $('#btn_join_bk').attr('value','戻る');
       $('#btn_join_bk').attr('id', 'btn_login_bk');
       $('#btn_join_join').val('登録へ');
@@ -143,6 +145,8 @@ $(function() {
       $('#join-joinReason').attr("disabled", false);
       $('input[type="radio"]').prop('disabled', false);
   });
+
+
 
     /* joinボタン押下時、disabledを解除しsubmit */
     $(document).on("click", "#btn_join_join", function(){
@@ -170,8 +174,6 @@ $(function() {
   let eljoinReason = document.querySelector('#join-joinReason')
   let elJoinCKbutton = document.querySelector('#btn_join_ck')
 
-  let elBdayOK = document.getElementById("BdayOK");
-  let elmailOK = document.getElementById("mailOK");
 
   /* 各メッセージの変数定義 */
   let elFailuremessage = document.querySelector('.failure-message')
@@ -181,6 +183,7 @@ $(function() {
   let elSuccessmessageMail = document.querySelector('.success-message-mail')
   let elFailuremessageBDay = document.querySelector('.failure-message-BDay')
   let elSuccessmessageBDay = document.querySelector('.success-message-BDay')
+
 
 
   /* ID入力欄に成功メッセージ、失敗メッセージ */
@@ -230,9 +233,6 @@ $(function() {
     else {
       elSuccessmessageMail.classList.add('hide')
       elFailuremessageMail.classList.remove('hide')
-      alert("正しいメール形式を入力してください");
-      elInputMail.value='';
-      elInputMail.focus()
   　}
   }
 
@@ -241,7 +241,12 @@ $(function() {
     return elMailRegExp.test(value)
   }
 
-
+/* 形式チェック */
+  function isRegExp(value) {
+    alert("正しい形式を入力してください");
+    value.value='';
+    return true
+  }
 
   /* 生年月日8文字チェック */
   function validateBirthdate(birthdate) {
@@ -279,9 +284,6 @@ $(function() {
     else {
       elSuccessmessageBDay.classList.add('hide')
       elFailuremessageBDay.classList.remove('hide')
-      alert("正しい生年月日を入力してください");
-      elInputBirthday.value='';
-      elInputBirthday.focus()
   　}
   }
 
@@ -292,7 +294,7 @@ $(document).ready(function() {
     var userId = $('#join-userId').val();
 
     $.ajax({
-      url: 'http://localhost:8080/join/idCheck',
+      url: 'join/idCheck',
       method: 'POST',
       data: { userId: userId },
       success: function(cnt) {
@@ -316,7 +318,5 @@ $(document).ready(function() {
 
 
 
-
 </script>
 </html>
-`

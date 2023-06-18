@@ -448,6 +448,10 @@ input[type='checkbox']:checked + .checkbox {
   justify-content: center;
 
   height: calc(100vh - 250px);
+  overflow: auto;
+}
+.login-form {
+  padding-top: 130px;
 }
 
 .login-form-item {
