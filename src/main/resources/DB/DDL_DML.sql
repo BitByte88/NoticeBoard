@@ -7,7 +7,7 @@ CREATE TABLE `t_board` (
   `board_id` int NOT NULL AUTO_INCREMENT,
   `board_title` varchar(50) NOT NULL,
   `board_content` varchar(3000) DEFAULT NULL,
-  `view_number` int NOT NULL,
+  `view_number` int NOT NULL DEFAULT '0',
   `register_user_id` varchar(18) DEFAULT NULL,
   `register_date` timestamp DEFAULT NULL,
   `update_user_id` varchar(45) DEFAULT NULL,
