@@ -3,12 +3,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="jp.co.noticeBoard.dao.mapper.OrderDetailMapper">
+<mapper namespace="jp.co.noticeBoard.dao.mapper.BoardDetailMapper">
 
-
-
-    <resultMap id="orderDetailMap" type="jp.co.noticeBoard.dto.OrderDetailDto">
-        <id column="order_no" jdbcType="INTEGER" property="orderNo" />
+    <resultMap id="boardDetailMap" type="jp.co.noticeBoard.dto.BoardDetailDto">
         <id column="board_id" jdbcType="INTEGER" property="boardId" />
         <id column="board_title" jdbcType="VARCHAR" property="boardTitle" />
         <id column="board_content" jdbcType="VARCHAR" property="boardContent" />
@@ -27,8 +24,8 @@
         <id column="register_date" jdbcType="TIMESTAMP" property="commentRegisterDate" />
     </resultMap>
 
-    <!-- 注文情報取得 -->
-    <select id="getOrderDetailList" resultMap="orderDetailMap">
+    <!-- 掲示文詳細情報取得 -->
+    <select id="getBoardDetailList" resultMap="boardDetailMap">
         SELECT
         t_board.board_id,
         t_board.board_title,
@@ -39,7 +36,7 @@
         FROM
         t_board
         WHERE
-        t_board.board_id = #{orderNo} AND
+        t_board.board_id = #{boardNo} AND
         t_board.delete_flag != 1
     </select>
 
@@ -53,7 +50,7 @@
         FROM
         t_comment
         WHERE
-        t_comment.board_id = #{orderNo} AND
+        t_comment.board_id = #{boardNo} AND
         t_comment.delete_flag != 1
         ORDER BY
         t_comment.register_date asc
@@ -65,7 +62,7 @@
         SET
         t_board.view_number = view_number + 1
         WHERE
-        t_board.board_id = #{orderNo}
+        t_board.board_id = #{boardNo}
     </update>
 
     <!-- コメント登録 -->
