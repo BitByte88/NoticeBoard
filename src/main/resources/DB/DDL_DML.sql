@@ -24,7 +24,7 @@ CREATE TABLE `t_comment` (
   `comment_content` varchar(100) DEFAULT NULL,
   `register_user_id` varchar(45) DEFAULT NULL,
   `register_date` timestamp NULL DEFAULT NULL,
-  `update_user_id` timestamp NULL DEFAULT NULL,
+  `update_user_id` varchar(45) DEFAULT NULL,
   `update_date` timestamp NULL DEFAULT NULL,
   `delete_flag` varchar(2) DEFAULT NULL,
   PRIMARY KEY (`comment_no`)
@@ -47,4 +47,4 @@ CREATE TABLE `t_user` (
   `delete_flg` varchar(2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-INSERT INTO `t_user` VALUES ('testid','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8','ipsg','2000-11-11 00:00:00','01','test@test.com','01','SYSTEM','2023-06-09 19:00:14',NULL,NULL,'0');
+INSERT INTO `t_user` VALUES ('testid','5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8','ipsg','20000101','01','test@test.com','01','SYSTEM','2023-06-09 19:00:14',NULL,NULL,'0');
