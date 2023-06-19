@@ -1,6 +1,20 @@
 package jp.co.noticeBoard.controller;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +23,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import jp.co.noticeBoard.dto.UserJoinDto;
 import jp.co.noticeBoard.form.JoinForm;
 import jp.co.noticeBoard.service.JoinService;
+import jp.co.noticeBoard.service.LoginService;
+import jp.co.noticeBoard.service.SessionManager;
 import lombok.RequiredArgsConstructor;
 
 
@@ -21,8 +39,17 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/join")
 public class JoinController {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+
+	@Autowired
+	private SessionManager sessionManager;
+
+	
     @Autowired
     private JoinService joinService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     /**
      * 会員登録初期画面
@@ -31,10 +58,35 @@ public class JoinController {
      */
 
     @GetMapping("")
-    public String join() throws Exception {
+    public String join(HttpServletRequest request, Model model) throws Exception {
+
+        //エラーメッセージリスト
+        List<String> messageList = new ArrayList<>();
+
+		//requestからエラー情報取得
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		Map<String, Object> params = new HashMap<>();
+		if (flashMap != null) {
+			params = (Map<String, Object>) flashMap.get("params");
+			if ((ArrayList) params.get("messageList") != null) {
+				messageList = (ArrayList) params.get("messageList");
+			}
+		}
+
+        if(messageList.size()!=0){
+            model.addAttribute("messageList", messageList);
+        }
+
+        JoinForm joinForm = new JoinForm();
+
+        //初期値設定
+        joinForm.setGender("1");
+        if(null != sessionManager.getSesJoinForm())
+        	joinForm = sessionManager.getSesJoinForm();
+        
+        model.addAttribute("joinForm", joinForm);
 
         return "views/admin_join";
-
     }
 
     /**
@@ -44,13 +96,164 @@ public class JoinController {
      * @return 画面パス
      */
     @PostMapping("/register")
-    public String join(@ModelAttribute("joinForm") JoinForm joinForm, Model model) throws Exception {
+    public String join(@ModelAttribute("joinForm") JoinForm joinForm, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
+
+    	 //エラーメッセージリスト
+        List<String> messageList = new ArrayList<>();
 
         UserJoinDto userJoinDto = new UserJoinDto();
-        
+
+        //ID入力チェック
+        if(joinForm.getUserId() == null || joinForm.getUserId().equals(""))
+        {
+            String noteLabel = messageSource.getMessage("label.id",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("userId", joinForm.getUserId());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //ID桁数チェック
+        if(joinForm.getUserId().length() <  4 || joinForm.getUserId().length() > 18)
+        {
+        	String noteLabel = messageSource.getMessage("label.id",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "18"}, locale));
+            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "18"}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("userId", joinForm.getUserId());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //ID重複チェック
+        if(idCheck(joinForm.getUserId()) > 0)
+        {
+            messageList.add(messageSource.getMessage("E00004", new Object[]{}, locale));
+            logger.error(messageSource.getMessage("E00004", new Object[]{}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("userId", joinForm.getUserId());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //パスワード入力チェック
+        if(joinForm.getPassword() == null || joinForm.getPassword().equals(""))
+        {
+            String noteLabel = messageSource.getMessage("label.password",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //パスワード桁数チェック
+        if(joinForm.getPassword().length() <  4 || joinForm.getPassword().length() > 18)
+        {
+            String noteLabel = messageSource.getMessage("label.password",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "14"}, locale));
+            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "14"}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //名前入力チェック
+        if(joinForm.getName() == null || joinForm.getName().equals(""))
+        {
+            String noteLabel = messageSource.getMessage("label.name",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserName", joinForm.getName());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //名前桁数チェック
+        if(joinForm.getName().length() > 18)
+        {
+            String noteLabel = messageSource.getMessage("label.name",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, "30	"}, locale));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserName", joinForm.getUserId());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //生年月日入力チェック
+        if(joinForm.getBirthday() == null || joinForm.getBirthday().equals(""))
+        {
+            String noteLabel = messageSource.getMessage("label.birthday",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserId", joinForm.getBirthday());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //生年月日妥当性チェック
+        if(!checkDate(joinForm.getBirthday()))
+        {
+            String noteLabel = messageSource.getMessage("label.birthday",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00003", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00003", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserId", joinForm.getBirthday());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //性別入力チェック
+        if(joinForm.getGender() == null || joinForm.getGender().equals(""))
+        {
+            String noteLabel = messageSource.getMessage("label.gender",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserGender", joinForm.getGender());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //メール入力チェック
+        if(joinForm.getMail() == null || joinForm.getMail().equals(""))
+        {
+            String noteLabel = messageSource.getMessage("label.mail",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserId", joinForm.getMail());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //メール形式チェック
+        if (!checkMail(joinForm.getMail())) {
+            String noteLabel = messageSource.getMessage("label.mail",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
+            logger.error(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
+            Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            params.put("UserMail", joinForm.getMail());
+            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //セッションに会員登録Formを格納する。
+        sessionManager.setJoinForm(joinForm);
+
+        // 上記のチェックでエラーが存在する場合
+        if(messageList.size()!=0){
+        	return "redirect:/join";
+        }
+
 		//画面引数パスワードをSHA-256アルゴリズムでハッシュ化する。
 		String hashPassword = joinService.getHash(joinForm.getPassword());
-        
+
         userJoinDto.setUserId(joinForm.getUserId());
         userJoinDto.setPassword(hashPassword);
         userJoinDto.setName(joinForm.getName());
@@ -58,10 +261,10 @@ public class JoinController {
         userJoinDto.setGender(joinForm.getGender());
         userJoinDto.setMail(joinForm.getMail());
         userJoinDto.setJoinReason(joinForm.getJoinReason());
+        
 
         joinService.joinUser(userJoinDto);
-
-        model.addAttribute("joinForm", userJoinDto);
+        sessionManager.clearSesJoinForm();
 
         return "redirect:/login";
 
@@ -74,4 +277,43 @@ public class JoinController {
         return cnt;
 
     }
+
+   /**
+    * 日付の妥当性チェックを行います。
+    * 指定した日付文字列（yyyyMMdd）が
+    * カレンダーに存在するかどうかを返します。
+    * @param strDate チェック対象の文字列
+    * @return 存在する日付の場合true
+    */
+   public boolean checkDate(String strDate) 
+   {
+
+       DateFormat format = DateFormat.getDateInstance();
+
+       format.setLenient(false);
+       try {
+           format.parse(strDate);
+           return true;
+       } catch (Exception e) {
+           return false;
+       }
+   }
+
+   /**
+    * メールアドレスの妥当性チェックを行います。
+    * @param strMail チェック対象の文字列
+    * @return 存在する日付の場合true
+    */
+   public boolean checkMail(String strMail)
+   {
+       Pattern pattern = Pattern.compile("/^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]+/");
+       Matcher matcher = pattern.matcher(strMail);
+
+       if (matcher.find()) {
+    	   return true;
+    	   
+       } else {
+    	   return false;
+       }
+   }
 }

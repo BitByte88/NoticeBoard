@@ -52,8 +52,11 @@ public class BoardListController {
 	@RequestMapping("")
 	public String boardList(HttpServletRequest request, Locale locale, Model model) throws Exception {
 
-		//注文状況一覧検索条件Formの初期設定
+		//掲示情報一覧検索条件Formの初期設定
 		BoardListForm boardListForm = boardListService.initBoardList();
+		
+		//セッションの会員登録Form削除
+		sessionManager.clearSesJoinForm();
 
 		//セッション「掲示板条件」格納
 		sessionManager.setSesOrderListSearchInfo(boardListForm);
@@ -98,7 +101,7 @@ public class BoardListController {
 		//掲示文リスト格納
 		model.addAttribute("boardList", boardList);
 		
-		//注文状況検索条件格納
+		//掲示情報検索条件格納
 		sessionManager.setSesOrderListSearchInfo(boardListForm);
 		
 		//現在時間格納

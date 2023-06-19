@@ -53,38 +53,26 @@ public class BoardEditRegisterController {
     @RequestMapping("")
     public String boardEditRegister(@ModelAttribute BoardDetailDto updateDto, HttpServletRequest request,Model model, Locale locale) throws Exception {
 
-		/*        //エラーメッセージリスト
+		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
-		
-		//一覧画面から遷移用、注文番号取得
-		String boardNo = updateDto.getBoardId();
-		
-		
-		if (boardNo == null || boardNo.equals(""))
-		{
-			model.addAttribute("registerFlg", "1");
-			return "views/board_EditRegister";
-		} else {
-			model.addAttribute("registerFlg", "2");
+
+		//requestからエラー情報取得
+		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+		Map<String, Object> params = new HashMap<>();
+		if (flashMap != null) {
+			params = (Map<String, Object>) flashMap.get("params");
+			if ((ArrayList) params.get("messageList") != null) {
+				messageList = (ArrayList) params.get("messageList");
+			}
 		}
-				
-		//掲示板情報リスト取得
-		List<BoardDetailDto> boardDetailList = new ArrayList<BoardDetailDto>();
-		boardDetailList.add(updateDto);
-		
-		if(boardDetailList.size()==0){
-		    return "redirect:/error";
-		}
-		
-		//現在時間格納
-		sessionManager.setSesTime();
-		
-		model.addAttribute("boardDetailList", boardDetailList);
-		
+
 		if(messageList.size()!=0){
 		    model.addAttribute("messageList", messageList);
 		}
-		*/
+		
+		updateDto = new BoardDetailDto();
+		model.addAttribute("updateDto", updateDto);
+
         return "views/board_EditRegister";
 
     }
@@ -117,12 +105,12 @@ public class BoardEditRegisterController {
             model.addAttribute("messageList", messageList);
         }
 
-    	//注文詳細リスト取得
+    	//掲示情報リスト取得
         List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
         BoardUpdateList = boardDetailService.getBoardDetailList(boardNo);
 
     	// 新規作成の場合
-    	if ( boardNo == null || boardNo.equals(""))
+    	if (boardNo == null || boardNo.equals(""))
     	{
 
     		model.addAttribute("registerFlg", "1");

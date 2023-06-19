@@ -25,7 +25,7 @@
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.userId}"/></div>
                         <div class="login-form-item-data">
-                            <input type="text" name="userId" id="join-userId" maxlength="18"
+                            <input type="text" name="userId" id="join-userId" maxlength="18" th:field="*{userId}"
                                    oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '').replace(/(\..*)\./g, '$1');"
                                    placeholder="英数字4～18文字" >
                             <span id="message"></span>
@@ -37,13 +37,13 @@
                     </li>
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.name}"/></div>
-                        <div class="login-form-item-data"><input type="text" name="name" id="join-name"></div>
+                        <div class="login-form-item-data"><input type="text" name="name" id="join-name" th:field="*{name}"></div>
                     </li>
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.birthday}"/></div>
                         <div class="login-form-item-data">
                             <input type="text" name="birthday" id="join-birthday" placeholder=" ex) 19800101"
-                                   maxlength="8" pattern="\d*">
+                                   maxlength="8" pattern="\d*" th:field="*{birthday}">
                             <div class="failure-message-BDay hide">生年月日を確認してください</div>
                             <div class="success-message-BDay hide" id="BdayOK">OK</div>
                         </div>
@@ -51,15 +51,15 @@
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.gender}"/></div>
                         <div class="login-form-item-data" id="join-gender">
-                            <label><input type="radio" name="gender" id="maleRadio" value="1" >男</label>
-                            <label><input type="radio" name="gender" id="femaleRadio" value="2">女</label>
-                            <label><input type="radio" name="gender" id="noneRadio" value="0" checked>非公開</label>
+                            <label><input type="radio" name="gender" id="maleRadio" value="1" th:field="*{Gender}">男</label>
+                            <label><input type="radio" name="gender" id="femaleRadio" value="2" th:field="*{Gender}">女</label>
+                            <label><input type="radio" name="gender" id="noneRadio" value="0" th:field="*{Gender}">非公開</label>
                         </div>
                     </li>
                     <li class="login-form-item">
                         <div class="login-form-item-name"><div th:text="#{label.join.mail}"/></div>
                         <div class="login-form-item-data">
-                            <input type="email" name="mail" id="join-mail" placeholder="abc@mail.com" >
+                            <input type="email" name="mail" id="join-mail" placeholder="abc@mail.com" th:field="*{Mail}" >
                             <div class="failure-message-mail hide">メール形式で入力してください</div>
                             <div class="success-message-mail hide" id="mailOK">OK</div>
                         </div>
