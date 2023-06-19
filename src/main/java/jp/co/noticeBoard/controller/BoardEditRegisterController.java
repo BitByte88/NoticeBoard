@@ -69,7 +69,7 @@ public class BoardEditRegisterController {
 		if(messageList.size()!=0){
 		    model.addAttribute("messageList", messageList);
 		}
-		
+
 		updateDto = new BoardDetailDto();
 		model.addAttribute("updateDto", updateDto);
 
@@ -105,6 +105,9 @@ public class BoardEditRegisterController {
             model.addAttribute("messageList", messageList);
         }
 
+        
+    //    BoardDetailDto updateDto = (BoardDetailDto) redirectAttributes.getAttribute("updateDto");
+        
     	//掲示情報リスト取得
         List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
         BoardUpdateList = boardDetailService.getBoardDetailList(boardNo);
@@ -145,7 +148,6 @@ public class BoardEditRegisterController {
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             Map<String,Object> params = new HashMap<>();
             params.put("messageList", messageList);
-            params.put("boardNo", updateDto.getBoardId());
             redirectAttributes.addFlashAttribute("params", params);
         }
 
@@ -156,13 +158,13 @@ public class BoardEditRegisterController {
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             Map<String,Object> params = new HashMap<>();
             params.put("messageList", messageList);
-            params.put("boardNo", updateDto.getBoardId());
             redirectAttributes.addFlashAttribute("params", params);
         }
         
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
-        	return "redirect:/boardEditRegister/returnBoardEdit";
+        	redirectAttributes.addFlashAttribute("updateDto", updateDto);
+        	return "redirect:/boardEditRegister/returnBoardEdit/";
         }
 
         if(sessionManager.getSesUserInfo() == null)
