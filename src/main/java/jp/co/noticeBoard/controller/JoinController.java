@@ -1,6 +1,7 @@
 package jp.co.noticeBoard.controller;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +81,7 @@ public class JoinController {
         JoinForm joinForm = new JoinForm();
 
         //初期値設定
-        joinForm.setGender("1");
+        joinForm.setGender("0");
         if(null != sessionManager.getSesJoinForm())
         	joinForm = sessionManager.getSesJoinForm();
         
@@ -285,10 +286,9 @@ public class JoinController {
     * @param strDate チェック対象の文字列
     * @return 存在する日付の場合true
     */
-   public boolean checkDate(String strDate) 
+   public boolean checkDate(String strDate)
    {
-
-       DateFormat format = DateFormat.getDateInstance();
+       DateFormat format = new SimpleDateFormat("yyyyMMdd");	
 
        format.setLenient(false);
        try {
@@ -306,7 +306,7 @@ public class JoinController {
     */
    public boolean checkMail(String strMail)
    {
-       Pattern pattern = Pattern.compile("/^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]+/");
+       Pattern pattern = Pattern.compile("^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]");
        Matcher matcher = pattern.matcher(strMail);
 
        if (matcher.find()) {
