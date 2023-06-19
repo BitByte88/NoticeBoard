@@ -562,6 +562,14 @@ input[type="email"] {
   vertical-align: middle;
 }
 
+.board-title {
+	font-size: 2.5rem;
+}
+
+.board-content {
+	font-size: 1.8rem;
+}
+
 .form-table-td {
   box-sizing: border-box;
   padding: 10px 0 0 10px;
