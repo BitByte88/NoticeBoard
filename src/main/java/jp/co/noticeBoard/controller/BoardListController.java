@@ -65,7 +65,7 @@ public class BoardListController {
 
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
-		
+
 		//検索条件DTO
 		BoardListSearchDto boardListsearchDto = new BoardListSearchDto();
 		PageDto pageDto = new PageDto();
@@ -75,14 +75,14 @@ public class BoardListController {
 		
 		//検索条件DTO生成
 		boardListsearchDto = boardListService.getSearchDto(boardListForm);
-		//条件に合わせた掲示文の件数を取得する。
+		//条件に合わせた掲示情報の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
 		//検索した件数が０の場合
 		if (count == 0) {
-		    messageList.add(messageSource.getMessage("E00009", new Object[]{}, locale));
+		    messageList.add(messageSource.getMessage("E00008", new Object[]{}, locale));
 		    model.addAttribute("messageList", messageList);
 		    sessionManager.setSesOrderListSearchInfo(boardListForm);
-		    logger.error(messageSource.getMessage("E00009", new Object[]{}, locale));
+		    logger.error(messageSource.getMessage("E00008", new Object[]{}, locale));
 		
 		    return "views/board_list";
 		}

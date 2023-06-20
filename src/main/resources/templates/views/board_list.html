@@ -12,7 +12,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=yes">
 </head>
-
 <Header th:replace="layout/Header :: Header"></Header>
 <body>
 
@@ -110,6 +109,17 @@
         </tbody>
       </table>
 
+	<div class="table-control" th:if="${boardList == null or #lists.isEmpty(boardList)}">
+	          <div class="table-control-left">
+        </div>
+        <div class="table-control-right">
+        <th:block th:if="${session.SesUserInfo != null}">
+			<button class="bt bt-green btn_write" onClick="location.href='/boardList/write'">
+				<div th:text="#{btn.orderList.write}"/>
+			</button>
+		</th:block>
+		</div>
+	
       <div class="table-control" th:if="!${boardList == null or #lists.isEmpty(boardList)}">
           <div class="table-control-left">
               <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>

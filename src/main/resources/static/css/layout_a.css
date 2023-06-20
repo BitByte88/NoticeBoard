@@ -307,6 +307,7 @@ input[type='checkbox']:checked + .checkbox {
 .title {
   line-height: 1;
   text-align: center;
+  font-size: 2rem;
 }
 
 .title-subtitle {
