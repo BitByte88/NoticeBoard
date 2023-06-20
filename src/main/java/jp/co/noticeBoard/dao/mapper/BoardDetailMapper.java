@@ -57,7 +57,7 @@ public interface BoardDetailMapper {
     /*
      * 掲示文を削除する。
      *
-     * @param deleteDto 注文状況検索変数
+     * @param deleteDto 掲示情報検索変数
      * @return 件数
      */
     void deleteBoard(@Param("deleteDto") BoardDeleteDto deleteDto);
@@ -69,6 +69,13 @@ public interface BoardDetailMapper {
      */
     void commentUpdate(@Param("commentDto") BoardCommentDto commentDto);
 
+    /*
+     * コメントを削除する。
+     *
+     * @param deleteDto 掲示情報検索変数
+     * @return 件数
+     */
+    void deleteComment(@Param("deleteDto") BoardDeleteDto deleteDto);
 }
 
 

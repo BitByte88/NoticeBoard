@@ -27,10 +27,9 @@ public class BoardDetailService {
     private BoardDetailMapper boardDetailMapper;
 
     /**
-     * 注文詳細情報を取得する。
+     * 掲示情報詳細情報を取得する。
      *
-     * @param boardNo 掲示文No
-     * @return エラーメッセージリスト
+     * @param boardNo 掲示No
      */
     public List<BoardDetailDto> getBoardDetailList(String boardNo) throws Exception {
         return boardDetailMapper.getBoardDetailList(boardNo);
@@ -41,7 +40,6 @@ public class BoardDetailService {
      * 掲示文を削除する。
      *
      * @param deleteDto 削除Dto
-     * @return エラーメッセージリスト
      */
     public void deleteBoard(BoardDeleteDto deleteDto) throws Exception {
         boardDetailMapper.deleteBoard(deleteDto);
@@ -52,7 +50,6 @@ public class BoardDetailService {
      * 閲覧数をカウントアップする。
      *
      * @param boardNo 掲示文No
-     * @return エラーメッセージリスト
      */
     public void updateViewCount(String boardNo) throws Exception {
         boardDetailMapper.updateViewCount(boardNo);
@@ -63,7 +60,6 @@ public class BoardDetailService {
      * コメント情報を取得する。
      *
      * @param boardNo 掲示文No
-     * @return エラーメッセージリスト
      */
     public List<BoardCommentDto> getCommentList(String boardNo) throws Exception {
         return boardDetailMapper.getCommentList(boardNo);
@@ -72,10 +68,20 @@ public class BoardDetailService {
     
     /**
      * コメント情報を更新する。
+     * 
      * @param updateDto コメント更新情報
-     * @return エラーメッセージリスト
      */
     public void commentUpdate(BoardCommentDto updateDto) throws Exception {
         boardDetailMapper.commentUpdate(updateDto);
+    }
+
+    /**
+     * コメントを削除する。
+     *
+     * @param deleteDto 削除Dto
+     */
+    public void deleteComment(BoardDeleteDto deleteDto) throws Exception {
+        boardDetailMapper.deleteComment(deleteDto);
+
     }
 }
