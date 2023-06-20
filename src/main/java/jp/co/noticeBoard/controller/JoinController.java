@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import jp.co.noticeBoard.dto.UserDto;
 import jp.co.noticeBoard.dto.UserJoinDto;
 import jp.co.noticeBoard.form.JoinForm;
 import jp.co.noticeBoard.service.JoinService;
@@ -82,9 +83,12 @@ public class JoinController {
 
         //初期値設定
         joinForm.setGender("0");
+
         if(null != sessionManager.getSesJoinForm())
+        {
         	joinForm = sessionManager.getSesJoinForm();
-        
+        }
+
         model.addAttribute("joinForm", joinForm);
 
         return "views/admin_join";
@@ -266,8 +270,14 @@ public class JoinController {
 
         joinService.joinUser(userJoinDto);
         sessionManager.clearSesJoinForm();
+		//セッション格納
+		UserDto sesUserDto = new UserDto(); 
+		sesUserDto.setName(userJoinDto.getName());
+		sesUserDto.setUserId(userJoinDto.getUserId());
+		sesUserDto.setPassword("");
+        sessionManager.setSesUserInfo(sesUserDto);
 
-        return "redirect:/login";
+        return "redirect:/boardList";
 
     }
 

@@ -56,7 +56,7 @@ public class BoardDetailController {
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
 
-        //一覧画面から遷移用、掲示文No取得
+        //一覧画面から遷移用、掲示情報No取得
         String boardNo = request.getParameter("intoOrderNo");
         
 		//コメントを登録した後、詳細画面再表示用 掲示文No取得処理
@@ -79,7 +79,7 @@ public class BoardDetailController {
         }
 
         model.addAttribute("boardDetailList", boardDetailList);
-        
+
         // ログイン中のみチェック
         if(sessionManager.getSesUserInfo() != null) {
 
@@ -120,6 +120,9 @@ public class BoardDetailController {
 	@RequestMapping("/returnBoardList")
 	public String boardDetailBackButton(HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
 
+        if(sessionManager.getSesUserInfo() == null)
+        	return "redirect:/boardList/";
+
         //復員変数設定
         Map<String,Object> params = new HashMap<>();
         String restorationJudgment = request.getParameter("restorationJudgment");
@@ -147,16 +150,20 @@ public class BoardDetailController {
 			model.addAttribute("messageList", messageList);
 		}
 
-        //注文詳細リスト取得
+        //掲示詳細情報リスト取得
         List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
+        BoardDetailDto updateDto = new BoardDetailDto();
+        updateDto = (BoardDetailDto) boardDetailService.getBoardDetailList(boardId).get(0);
         BoardUpdateList = boardDetailService.getBoardDetailList(boardId);
 
         if(BoardUpdateList.size()==0){
             return "redirect:/error";
         }
 		
+        //BoardDetailDto = updateDto = new BoardDetailDto();
+        
 		model.addAttribute("registerFlg", "2");
-		model.addAttribute("boardDetailList", BoardUpdateList);
+		model.addAttribute("updateDto", updateDto);
 
 		return "views/board_EditRegister";
 

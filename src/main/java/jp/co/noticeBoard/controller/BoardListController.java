@@ -206,9 +206,7 @@ public class BoardListController {
 	@RequestMapping("/write")
 	public String boardwrite(Model model, RedirectAttributes redirectAttributes) throws Exception {
 
-		model.addAttribute("registerFlg", "1");
-
-		return "views/board_EditRegister";
+		return "redirect:/boardEditRegister/";
 
 	}
 }

@@ -56,6 +56,7 @@ public class BoardEditRegisterController {
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
 
+		String boardNo = request.getParameter("intoOrderNo");
 		//requestからエラー情報取得
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();
@@ -65,7 +66,8 @@ public class BoardEditRegisterController {
 				messageList = (ArrayList) params.get("messageList");
 			}
 		}
-
+		
+		model.addAttribute("registerFlg", "1");
 		if(messageList.size()!=0){
 		    model.addAttribute("messageList", messageList);
 		}
@@ -87,15 +89,18 @@ public class BoardEditRegisterController {
 
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
+        BoardDetailDto updateDto = new BoardDetailDto();
 
-    	String boardNo = request.getParameter("intoOrderNo");
+    	String boardNo = null;
     	
 		//画面遷移用 掲示文No取得処理
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
 			params = (Map<String, Object>) flashMap.get("params");
-			boardNo = (String) params.get("boardNo");
+			updateDto =(BoardDetailDto) flashMap.get("updateDto");
+			boardNo =(String) flashMap.get("boardNo");
+
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
@@ -105,24 +110,16 @@ public class BoardEditRegisterController {
             model.addAttribute("messageList", messageList);
         }
 
-        
-    //    BoardDetailDto updateDto = (BoardDetailDto) redirectAttributes.getAttribute("updateDto");
-        
-    	//掲示情報リスト取得
-        List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
-        BoardUpdateList = boardDetailService.getBoardDetailList(boardNo);
-
     	// 新規作成の場合
     	if (boardNo == null || boardNo.equals(""))
     	{
-
     		model.addAttribute("registerFlg", "1");
-    		model.addAttribute("boardDetailList", BoardUpdateList);
+    		model.addAttribute("updateDto", updateDto);
 
     	// 修正の場合
     	} else {
     		model.addAttribute("registerFlg", "2");
-    		model.addAttribute("boardDetailList", BoardUpdateList);
+    		model.addAttribute("updateDto", updateDto);
     	}
 
 
@@ -139,6 +136,9 @@ public class BoardEditRegisterController {
     @RequestMapping("/toProcess")
     public String toBoardEditRegisterProcess(HttpServletRequest request, @ModelAttribute BoardDetailDto updateDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
 
+    	// 修正画面から遷移した場合
+    	String boardNo = request.getParameter("boardId");
+    	
         List<String> messageList = new ArrayList<>();
 
         //タイトル入力チェック
@@ -163,6 +163,7 @@ public class BoardEditRegisterController {
         
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
+        	redirectAttributes.addFlashAttribute("boardNo", boardNo);
         	redirectAttributes.addFlashAttribute("updateDto", updateDto);
         	return "redirect:/boardEditRegister/returnBoardEdit/";
         }
@@ -170,7 +171,8 @@ public class BoardEditRegisterController {
         if(sessionManager.getSesUserInfo() == null)
         	return "views/admin_login";
         
-        
+        updateDto.setBoardContent(updateDto.getBoardContent().replaceAll("(\r\n|\n)", "<br />"));
+
         //新規の場合
         if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
         	//作成者設定
