@@ -86,7 +86,7 @@ public class BoardListController {
 		//ページング情報取得
 		pageDto = boardListService.changeOffset(count,boardListForm.getOffset());
 		
-		//掲示文リスト取得
+		//掲示情報リスト取得
 		List<Tblboard> list = new ArrayList<>();
 		list = boardListService.getBoardList(boardListsearchDto);
 		List<BoardListDto> boardList = new ArrayList<>();
@@ -94,7 +94,7 @@ public class BoardListController {
 		//画面表示用文字列取得
 		boardList = boardListService.boardListConversion(list,locale);
 		
-		//掲示文リスト格納
+		//掲示情報リスト格納
 		model.addAttribute("boardList", boardList);
 		
 		//掲示情報検索条件格納
@@ -111,9 +111,9 @@ public class BoardListController {
 	}
 
 	/**
-	 * 掲示文一覧（検索）
+	 * 掲示情報一覧（検索）
 	 *
-	 * @param boardListForm 掲示文一覧画面のForm
+	 * @param boardListForm 掲示情報一覧画面のForm
 	 * @param locale ロケール
 	 * @param model　モデル
 	 * @return 画面パス
@@ -171,7 +171,7 @@ public class BoardListController {
 		//ページング情報取得
 		pageDto = boardListService.changeOffset(count, boardListForm.getOffset());
 
-		//掲示文リスト取得
+		//掲示情報リスト取得
 		List<Tblboard> list = new ArrayList<>();
 		list = boardListService.getBoardList(boardListsearchDto);
 		List<BoardListDto> boardList = new ArrayList<>();
@@ -179,10 +179,10 @@ public class BoardListController {
 		//画面表示用文字列取得
 		boardList = boardListService.boardListConversion(list, locale);
 
-		//掲示文リスト格納
+		//掲示情報リスト格納
 		model.addAttribute("boardList", boardList);
 
-		//掲示文リスト条件格納
+		//掲示情報リスト条件格納
 		sessionManager.setSesBoardListSearchInfo(boardListForm);
 
 		//現在時間格納
