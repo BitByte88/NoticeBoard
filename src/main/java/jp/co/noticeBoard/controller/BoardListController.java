@@ -1,13 +1,13 @@
 package jp.co.noticeBoard.controller;
 
-import jp.co.noticeBoard.dto.BoardListDto;
-import jp.co.noticeBoard.dto.BoardListSearchDto;
-import jp.co.noticeBoard.dto.PageDto;
-import jp.co.noticeBoard.entitiy.Tblboard;
-import jp.co.noticeBoard.form.BoardListForm;
-import jp.co.noticeBoard.service.BoardListService;
-import jp.co.noticeBoard.service.LoginService;
-import jp.co.noticeBoard.service.SessionManager;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import jp.co.noticeBoard.dto.BoardListDto;
+import jp.co.noticeBoard.dto.BoardListSearchDto;
+import jp.co.noticeBoard.dto.PageDto;
+import jp.co.noticeBoard.entitiy.Tblboard;
+import jp.co.noticeBoard.form.BoardListForm;
+import jp.co.noticeBoard.service.BoardListService;
+import jp.co.noticeBoard.service.LoginService;
+import jp.co.noticeBoard.service.SessionManager;
 
 @Controller
 @RequestMapping("/boardList")
@@ -153,7 +158,7 @@ public class BoardListController {
 		boardListsearchDto = boardListService.getSearchDto(boardListForm);
 		//条件に合わせた掲示文の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
-		//検索した掲示文件数が０の場合
+		//検索した掲示情報件数が０の場合
 		if (count == 0) {
             messageList.add(messageSource.getMessage("E00009", new Object[]{}, locale));
 			model.addAttribute("messageList", messageList);
@@ -187,17 +192,5 @@ public class BoardListController {
 		model.addAttribute("pager", pageDto);
 
 		return "views/board_list";
-	}
-	
-	/**
-	 * 掲示文新規作成
-	 * @param model モデル
-	 * @return 画面パス
-	 */
-	@RequestMapping("/write")
-	public String boardwrite(Model model, RedirectAttributes redirectAttributes) throws Exception {
-
-		return "redirect:/boardEditRegister/";
-
 	}
 }

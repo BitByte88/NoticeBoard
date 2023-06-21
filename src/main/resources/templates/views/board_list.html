@@ -85,10 +85,10 @@
       <table class="border-table table-hover board-table">
         <thead>
           <tr>
-            <td width="75%" class="border-table-th"><div th:text="#{label.title}"/></th></td>
+            <td width="75%" class="border-table-th"><div th:text="#{label.title}"/></td>
             <th width="10%" class="border-table-th"><div th:text="#{label.boardList.registerName}"/></th>
-            <th width="10%" class="border-table-th"><div th:text="#{label.boardList.registerDate}"/></a></th>
-            <th width="5%" class="border-table-th"><div th:text="#{label.boardList.viewcount}"/></a></th>
+            <th width="10%" class="border-table-th"><div th:text="#{label.boardList.registerDate}"/></th>
+            <th width="5%" class="border-table-th"><div th:text="#{label.boardList.viewcount}"/></th>
           </tr>
         </thead>
         <tbody>
@@ -99,7 +99,7 @@
             <td th:text="${order.viewCount}" class="border-table-td"></td>
         </tr>
         <div th:if="${boardList == null or #lists.isEmpty(boardList)}">
-            <tr style="height:35px;" th:each="num: ${#numbers.sequence(1,4)}">
+            <tr style="height:35px;" th:each="num: ${#numbers.sequence(1,1)}">
                 <td  class="border-table-td center"></td>
                 <td  class="border-table-td"></td>
                 <td  class="border-table-td center"></td>
@@ -114,8 +114,8 @@
         </div>
         <div class="table-control-right">
         <th:block th:if="${session.SesUserInfo != null}">
-			<button class="bt bt-green btn_write" onClick="location.href='/boardList/write'">
-				<div th:text="#{btn.orderList.write}"/>
+			<button class="bt bt-green btn_write" onClick="location.href='/boardEditRegister'">
+				<th:block th:text="#{btn.orderList.write}"/>
 			</button>
 		</th:block>
 		</div>
@@ -148,7 +148,7 @@
         </div>
         <div class="table-control-right">
         <th:block th:if="${session.SesUserInfo != null}">
-			<button class="bt bt-green btn_write" onClick="location.href='/boardList/write'">
+			<button class="bt bt-green btn_write" onClick="location.href='/boardEditRegister'">
 				<div th:text="#{btn.orderList.write}"/>
 			</button>
 		</th:block>
