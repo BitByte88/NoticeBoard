@@ -96,6 +96,9 @@ public class BoardListController {
 		
 		//掲示情報リスト格納
 		model.addAttribute("boardList", boardList);
+
+		//検索条件Form格納
+		model.addAttribute("boardListForm", boardListForm);
 		
 		//掲示情報検索条件格納
 		sessionManager.setSesBoardListSearchInfo(boardListForm);
@@ -126,6 +129,7 @@ public class BoardListController {
 
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
+		
 
 		//検索条件DTO
 		BoardListSearchDto boardListsearchDto = new BoardListSearchDto();
