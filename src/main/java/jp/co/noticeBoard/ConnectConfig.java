@@ -1,8 +1,5 @@
 package jp.co.noticeBoard;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -10,12 +7,15 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
-public class LoginConfig implements WebMvcConfigurer {
+public class ConnectConfig implements WebMvcConfigurer {
 
     @Autowired
-    @Qualifier(value = "loginInterceptor")
-    private HandlerInterceptor loginInterceptor;
+    @Qualifier(value = "ConnectInterceptor")
+    private HandlerInterceptor ConnectInterceptor;
 
 
     @Override
@@ -24,9 +24,7 @@ public class LoginConfig implements WebMvcConfigurer {
         notLoadList.add("/login");
         notLoadList.add("/returnLogin");
         notLoadList.add("/logout");
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/").excludePathPatterns(notLoadList);
-
-
+        registry.addInterceptor(ConnectInterceptor).addPathPatterns("/").excludePathPatterns(notLoadList);
     }
 }
 

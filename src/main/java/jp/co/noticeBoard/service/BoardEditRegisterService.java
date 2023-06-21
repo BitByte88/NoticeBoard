@@ -19,9 +19,9 @@ public class BoardEditRegisterService {
 
 
     /**
-     * 掲示板を登録する。
+     * 掲示内容を登録する。
      *
-     * @param  BoardDetailDto 注文詳細情報リスト
+     * @param  boardDto 掲示情報
      * @return エラーメッセージリスト
      */
     public void registerBoard(BoardDetailDto boardDto) throws Exception {
@@ -29,9 +29,9 @@ public class BoardEditRegisterService {
     }
 
     /**
-     * 掲示板を更新する。
+     * 掲示内容を更新する。
      *
-     * @param BoardDetailDto 注文No
+     * @param boardDto 掲示情報
      * @return エラーメッセージリスト
      */
     public void updateBoard(BoardDetailDto boardDto) throws Exception {
