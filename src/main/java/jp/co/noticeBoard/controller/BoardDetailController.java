@@ -86,7 +86,7 @@ public class BoardDetailController {
         if(sessionManager.getSesUserInfo() != null) {
 
         	// ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
-        	if (sessionManager.getSesUserInfo().getName().equals(boardDetail.getRegisterUserId())) {
+        	if (sessionManager.getSesUserInfo().getUserId().equals(boardDetail.getRegisterUserId())) {
         		model.addAttribute("displayEditButtonFlg", "1");
         }
         }
@@ -175,7 +175,7 @@ public class BoardDetailController {
 
 		//削除対象設定
 		deleteDto.setBoardId(deleteDto.getBoardId());
-		deleteDto.setRegisterUserId(sessionManager.getSesUserInfo().getName());
+		deleteDto.setRegisterUserId(sessionManager.getSesUserInfo().getUserId());
         
         //掲示情報削除
         boardDetailService.deleteBoard(deleteDto);
@@ -201,8 +201,8 @@ public class BoardDetailController {
 
         // コメント入力チェック
 		if(commentDto.getCommentContent() == null || commentDto.getCommentContent().equals("")){
-		    messageList.add(messageSource.getMessage("E0007", new Object[]{}, locale));
-		    logger.error(messageSource.getMessage("E0007", new Object[]{}, locale));
+		    messageList.add(messageSource.getMessage("E00007", new Object[]{}, locale));
+		    logger.error(messageSource.getMessage("E00007", new Object[]{}, locale));
 		    Map<String,Object> params = new HashMap<>();
 		    params.put("messageList", messageList);
 		    params.put("boardNo", commentDto.getBoardId());

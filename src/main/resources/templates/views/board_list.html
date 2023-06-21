@@ -37,16 +37,15 @@
 						<option value="registerUserId"><div th:text="#{label.register}"></option>
 						<option value="content"><div th:text="#{label.content}"></option>
 					</select>
-					</td>
-					</th>
-					<td width="20%">
-						<input type="text" name="searchKeyword" maxlength="128"><p class="section-block center">
-					</td>
-					<td width="5%">
-						<button class="bt bt-green btn_search">
-							<div th:text="#{btn.orderList.search}"/>
-						</button>
-					</td>
+				 </td>
+				 <td width="20%">
+					<input type="text" name="searchKeyword" maxlength="128"><p class="section-block center">
+				 </td>
+				 <td width="5%">
+				 <button class="bt bt-green btn_search">
+					<th:block th:text="#{btn.orderList.search}"/>
+				 </button>
+				 </td>
               </tr>
        		<tbody>
       	</table>
@@ -149,7 +148,7 @@
         <div class="table-control-right">
         <th:block th:if="${session.SesUserInfo != null}">
 			<button class="bt bt-green btn_write" onClick="location.href='/boardEditRegister'">
-				<div th:text="#{btn.orderList.write}"/>
+				<th:block th:text="#{btn.orderList.write}"/>
 			</button>
 		</th:block>
 		</div>
@@ -164,7 +163,6 @@
 <script type="text/javascript">
               /* 「検索」ボタン */
               $('.btn_search').click(function() {
-                statusSetting();
                 $("input[name='offset']").val(0);
                  $("#searchForm").submit();
               });
@@ -179,18 +177,8 @@
               var maxCount = [[${@environment.getProperty('list.max.count')}]]
               var offset = (clickPage-1)*maxCount;
               $("input[name='offset']").val(offset);
-              statusSetting();
                $("#searchForm").submit();
               });
-
-              function statusSetting(){
-              var checkValue= [];
-                 $("input[name='statusCheck']:checked").each(function(i){
-                 checkValue.push($(this).val());
-                 });
-                 $("input[name='status']").val(checkValue);
-              };
-
 </script>
 <footer th:replace="layout/Footer :: Footer"></footer>
 </html>

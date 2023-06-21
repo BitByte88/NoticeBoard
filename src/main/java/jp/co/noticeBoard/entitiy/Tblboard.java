@@ -3,7 +3,7 @@ package jp.co.noticeBoard.entitiy;
 import java.util.Date;
 
 import lombok.Data;
-/*掲示文テーブル*/
+/*掲示情報テーブル*/
 @Data
 public class Tblboard {
 

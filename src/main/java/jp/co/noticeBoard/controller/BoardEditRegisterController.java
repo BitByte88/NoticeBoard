@@ -189,7 +189,7 @@ public class BoardEditRegisterController {
         //新規の場合
         if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
         	//作成者設定
-            updateDto.setRegisterUserId(sessionManager.getSesUserInfo().getName());
+            updateDto.setRegisterUserId(sessionManager.getSesUserInfo().getUserId());
 
         	//登録処理
         	boardEditRegisterService.registerBoard(updateDto);
@@ -197,7 +197,7 @@ public class BoardEditRegisterController {
         //修正の場合
     	} else { 
     		//更新者設定
-            updateDto.setUpdateUserId(sessionManager.getSesUserInfo().getName());
+            updateDto.setUpdateUserId(sessionManager.getSesUserInfo().getUserId());
 
         	//更新処理
     		boardEditRegisterService.updateBoard(updateDto);

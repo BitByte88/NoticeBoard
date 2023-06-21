@@ -15,8 +15,6 @@
                 position: static;
                 }
             </style>
-
-
         </head>
         <body>
             <div class="wrapper">
@@ -43,7 +41,7 @@
                             <ul class="hdr-button">
                             <li class="hdr-button-item">
                                 <p><div th:text="${session.SesTime}"/></p>
-                                <p><div th:text="${session.SesUserInfo.name}"/></p>
+                                <p><div th:text="${session.SesUserInfo.userId}"/></p>
                             </li>
                             <li class="hdr-button-item"><button class="bt bt-gray btn_logout_header"><th:block th:text="#{btn.header.logout}" /></button></li>
                         </ul>
@@ -56,7 +54,6 @@
                                 <li class="hdr-button-item"></li>
                             </ul>
                         </div>
-
                     </div>
                 </div><!--/.hdr-->
             </div>

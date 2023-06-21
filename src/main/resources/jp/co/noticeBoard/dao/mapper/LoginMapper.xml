@@ -9,7 +9,8 @@
     <select id="getUserInfo" resultType="jp.co.noticeBoard.dto.UserDto">
         SELECT
         t_user.user_pass AS password,
-        t_user.user_name AS name
+        t_user.user_name AS name,
+        t_user.user_id AS userId
         FROM
         t_user
         WHERE
