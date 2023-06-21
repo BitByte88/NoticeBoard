@@ -28,22 +28,24 @@ public class SessionManager implements InitializingBean {
     @Autowired
     private HttpSession session;
 
+    /**
+     * セッション情報クリア
+     */
     public void clearSession() {
         session.invalidate();
     }
 
     /**
-     * セッション情報「userInfo」を設定する。
+     * セッション情報へ「ユーザー情報」を設定する。
      *
-     * @param userInfo セッション情報「ユーザーログイン情報」
+     * @param userInfo セッション情報「ユーザー情報」
      */
     public void setSesUserInfo(UserDto userInfo) {
         this.session.setAttribute(Const.SES_USER_INFO, userInfo);
     }
 
     /**
-     * セッション情報「userInfo」を取得する。
-     *
+     * セッション情報から「ユーザー情報」を取得する。
      */
     public UserDto getSesUserInfo() {
 
@@ -51,8 +53,15 @@ public class SessionManager implements InitializingBean {
     }
 
     /**
-     * セッション情報「現在時間」を設定する。
+     * セッション情報から「ユーザー情報」を削除する。
      *
+     */
+    public void clearUserInfo() {
+        this.session.removeAttribute(Const.SES_USER_INFO);
+    }
+
+    /**
+     * セッション情報へ「現在時間」を設定する。
      */
     public void setSesTime() {
         SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy/MM/dd HH:mm:ss");
@@ -64,19 +73,18 @@ public class SessionManager implements InitializingBean {
 
 
     /**
-     * セッション情報「boardListForm」を設定する。
+     * セッション情報へ「掲示情報の検索条件」を設定する。
      *
-     * @param boardListForm セッション情報「掲示情報一覧検索条件」
+     * @param boardListForm セッション情報「掲示情報の検索条件」
      */
-    public void setSesOrderListSearchInfo(BoardListForm boardListForm) {
+    public void setSesBoardListSearchInfo(BoardListForm boardListForm) {
         this.session.setAttribute(Const.SES_SEARCH_INFO, boardListForm);
     }
 
     /**
-     * セッション情報「boardListForm」を取得する。
-     *
+     * セッション情報から「掲示情報の検索条件」を取得する。
      */
-    public BoardListForm getSesOrderListSearchInfo() {
+    public BoardListForm getSesBoardListSearchInfo() {
         BoardListForm boardListForm =(BoardListForm)this.session.getAttribute(Const.SES_SEARCH_INFO);
         return boardListForm;
     }
@@ -93,15 +101,6 @@ public class SessionManager implements InitializingBean {
     public void clearSesJoinForm() {
     	this.session.removeAttribute("SesJoinForm");
     }
-
-    /**
-     * セッション情報「userInfo」を削除する。
-     *
-     */
-    public void clearUserInfo() {
-        this.session.removeAttribute(Const.SES_USER_INFO);
-    }
-
 
     @Override
     public void afterPropertiesSet() throws Exception {

@@ -1,13 +1,13 @@
 package jp.co.noticeBoard.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import jp.co.noticeBoard.dto.BoardListDto;
+import jp.co.noticeBoard.dto.BoardListSearchDto;
+import jp.co.noticeBoard.dto.PageDto;
+import jp.co.noticeBoard.entitiy.Tblboard;
+import jp.co.noticeBoard.form.BoardListForm;
+import jp.co.noticeBoard.service.BoardListService;
+import jp.co.noticeBoard.service.LoginService;
+import jp.co.noticeBoard.service.SessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import jp.co.noticeBoard.dto.BoardListDto;
-import jp.co.noticeBoard.dto.BoardListSearchDto;
-import jp.co.noticeBoard.dto.PageDto;
-import jp.co.noticeBoard.entitiy.Tblboard;
-import jp.co.noticeBoard.form.BoardListForm;
-import jp.co.noticeBoard.service.BoardListService;
-import jp.co.noticeBoard.service.LoginService;
-import jp.co.noticeBoard.service.SessionManager;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Controller
 @RequestMapping("/boardList")
@@ -44,7 +38,7 @@ public class BoardListController {
 	private BoardListService boardListService;
 
 	/**
-	 * 掲示文一覧（初期表示）
+	 * 掲示情報一覧（初期表示）
 	 *
 	 * @return 画面パス
 	 * @throws Exception 
@@ -52,14 +46,11 @@ public class BoardListController {
 	@RequestMapping("")
 	public String boardList(HttpServletRequest request, Locale locale, Model model) throws Exception {
 
-		//掲示情報一覧検索条件Formの初期設定
-		BoardListForm boardListForm = boardListService.initBoardList();
-		
-		//セッションの会員登録Form削除
-		sessionManager.clearSesJoinForm();
+		//掲示情報一覧の検索条件Formの初期化
+		BoardListForm boardListForm = new BoardListForm();
 
-		//セッション「掲示板条件」格納
-		sessionManager.setSesOrderListSearchInfo(boardListForm);
+		//セッション情報へ「掲示情報の検索条件」を設定する。
+		sessionManager.setSesBoardListSearchInfo(boardListForm);
 		//現在時間格納
 		sessionManager.setSesTime();
 
@@ -81,7 +72,7 @@ public class BoardListController {
 		if (count == 0) {
 		    messageList.add(messageSource.getMessage("E00008", new Object[]{}, locale));
 		    model.addAttribute("messageList", messageList);
-		    sessionManager.setSesOrderListSearchInfo(boardListForm);
+		    sessionManager.setSesBoardListSearchInfo(boardListForm);
 		    logger.error(messageSource.getMessage("E00008", new Object[]{}, locale));
 		
 		    return "views/board_list";
@@ -102,7 +93,7 @@ public class BoardListController {
 		model.addAttribute("boardList", boardList);
 		
 		//掲示情報検索条件格納
-		sessionManager.setSesOrderListSearchInfo(boardListForm);
+		sessionManager.setSesBoardListSearchInfo(boardListForm);
 		
 		//現在時間格納
 		sessionManager.setSesTime();
@@ -147,12 +138,12 @@ public class BoardListController {
 		//画面復元判定フラグが「RESTORATION」の場合
 		if (restorationJudgment.equals("restoration")) {
 			//セッションから検索条件取得
-			boardListForm = sessionManager.getSesOrderListSearchInfo();
+			boardListForm = sessionManager.getSesBoardListSearchInfo();
 		} else { //画面復元判定フラグが「RESTORATION」以外の場合
 			//検索条件チェック
 			messageList = boardListService.searchInputCheck(boardListForm, locale);
 			if (!messageList.isEmpty()) {
-				sessionManager.setSesOrderListSearchInfo(boardListForm);
+				sessionManager.setSesBoardListSearchInfo(boardListForm);
 				model.addAttribute("messageList", messageList);
 				return "views/board_list";
 			}
@@ -166,7 +157,7 @@ public class BoardListController {
 		if (count == 0) {
             messageList.add(messageSource.getMessage("E00009", new Object[]{}, locale));
 			model.addAttribute("messageList", messageList);
-			sessionManager.setSesOrderListSearchInfo(boardListForm);
+			sessionManager.setSesBoardListSearchInfo(boardListForm);
             logger.error(messageSource.getMessage("E00009", new Object[]{}, locale));
 
 			return "views/board_list";
@@ -187,7 +178,7 @@ public class BoardListController {
 		model.addAttribute("boardList", boardList);
 
 		//掲示文リスト条件格納
-		sessionManager.setSesOrderListSearchInfo(boardListForm);
+		sessionManager.setSesBoardListSearchInfo(boardListForm);
 
 		//現在時間格納
 		sessionManager.setSesTime();

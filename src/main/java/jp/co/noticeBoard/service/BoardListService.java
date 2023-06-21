@@ -36,19 +36,6 @@ public class BoardListService {
     private BoardListMapper boardListMapper;
 
     /**
-     * 掲示文一覧初期設定
-     *
-     * @return 注文状況検索条件Form
-     */
-    public BoardListForm initBoardList(){
-    	// TODO 初期値設定
-        BoardListForm boardListForm = new BoardListForm();
-
-        return boardListForm;
-    }
-
-
-    /**
      * 掲示文条件チェック
      *
      * @param boardListForm 掲示文条件Form
