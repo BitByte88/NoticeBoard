@@ -22,12 +22,7 @@ public class Const {
     // 改行（CRLF）
     public static final String CRLF = "\r\n";
     // 改行（LF）
-    public static final String LF = "\n";
-    // 改行変換文字列パータン
-    public static final String CONVERT_CRLF_LF = "(\r\n|\n)";
-    // 改行変換文字列：<br>
-    public static final String BR = "<br>";
-    
+    public static final String CR = "\r";
     // 数字フォーマット
     public static final String NUMBER_FORMAT = "^[0-9]+$";
     // 英字数字記号フォーマット

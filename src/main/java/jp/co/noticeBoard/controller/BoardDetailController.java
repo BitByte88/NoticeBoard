@@ -158,9 +158,6 @@ public class BoardDetailController {
             return "redirect:/error";
         }
 
-        //改行コード変換
-        updateDto.setBoardContent(updateDto.getBoardContent().replaceAll(Const.BR, Const.CRLF));
-
 		model.addAttribute("registerFlg", "2");
 		model.addAttribute("updateDto", updateDto);
 
@@ -217,7 +214,7 @@ public class BoardDetailController {
 		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getName());
 
 		//改行変換
-		commentDto.setCommentContent(commentDto.getCommentContent().replaceAll(Const.CONVERT_CRLF_LF, Const.BR));
+		commentDto.setCommentContent(commentDto.getCommentContent().replace(Const.CRLF, Const.CR));
 
 		// コメント情報更新
 		boardDetailService.commentUpdate(commentDto);

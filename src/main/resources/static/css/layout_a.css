@@ -571,6 +571,11 @@ input[type="email"] {
 
 .board-content {
 	font-size: 1.8rem;
+	 white-space: pre-wrap;
+}
+
+.board-comment {
+	 white-space: pre-wrap;
 }
 
 .form-table-td {
