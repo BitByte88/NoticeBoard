@@ -21,6 +21,13 @@ public class Const {
     public static final String TAB = "\t";
     // 改行（CRLF）
     public static final String CRLF = "\r\n";
+    // 改行（LF）
+    public static final String LF = "\n";
+    // 改行変換文字列パータン
+    public static final String CONVERT_CRLF_LF = "(\r\n|\n)";
+    // 改行変換文字列：<br>
+    public static final String BR = "<br>";
+    
     // 数字フォーマット
     public static final String NUMBER_FORMAT = "^[0-9]+$";
     // 英字数字記号フォーマット
@@ -34,8 +41,13 @@ public class Const {
 
     // セッション「ユーザー情報」のキー
     public static final String SES_USER_INFO = "SesUserInfo";
-    //セッション「掲示文検索条件」のキー
+    //セッション「掲示情報検索条件」のキー
     public static final String SES_SEARCH_INFO ="SesSearchInfo";
     //セッション「現在時間」のキー
     public static final String SES_TIME = "SesTime";
+
+    // ID 最大桁数 : 4
+    public static final String MAX_ID_LENGTH = "4";
+    
+    
 }
