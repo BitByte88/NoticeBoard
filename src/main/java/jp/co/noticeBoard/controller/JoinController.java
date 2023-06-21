@@ -3,10 +3,8 @@ package jp.co.noticeBoard.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import jp.co.noticeBoard.dto.UserDto;
 import jp.co.noticeBoard.dto.UserJoinDto;
@@ -62,27 +59,11 @@ public class JoinController {
     @GetMapping("")
     public String join(HttpServletRequest request, Model model) throws Exception {
 
-        //エラーメッセージリスト
-        List<String> messageList = new ArrayList<>();
-
-		//requestからエラー情報取得
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		Map<String, Object> params = new HashMap<>();
 		JoinForm joinForm = new JoinForm();
+
 	    //初期値設定
         joinForm.setGender("0");
-
-		if (flashMap != null) {
-			params = (Map<String, Object>) flashMap.get("params");
-			joinForm = (JoinForm) flashMap.get("joinForm");
-			if ((ArrayList) params.get("messageList") != null) {
-				messageList = (ArrayList) params.get("messageList");
-			}
-		}
-
-        if(messageList.size()!=0){
-            model.addAttribute("messageList", messageList);
-        }
+        joinForm.setJoinReason("0");
 
         model.addAttribute("joinForm", joinForm);
 
@@ -197,19 +178,13 @@ public class JoinController {
             logger.error(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
         }
 
-        //セッションに会員登録Formを格納する。
-        //sessionManager.setJoinForm(joinForm);
-
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
-            Map<String,Object> params = new HashMap<>();
-            params.put("messageList", messageList);
-            params.put("UserMail", joinForm.getMail());
-            redirectAttributes.addFlashAttribute("params", params);
             
-            redirectAttributes.addFlashAttribute("joinForm", joinForm);
+            model.addAttribute("messageList", messageList);
+            model.addAttribute("joinForm", joinForm);
 
-        	return "redirect:/join";
+            return "views/admin_join";
         }
 
 		//画面引数パスワードをSHA-256アルゴリズムでハッシュ化する。
