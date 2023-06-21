@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import jp.co.noticeBoard.common.Const;
 import jp.co.noticeBoard.dto.BoardDetailDto;
-import jp.co.noticeBoard.service.BoardDetailService;
 import jp.co.noticeBoard.service.BoardEditRegisterService;
 import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
@@ -36,9 +36,6 @@ public class BoardEditRegisterController {
 
     @Autowired
     private MessageSource messageSource;
-
-    @Autowired
-    private BoardDetailService boardDetailService;
 
     @Autowired
     private BoardEditRegisterService boardEditRegisterService;
@@ -68,6 +65,7 @@ public class BoardEditRegisterController {
 		}
 		
 		model.addAttribute("registerFlg", "1");
+
 		if(messageList.size()!=0){
 		    model.addAttribute("messageList", messageList);
 		}
@@ -80,7 +78,7 @@ public class BoardEditRegisterController {
     }
 
     /**
-     * 作成修正画面表示（戻る）
+     * 作成修正画面表示（再表示）
      *
      * @return 画面パス
      */
@@ -89,11 +87,12 @@ public class BoardEditRegisterController {
 
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
+
         BoardDetailDto updateDto = new BoardDetailDto();
 
     	String boardNo = null;
     	
-		//画面遷移用 掲示文No取得処理
+		//画面再表示の為、値取得
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
@@ -105,7 +104,7 @@ public class BoardEditRegisterController {
 				messageList = (ArrayList) params.get("messageList");
 			}
 		}
-        
+
         if(messageList.size()!=0){
             model.addAttribute("messageList", messageList);
         }
@@ -146,9 +145,13 @@ public class BoardEditRegisterController {
             String noteLabel = messageSource.getMessage("label.title",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            Map<String,Object> params = new HashMap<>();
-            params.put("messageList", messageList);
-            redirectAttributes.addFlashAttribute("params", params);
+        }
+
+        //タイトル桁数チェック
+        if(updateDto.getBoardTitle().length() > 50){
+            String noteLabel = messageSource.getMessage("label.title",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, "50"}, locale));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, "50"}, locale));
         }
 
         //内容入力チェック
@@ -156,28 +159,38 @@ public class BoardEditRegisterController {
             String noteLabel = messageSource.getMessage("label.content",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            Map<String,Object> params = new HashMap<>();
-            params.put("messageList", messageList);
-            redirectAttributes.addFlashAttribute("params", params);
         }
-        
+
+        //内容桁数チェック
+        if(updateDto.getBoardContent().length() > 3000){
+            String noteLabel = messageSource.getMessage("label.content",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, "3000"}, locale));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, "3000"}, locale));
+        }
+
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
         	redirectAttributes.addFlashAttribute("boardNo", boardNo);
         	redirectAttributes.addFlashAttribute("updateDto", updateDto);
+        	
+        	Map<String,Object> params = new HashMap<>();
+            params.put("messageList", messageList);
+            redirectAttributes.addFlashAttribute("params", params);
+
         	return "redirect:/boardEditRegister/returnBoardEdit/";
         }
 
         if(sessionManager.getSesUserInfo() == null)
         	return "views/admin_login";
-        
-        updateDto.setBoardContent(updateDto.getBoardContent().replaceAll("(\r\n|\n)", "<br />"));
+
+        //改行処理
+        updateDto.setBoardContent(updateDto.getBoardContent().replace(Const.CRLF, Const.CR));
 
         //新規の場合
         if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
         	//作成者設定
             updateDto.setRegisterUserId(sessionManager.getSesUserInfo().getName());
-        	
+
         	//登録処理
         	boardEditRegisterService.registerBoard(updateDto);
 
@@ -185,7 +198,7 @@ public class BoardEditRegisterController {
     	} else { 
     		//更新者設定
             updateDto.setUpdateUserId(sessionManager.getSesUserInfo().getName());
-    		
+
         	//更新処理
     		boardEditRegisterService.updateBoard(updateDto);
     	}
