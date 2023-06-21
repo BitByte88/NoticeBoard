@@ -40,7 +40,7 @@
         </where>
     </select>
 
-    <!-- 掲示文情報取得 -->
+    <!-- 掲示情報取得 -->
     <select id="getBoardList" resultMap="BoardMap">
         SELECT
         t_board.board_id,

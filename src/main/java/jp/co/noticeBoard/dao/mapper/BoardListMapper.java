@@ -9,7 +9,7 @@ import jp.co.noticeBoard.dto.BoardListSearchDto;
 import jp.co.noticeBoard.entitiy.Tblboard;
 
 /**
- * 掲示板リスト取得 Mapperクラス.
+ * 掲示情報リスト取得 Mapperクラス.
  */
 
 @Mapper
@@ -18,7 +18,7 @@ public interface BoardListMapper {
     /**
      * 掲示文件数取得.
      *
-     * @param boardListSearchDto 掲示板検索変数
+     * @param boardListSearchDto 掲示情報リスト検索変数
      * @return 件数
      */
     Integer getBoardListCount(@Param("boardListSearchDto") BoardListSearchDto boardListSearchDto);
@@ -26,9 +26,9 @@ public interface BoardListMapper {
     /**
      * 掲示文情報取得.
      *
-     * @param boardListSearchDto 掲示板検索変数
-     * @param limit 1ページに表示される注文件数
-     * @return 掲示文リスト
+     * @param boardListSearchDto 掲示情報リスト検索変数
+     * @param limit 1ページに表示される掲示情報件数
+     * @return 掲示情報リスト
      */
     List<Tblboard> getBoardList(@Param("boardListSearchDto") BoardListSearchDto boardListSearchDto, @Param("limit") Integer limit);
 

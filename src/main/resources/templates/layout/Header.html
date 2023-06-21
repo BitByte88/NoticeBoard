@@ -6,7 +6,7 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, user-scalable=yes">
 
-            <title><th:block th:text="#{label.header.title}"/></title>
+            <title><th:block th:text="#{label.browser.title}"/></title>
             <link rel="stylesheet" th:href="@{/css/layout_a.css}">
             <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 
@@ -27,7 +27,7 @@
                         </div>
                         <div class="title">
                             <h1>
-                            	<div onClick="location.href='/boardList'">株式会社 IPSG Holdings</div>
+                            	<div onClick="location.href='/boardList'"><th:block th:text="#{label.header.title}"/></div>
                                 <br>
                             </h1>
                         </div>
@@ -36,7 +36,7 @@
 						    <ul class="hdr-button">
 						    <li class="hdr-button-item">
 						    </li>
-                            <li class="hdr-button-item"><button class="bt bt-gray btn_login"><th:block th:text="#{btn.header.login}" /></button></li>
+                            <li class="hdr-button-item"><button class="bt bt-gray btn_login_header"><th:block th:text="#{btn.header.login}" /></button></li>
                         	</ul>
                         </th:block>
                         <th:block th:if="${session.SesUserInfo != null}">
@@ -45,7 +45,7 @@
                                 <p><div th:text="${session.SesTime}"/></p>
                                 <p><div th:text="${session.SesUserInfo.name}"/></p>
                             </li>
-                            <li class="hdr-button-item"><button class="bt bt-gray btn_logout"><th:block th:text="#{btn.header.logout}" /></button></li>
+                            <li class="hdr-button-item"><button class="bt bt-gray btn_logout_header"><th:block th:text="#{btn.header.logout}" /></button></li>
                         </ul>
                         </th:block>
 						</div>
@@ -66,12 +66,12 @@
         <form id="logoutAction" th:action="@{/login/logout}" method="post"></form>
         <script type="text/javascript">
               /* 「ログイン」ボタン */
-              $('.btn_login').click(function() {
+              $('.btn_login_header').click(function() {
                  $('#loginAction').submit();
               });
 
               /* 「ログアウト」ボタン */
-              $('.btn_logout').click(function() {
+              $('.btn_logout_header').click(function() {
                  $('#logoutAction').submit();
               });
 

@@ -302,12 +302,14 @@ input[type='checkbox']:checked + .checkbox {
 
 .logo-image {
   width: 70px;
+  cursor: pointer;
 }
 
 .title {
   line-height: 1;
   text-align: center;
   font-size: 2rem;
+  cursor: pointer;
 }
 
 .title-subtitle {
