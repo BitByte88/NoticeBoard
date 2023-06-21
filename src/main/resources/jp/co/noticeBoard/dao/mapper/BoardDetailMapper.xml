@@ -24,8 +24,8 @@
         <id column="register_date" jdbcType="TIMESTAMP" property="commentRegisterDate" />
     </resultMap>
 
-    <!-- 掲示文詳細情報取得 -->
-    <select id="getBoardDetailList" resultMap="boardDetailMap">
+    <!-- 掲示情報の詳細情報取得 -->
+    <select id="getBoardDetail" resultMap="boardDetailMap">
         SELECT
         t_board.board_id,
         t_board.board_title,

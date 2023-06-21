@@ -19,7 +19,7 @@
     <table class="form-table" style="width:100%;">
         <tbody>
         	<tr class="form-table-row">
-		  		<td class="form-table-th board-title"><th:block th:text="${boardDetailList[0].boardTitle}"/></td>
+		  		<td class="form-table-th board-title"><th:block th:text="${boardDetail.boardTitle}"/></td>
         	</tr>
         </tbody>
       </table>
@@ -33,9 +33,9 @@
         <tbody>
        		<tr class="form-table-row">
        			<th class="form-table-th"><th:block th:text="#{label.boardList.registerDate}"></th:block></th>
-		      	<td class="form-table-td"><th:block th:text="${boardDetailList[0].registerDate}"/></td>
-		      	<th class="form-table-th"><th:block th:text="#{label.orderDetail.boardtCreator}"/></th>
-		      	<td class="form-table-td"><th:block th:text="${boardDetailList[0].registerUserId}"/></td>
+		      	<td class="form-table-td"><th:block th:text="${boardDetail.registerDate}"/></td>
+		      	<th class="form-table-th"><th:block th:text="#{label.boardRegister}"/></th>
+		      	<td class="form-table-td"><th:block th:text="${boardDetail.registerUserId}"/></td>
 	    	</tr>
         </tbody>
       </table>
@@ -55,7 +55,7 @@
       <table class="form-table" style="width:100%;">
         <tbody>
         <tr class="form-table-row">
-          <td class="form-table-td board-content"><span th:utext="${boardDetailList[0].boardContent}"/></td>
+          <td class="form-table-td board-content"><span th:utext="${boardDetail.boardContent}"/></span></td>
         </tr>
         </tbody>
       </table>
@@ -71,17 +71,17 @@
         	<thead>
         	<th:block th:if="${boardCommentList.size() > 0}">
         	<tr>
-          			<th width="10%" class="border-table-th"><div th:text="#{label.orderDetail.boardtCreator}"/></th>
-            		<td width="80%" class="border-table-th"><div th:text="#{label.orderDetail.note}"/></th></td>
-            		<th width="10%" class="border-table-th"><div th:text="#{label.boardList.registerDate}"/></a></th>
-          		</tr>
-          		<tr th:each="comment,index: ${boardCommentList}">
-		            <td th:text="${comment.commentRegisterUserId}" class="border-table-td"></td>
-		            <td th:text="${comment.commentContent}" class="border-table-td" ></td>
-		            <td th:text="${comment.commentRegisterDate}" class="border-table-td"></td>
-        		</tr>
-        		</th:block>
-        </thead>
+          		<th width="10%" class="border-table-th"><th:block th:text="#{label.commentRegister}"/></th>
+            	<td width="80%" class="border-table-th"><th:block th:text="#{label.commentContent}"/></td>
+            	<th width="10%" class="border-table-th"><th:block th:text="#{label.boardList.registerDate}"/></th>
+          	</tr>
+          	<tr th:each="comment,index: ${boardCommentList}">
+		    	<td th:text="${comment.commentRegisterUserId}" class="border-table-td"></td>
+		        <td class="border-table-td"><span th:utext="${comment.commentContent}"></span></td>
+		        <td th:text="${comment.commentRegisterDate}" class="border-table-td"></td>
+        	</tr>
+        	</th:block>
+        	</thead>
         </table>
         </section><!--/.main-section-->
         <th:block th:if="${session.SesUserInfo != null}">
@@ -173,16 +173,16 @@
 </div>
 
 <form id="updateForm" th:action="@{/boardDetail/update}" method="post" th:object="${updateDto}">
-  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
+  <input type="hidden" name="boardId" th:value="${boardDetail.boardId}"/>
 </form>
 
 <form id="deleteForm" th:action="@{/boardDetail/delete}" method="post" th:object="${deleteDto}">
-  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
-  <input type="hidden" name="RegisterUserId" th:value="${boardDetailList[0].registerUserId}"/>
+  <input type="hidden" name="boardId" th:value="${boardDetail.boardId}"/>
+  <input type="hidden" name="RegisterUserId" th:value="${boardDetail.registerUserId}"/>
 </form>
 
 <form id="commentForm" th:action="@{/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
-  <input type="hidden" name="boardId" th:value="${boardDetailList[0].boardId}"/>
+  <input type="hidden" name="boardId" th:value="${boardDetail.boardId}"/>
   <input type="hidden" name="commentContent"/>
 </form>
 
