@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import jp.co.noticeBoard.common.Const;
 import jp.co.noticeBoard.dto.BoardCommentDto;
 import jp.co.noticeBoard.dto.BoardDeleteDto;
 import jp.co.noticeBoard.dto.BoardDetailDto;
@@ -42,24 +43,24 @@ public class BoardDetailController {
 	private BoardDetailService boardDetailService;
 
 	/**
-	 * 掲示文詳細表示（初期表示）
+	 * 掲示情報の詳細表示（初期表示）
 	 *
+	 * @param HttpServletRequest
 	 * @param model モデル
-	 * @param locale  ロケール
 	 * @return 画面パス
 	 */
 	@RequestMapping("")
-	public String boardDetail(HttpServletRequest request, Model model, Locale locale) throws Exception {
+	public String boardDetail(HttpServletRequest request, Model model) throws Exception {
 
 
 
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
 
-        //一覧画面から遷移用、掲示情報No取得
+        //一覧画面から遷移用、掲示No取得
         String boardNo = request.getParameter("intoOrderNo");
         
-		//コメントを登録した後、詳細画面再表示用 掲示文No取得処理
+		//コメント登録後、詳細画面再表示用 掲示No取得処理
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
@@ -70,21 +71,22 @@ public class BoardDetailController {
 			}
 		}
 
-        //掲示板情報リスト取得
-        List<BoardDetailDto> boardDetailList = new ArrayList<BoardDetailDto>();
-        boardDetailList = boardDetailService.getBoardDetailList(boardNo);
+        //掲示情報取得
+        BoardDetailDto boardDetail = new BoardDetailDto();
+        boardDetail = boardDetailService.getBoardDetail(boardNo);
 
-        if(boardDetailList.size()==0){
+        if(boardDetail == null){
             return "redirect:/error";
         }
 
-        model.addAttribute("boardDetailList", boardDetailList);
+        model.addAttribute("boardDetail", boardDetail);
+        
 
         // ログイン中のみチェック
         if(sessionManager.getSesUserInfo() != null) {
 
         	// ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
-        	if (sessionManager.getSesUserInfo().getName().equals(boardDetailList.get(0).getRegisterUserId())) {
+        	if (sessionManager.getSesUserInfo().getName().equals(boardDetail.getRegisterUserId())) {
         		model.addAttribute("displayEditButtonFlg", "1");
         }
         }
@@ -113,15 +115,14 @@ public class BoardDetailController {
 	}
 
 	/**
-	 * 掲示文一覧表示（戻る）
+	 * 掲示情報一覧表示（戻る）
 	 *
+	 * @param HttpServletRequest
+	 * @param RedirectAttributes
 	 * @return 画面パス
 	 */
 	@RequestMapping("/returnBoardList")
 	public String boardDetailBackButton(HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
-
-        if(sessionManager.getSesUserInfo() == null)
-        	return "redirect:/boardList/";
 
         //復員変数設定
         Map<String,Object> params = new HashMap<>();
@@ -133,14 +134,13 @@ public class BoardDetailController {
     }
 
 	/**
-	 * 掲示文作成修正画面表示（更新）
-	 * @param model モデル
-	 * @param locale　ロケール
+	 * 掲示情報の修正表示（更新）
+	 * @param HttpServletRequest
+	 * @param model　モデル
 	 * @return 画面パス
 	 */
 	@RequestMapping("/update")
-	public String boardupdate(HttpServletRequest request, Model model, Locale locale, 
-			RedirectAttributes redirectAttributes) throws Exception {
+	public String boardupdate(HttpServletRequest request, Model model) throws Exception {
 
 		List<String> messageList = new ArrayList<>();
 		
@@ -151,17 +151,16 @@ public class BoardDetailController {
 		}
 
         //掲示詳細情報リスト取得
-        List<BoardDetailDto> BoardUpdateList = new ArrayList<BoardDetailDto>();
         BoardDetailDto updateDto = new BoardDetailDto();
-        updateDto = (BoardDetailDto) boardDetailService.getBoardDetailList(boardId).get(0);
-        BoardUpdateList = boardDetailService.getBoardDetailList(boardId);
+        updateDto = (BoardDetailDto) boardDetailService.getBoardDetail(boardId);
 
-        if(BoardUpdateList.size()==0){
+        if(updateDto == null){
             return "redirect:/error";
         }
-		
-        //BoardDetailDto = updateDto = new BoardDetailDto();
-        
+
+        //改行コード変換
+        updateDto.setBoardContent(updateDto.getBoardContent().replaceAll(Const.BR, Const.CRLF));
+
 		model.addAttribute("registerFlg", "2");
 		model.addAttribute("updateDto", updateDto);
 
@@ -170,23 +169,22 @@ public class BoardDetailController {
 	}
 
     /**
-     * 掲示文削除
+     * 掲示情報削除
      * @param updateDto 更新情報
-     * @param model モデル
-     * @param locale　ロケール
      * @return 画面パス
      */
     @RequestMapping("/delete")
-    public String boardDelete(HttpServletRequest request, @ModelAttribute BoardDeleteDto deleteDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
-
-        List<String> messageList = new ArrayList<>();
+    public String boardDelete(@ModelAttribute BoardDeleteDto deleteDto) throws Exception {
 
 		//削除対象設定
 		deleteDto.setBoardId(deleteDto.getBoardId());
 		deleteDto.setRegisterUserId(sessionManager.getSesUserInfo().getName());
         
-        //削除処理
+        //掲示情報削除
         boardDetailService.deleteBoard(deleteDto);
+
+        //コメント削除
+        boardDetailService.deleteComment(deleteDto);
 
         return "redirect:/boardList";
     }
@@ -194,13 +192,13 @@ public class BoardDetailController {
 
     /**
      * コメント登録
-     * @param updateDto 更新情報
-     * @param model モデル
+     * @param commentDto コメントDto
      * @param locale　ロケール
+     * @param RedirectAttributes
      * @return 画面パス
      */
     @RequestMapping("/commentwrite")
-    public String commentwrite(@ModelAttribute BoardCommentDto commentDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
+    public String commentwrite(@ModelAttribute BoardCommentDto commentDto, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
 
         List<String> messageList = new ArrayList<>();
 
@@ -218,10 +216,13 @@ public class BoardDetailController {
 		//作成者名設定
 		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getName());
 
+		//改行変換
+		commentDto.setCommentContent(commentDto.getCommentContent().replaceAll(Const.CONVERT_CRLF_LF, Const.BR));
+
 		// コメント情報更新
 		boardDetailService.commentUpdate(commentDto);
 		
-		//掲示文Noリダイレクト
+		//掲示Noリダイレクト
 		Map<String,Object> params = new HashMap<>();
 		params.put("boardNo", commentDto.getBoardId());
 		redirectAttributes.addFlashAttribute("params", params);

@@ -10,22 +10,22 @@ import jp.co.noticeBoard.dto.BoardDeleteDto;
 import jp.co.noticeBoard.dto.BoardDetailDto;
 
 /**
- * 掲示文詳細取得 Mapperクラス.
+ * 掲示情報の詳細情報取得 Mapperクラス.
  */
 
 @Mapper
 public interface BoardDetailMapper {
 
     /*
-     * 掲示文情報を取得する。.
+     * 掲示情報を取得する。
      *
-     * @param boardNo 掲示板検索変数
-     * @return 件数
+     * @param boardNo 掲示No
+     * @return BoardDetailDto
      */
-    List<BoardDetailDto> getBoardDetailList(@Param("boardNo") String boardNo);
+    BoardDetailDto getBoardDetail(@Param("boardNo") String boardNo);
 
     /*
-     * 掲示文情報を取得する。.
+     * 掲示情報を取得する。
      *
      * @param boardNo コメント検索変数
      * @return コメントリスト
@@ -41,21 +41,21 @@ public interface BoardDetailMapper {
     void updateViewCount(@Param("boardNo") String boardNo);    
     
     /*
-     * 掲示文を登録する。
+     * 掲示情報を登録する。
      *
      * @param updateDto 掲示文情報
      */
     void registerBoard(@Param("updateDto") BoardDetailDto updateDto);
 
     /*
-     * 掲示文を更新する。
+     * 掲示情報を更新する。
      *
      * @param updateDto 掲示文情報
      */
     void updateBoard(@Param("updateDto") BoardDetailDto updateDto);
     
     /*
-     * 掲示文を削除する。
+     * 掲示情報を削除する。
      *
      * @param deleteDto 掲示情報検索変数
      * @return 件数

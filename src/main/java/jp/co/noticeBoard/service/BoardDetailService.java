@@ -27,13 +27,12 @@ public class BoardDetailService {
     private BoardDetailMapper boardDetailMapper;
 
     /**
-     * 掲示情報詳細情報を取得する。
+     * 掲示情報の詳細情報を取得する。
      *
      * @param boardNo 掲示No
      */
-    public List<BoardDetailDto> getBoardDetailList(String boardNo) throws Exception {
-        return boardDetailMapper.getBoardDetailList(boardNo);
-
+    public BoardDetailDto getBoardDetail(String boardNo) throws Exception {
+        return boardDetailMapper.getBoardDetail(boardNo);
     }
 
     /**
