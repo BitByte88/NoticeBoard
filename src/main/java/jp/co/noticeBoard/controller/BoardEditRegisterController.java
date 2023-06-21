@@ -53,7 +53,6 @@ public class BoardEditRegisterController {
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
 
-		String boardNo = request.getParameter("intoOrderNo");
 		//requestからエラー情報取得
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Map<String, Object> params = new HashMap<>();

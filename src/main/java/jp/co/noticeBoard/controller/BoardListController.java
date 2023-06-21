@@ -148,6 +148,7 @@ public class BoardListController {
 		if (restorationJudgment.equals("restoration")) {
 			//セッションから検索条件取得
 			boardListForm = sessionManager.getSesBoardListSearchInfo();
+			model.addAttribute("boardListForm", boardListForm);
 		} else { //画面復元判定フラグが「RESTORATION」以外の場合
 			//検索条件チェック
 			messageList = boardListService.searchInputCheck(boardListForm, locale);
