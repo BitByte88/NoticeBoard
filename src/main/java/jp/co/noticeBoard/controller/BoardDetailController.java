@@ -200,12 +200,25 @@ public class BoardDetailController {
 		if(commentDto.getCommentContent() == null || commentDto.getCommentContent().equals("")){
 		    messageList.add(messageSource.getMessage("E00007", new Object[]{}, locale));
 		    logger.error(messageSource.getMessage("E00007", new Object[]{}, locale));
+
+		}
+
+        // コメント桁数チェック
+        if(commentDto.getCommentContent().length() > Const.MAX_COMMENT_LENGTH){
+            String noteLabel = messageSource.getMessage("label.boardDetail.comment",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, locale));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, locale));
+        }
+		
+        // 上記のチェックでエラーが存在する場合
+        if(messageList.size()!=0){
 		    Map<String,Object> params = new HashMap<>();
 		    params.put("messageList", messageList);
 		    params.put("boardNo", commentDto.getBoardId());
 		    redirectAttributes.addFlashAttribute("params", params);
+
 		    return "redirect:/boardDetail/";
-		}
+        }
 
 		//作成者設定
 		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getUserId());

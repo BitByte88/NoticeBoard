@@ -52,9 +52,17 @@ public class Const {
     
     // PW 最大桁数 : 14
     public static final int MAX_PW_LENGTH = 14;
-    
+
     // 名前 最大桁数；30
     public static final int MAX_NAME_LENGTH = 30;
-    
+
+    // 掲示タイトル 最大桁数；50
+    public static final int MAX_TITLE_LENGTH = 50;
+
+    // 掲示内容 最大桁数；3000
+    public static final int MAX_CONTENT_LENGTH = 3000;
+
+    // コメント 最大桁数；45
+    public static final int MAX_COMMENT_LENGTH = 45;
     
 }

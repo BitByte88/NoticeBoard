@@ -147,10 +147,10 @@ public class BoardEditRegisterController {
         }
 
         //タイトル桁数チェック
-        if(updateDto.getBoardTitle().length() > 50){
+        if(updateDto.getBoardTitle().length() > Const.MAX_TITLE_LENGTH){
             String noteLabel = messageSource.getMessage("label.title",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, "50"}, locale));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, "50"}, locale));
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_TITLE_LENGTH}, locale));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_TITLE_LENGTH}, locale));
         }
 
         //内容入力チェック
@@ -161,10 +161,10 @@ public class BoardEditRegisterController {
         }
 
         //内容桁数チェック
-        if(updateDto.getBoardContent().length() > 3000){
+        if(updateDto.getBoardContent().length() > Const.MAX_CONTENT_LENGTH){
             String noteLabel = messageSource.getMessage("label.content",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, "3000"}, locale));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, "3000"}, locale));
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_CONTENT_LENGTH}, locale));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_CONTENT_LENGTH}, locale));
         }
 
         // 上記のチェックでエラーが存在する場合
