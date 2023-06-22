@@ -117,7 +117,7 @@
     <update id="deleteBoard">
     	UPDATE t_board
     	SET
-    	t_board.update_user_id =  #{deleteDto.RegisterUserId},
+    	t_board.update_user_id =  #{deleteDto.updateUserId},
     	t_board.update_date = now(),
     	t_board.delete_flag = '1'
     	WHERE
@@ -125,10 +125,10 @@
     </update>
     
     <!-- コメント削除 -->
-        <update id="deleteComment">
+    <update id="deleteComment">
     	UPDATE t_comment
     	SET
-    	t_comment.update_user_id =  #{deleteDto.RegisterUserId},
+    	t_comment.update_user_id =  #{deleteDto.updateUserId},
     	t_comment.update_date = now(),
     	t_comment.delete_flag = '1'
     	WHERE
