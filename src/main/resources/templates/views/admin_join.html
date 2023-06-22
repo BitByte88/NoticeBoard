@@ -22,7 +22,7 @@
         <section class="login-section">
             <form id="joinForm" th:action="@{/join/register}" method="post" th:object="${joinForm}">
                 <ul class="login-form">
-                    <li class="login-form-item">*
+                    <li class="login-form-item"><th: block th:text="#{label.join.asterisk}"/>
                         <div class="login-form-item-name"><div th:text="#{label.join.userId}"/></div>
                         <div class="login-form-item-data">
                             <input type="text" name="userId" id="join-userId" maxlength="18" th:field="*{userId}"
@@ -31,15 +31,15 @@
                             <span id="message"></span>
                         </div>
                     </li>
-                    <li class="login-form-item">*
+                    <li class="login-form-item"><th: block th:text="#{label.join.asterisk}"/>
                         <div class="login-form-item-name"><div th:text="#{label.join.password}"/></div>
                         <div class="login-form-item-data"><input type="password" name="password" id="join-password"></div>
                     </li>
-                    <li class="login-form-item">*
+                    <li class="login-form-item"><th: block th:text="#{label.join.asterisk}"/>
                         <div class="login-form-item-name"><div th:text="#{label.join.name}"/></div>
                         <div class="login-form-item-data"><input type="text" name="name" id="join-name" th:field="*{name}"></div>
                     </li>
-                    <li class="login-form-item">*
+                    <li class="login-form-item"><th: block th:text="#{label.join.asterisk}"/>
                         <div class="login-form-item-name"><div th:text="#{label.join.birthday}"/></div>
                         <div class="login-form-item-data">
                             <input type="text" name="birthday" id="join-birthday" placeholder=" ex) 19800101"
@@ -48,7 +48,7 @@
                             <div class="success-message-BDay hide" id="BdayOK">OK</div>
                         </div>
                     </li>
-                    <li class="login-form-item">*
+                    <li class="login-form-item"><th: block th:text="#{label.join.asterisk}"/>
                         <div class="login-form-item-name"><div th:text="#{label.join.gender}"/></div>
                         <div class="login-form-item-data" id="join-gender">
                             <label><input type="radio" name="gender" id="maleRadio" value="1" th:field="*{Gender}">男</label>
@@ -56,7 +56,7 @@
                             <label><input type="radio" name="gender" id="noneRadio" value="0" th:field="*{Gender}">非公開</label>
                         </div>
                     </li>
-                    <li class="login-form-item">*
+                    <li class="login-form-item"><th: block th:text="#{label.join.asterisk}"/>
                         <div class="login-form-item-name"><div th:text="#{label.join.mail}"/></div>
                         <div class="login-form-item-data">
                             <input type="email" name="mail" id="join-mail" placeholder="abc@mail.com" th:field="*{Mail}" >
