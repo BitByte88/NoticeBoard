@@ -89,7 +89,7 @@
        		<tr class="form-table-row">
         		<td class="form-table-td">
           			<textarea rows="3" name="commentTextArea"></textarea>
-          			<button class="bt bt-green btn_comment"><th:block th:text="#{btn.orderDetail.save}"/></button>
+          			<button class="bt bt-green btn_comment"><th:block th:text="#{btn.regist}"/></button>
           		</td>
         	</tr>
         </tbody>
@@ -98,16 +98,16 @@
     <section class="main-section gray-top-border buttons buttons-4">
     <th:block th:if="${session.SesUserInfo != null}">
     	<th:block th:if="${'1' == displayEditButtonFlg}">
-      		<p class="section-block center"><button class="bt bt-green btn_modal" th:value="deleteModal"><th:block th:text="#{btn.orderDetail.delete}"/></button></p>
-      		<p class="section-block center"><button class="bt bt-green btn_update" th:value="updateModal"><th:block th:text="#{btn.Detail.update}"/></button></p>
-      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      		<p class="section-block center"><button class="bt bt-green btn_modal" th:value="deleteModal"><th:block th:text="#{btn.boardDetail.delete}"/></button></p>
+      		<p class="section-block center"><button class="bt bt-green btn_update" th:value="updateModal"><th:block th:text="#{btn.boardDetail.edit}"/></button></p>
+      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
       	</th:block>
       	<th:block th:if="${'1' != displayEditButtonFlg}">
-      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
       	</th:block>
     </th:block>
     <th:block th:if="${session.SesUserInfo == null}">
-      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
      </th:block>
     </section><!--/.main-section-->
 
@@ -123,8 +123,8 @@
         <p><th:block th:text="#{btn.boardDetail.update}"/><th:block th:text="#{label.boardDetail.modal.content}"/></p>
       </section>
       <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="updateModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="updateModal"><th:block th:text="#{btn.back}"/></button></p>
       </section>
     </div>
   </div>
@@ -135,11 +135,11 @@
     <div class="modal">
 
       <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.delete}"/><th:block th:text="#{label.boardDetail.modal.content}"/></p>
+        <p><th:block th:text="#{btn.boardDetail.delete}"/><th:block th:text="#{label.boardDetail.modal.content}"/></p>
       </section>
       <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_delete"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="deleteModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+        <p class="section-block center"><button class="bt bt-green btn_delete"><th:block th:text="#{btn.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="deleteModal"><th:block th:text="#{btn.back}"/></button></p>
       </section>
     </div>
   </div>

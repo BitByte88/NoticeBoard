@@ -38,7 +38,7 @@
       <table class="form-table" style="width:100%;">
         <tbody>
         <tr class="form-table-row">
-          <th class="form-table-th"><th:block th:text="#{label.orderDetail.note}"/></th>
+          <th class="form-table-th"><th:block th:text="#{label.boardDetail.note}"/></th>
         </tr>
         <tr class="form-table-row">
           <td class="form-table-td"><textarea rows="5" name="ContentTextArea" th:text="${updateDto.boardContent}"></textarea></td>
@@ -50,15 +50,15 @@
 <!-- 新規 -->
 <th:block th:if="${'1' == registerFlg}">
     <section class="main-section gray-top-border buttons buttons-4">
-      <p class="section-block center"><button class="bt bt-green btn_modal" th:value="createModal"><th:block th:text="#{btn.orderDetail.register}"/></button></p>
-      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      <p class="section-block center"><button class="bt bt-green btn_modal" th:value="createModal"><th:block th:text="#{btn.regist}"/></button></p>
+      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
     </section><!--/.main-section-->
 </th:block>
 <!-- 修正 -->
 <th:block th:if="${'2' == registerFlg}">
     <section class="main-section gray-top-border buttons buttons-4">
       <p class="section-block center"><button class="bt bt-green btn_modal" th:value="updateModal"><th:block th:text="#{btn.boardDetail.update}"/></button></p>
-      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
     </section><!--/.main-section-->
 </th:block>
 <th:block th:if="${'1' == registerFlg}">
@@ -75,22 +75,22 @@
   <div class="overlay" id="createModal" style="display:none">
     <div class="modal">
       <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.register}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+        <p><th:block th:text="#{btn.regist}"/><th:block th:text="#{label.modal.contents}"/></p>
       </section>
       <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="createModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="createModal"><th:block th:text="#{btn.back}"/></button></p>
       </section>
     </div>
   </div>
   <div class="overlay" id="updateModal" style="display:none">
     <div class="modal">
       <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.boardDetail.update}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+        <p><th:block th:text="#{btn.boardDetail.update}"/><th:block th:text="#{label.modal.contents}"/></p>
       </section>
       <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="updateModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
+        <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.execution}"/></button></p>
+        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="updateModal"><th:block th:text="#{btn.back}"/></button></p>
       </section>
     </div>
   </div>

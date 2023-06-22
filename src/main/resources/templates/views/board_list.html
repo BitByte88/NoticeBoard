@@ -43,7 +43,7 @@
 				 </td>
 				 <td width="5%">
 				 <button class="bt bt-green btn_search">
-					<th:block th:text="#{btn.orderList.search}"/>
+					<th:block th:text="#{btn.search}"/>
 				 </button>
 				 </td>
               </tr>
@@ -55,7 +55,7 @@
       <div class="table-control" th:if="!${boardList == null or #lists.isEmpty(boardList)}">
 
           <div class="table-control-left">
-              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
+              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.paging.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.paging.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.paging.page}"/>）</div>
           <div class="table-control-center">
               <ul class="pager">
                   <th block th:if="${pager.currentPage != 1}">
@@ -114,14 +114,14 @@
         <div class="table-control-right">
         <th:block th:if="${session.SesUserInfo != null}">
 			<button class="bt bt-green btn_write" onClick="location.href='/boardEditRegister'">
-				<th:block th:text="#{btn.orderList.write}"/>
+				<th:block th:text="#{btn.write}"/>
 			</button>
 		</th:block>
 		</div>
 	</div>
       <div class="table-control" th:if="!${boardList == null or #lists.isEmpty(boardList)}">
           <div class="table-control-left">
-              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.orderList.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.orderList.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.orderList.page}"/>）</div>
+              <strong><th:block th:text="${pager.count}"/><th:block th:text="#{label.paging.total}"/><th:block th:text="${pager.offset+1}"/>~<th:block th:text="${pager.offset + #lists.size(boardList)}"/><th:block th:text="#{label.paging.currentView}"/></strong>（<th:block th:text="${pager.currentPage}"/>  ／<th:block th:text="${pager.totalPage}"/>  <th:block th:text="#{label.paging.page}"/>）</div>
           <div class="table-control-center">
           <ul class="pager">
               <th block th:if="${pager.currentPage != 1}">
@@ -148,7 +148,7 @@
         <div class="table-control-right">
         <th:block th:if="${session.SesUserInfo != null}">
 			<button class="bt bt-green btn_write" onClick="location.href='/boardEditRegister'">
-				<th:block th:text="#{btn.orderList.write}"/>
+				<th:block th:text="#{btn.write}"/>
 			</button>
 		</th:block>
 		</div>
