@@ -35,35 +35,9 @@ public class BoardListService {
     private BoardListMapper boardListMapper;
 
     /**
-     * 掲示文条件チェック
+     * 掲示情報の件数取得
      *
-     * @param boardListsearchDto 掲示文条件Form
-     * @return エラーメッセージリスト
-     */
-    public List<String> searchInputCheck(BoardListSearchDto boardListsearchDto, Locale locale) throws Exception {
-
-        // エラーメッセージリスト
-        List<String> messageList = new ArrayList<>();
-        
-        
-        // TODO 何もチェックしてない
-
-        // ログ出力
-        if (!messageList.isEmpty()) {
-            for (String message : messageList) {
-                logger.error(message);
-            }
-            return messageList;
-
-        }
-
-        return messageList;
-    }
-
-    /**
-     * 掲示文件数取得.
-     *
-     * @param boardListSearchDto 掲示文検索変数
+     * @param boardListSearchDto 掲示情報の検索条件
      * @return 件数
      */
     public Integer getBoardListCount(BoardListSearchDto boardListSearchDto) {
@@ -71,13 +45,41 @@ public class BoardListService {
     }
 
     /**
-     * 掲示文情報取得.
+     * 掲示情報取得
      *
-     * @param boardListSearchDto　注文状況検索条件
+     * @param boardListSearchDto　掲示情報の検索条件
      * @return 掲示文リスト
      */
     public List<Tblboard> getBoardList(BoardListSearchDto boardListSearchDto) {
         return boardListMapper.getBoardList(boardListSearchDto, limit);
+    }
+
+    /**
+     * 画面表示項目設定
+     * @param list    掲示情報リスト
+     * @return 掲示情報リスト
+     **/
+    public List<BoardListDto> boardListConversion(List<Tblboard> list){
+
+        List<BoardListDto> boardList = new ArrayList<>();
+        for (Tblboard board : list) {
+            BoardListDto dto = new BoardListDto();
+
+            //日付フォーマット変換
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            String boardDate = dateFormat.format(board.getRegisterDate());
+
+            dto.setBoardId(board.getBoardId());
+            dto.setBoardTitle(board.getBoardTitle());
+            dto.setBoardContent(board.getBoardContent());
+            dto.setRegisterUserId(board.getRegisterUserId());
+            dto.setRegisterDate(boardDate);
+            dto.setViewCount(board.getViewCount());
+
+            boardList.add(dto);
+        }
+
+        return boardList;
     }
 
     /**
@@ -94,7 +96,7 @@ public class BoardListService {
     /**
      * １ページあたりの最大件数取得
      *
-      * @return limit
+     * @return limit
      **/
     public int getLimit() {
         return limit.intValue();
@@ -142,8 +144,6 @@ public class BoardListService {
             return dto;
         }
 
-
-
         // 現在のオフセットと1Pの表示件数より、現在のページ数を取得する
         int currentPage = offset / limitCount;
         restCount = offset % limitCount;
@@ -170,37 +170,5 @@ public class BoardListService {
             dto.setTotalPage(maxPage);
             return dto;
         }
-    }
-
-
-
-    /**
-     * 表示用文字列取得
-
-     * @param list    掲示文リスト
-     * @return 掲示文リスト
-     **/
-
-    public List<BoardListDto> boardListConversion(List<Tblboard> list,Locale locale){
-
-        List<BoardListDto> boardList = new ArrayList<>();
-        for (Tblboard board : list) {
-            BoardListDto dto = new BoardListDto();
-
-            //日付フォーマット変換
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            String boardDate = dateFormat.format(board.getRegisterDate());
-
-            dto.setBoardId(board.getBoardId());
-            dto.setBoardTitle(board.getBoardTitle());
-            dto.setBoardContent(board.getBoardContent());
-            dto.setRegisterUserId(board.getRegisterUserId());
-            dto.setRegisterDate(boardDate);
-            dto.setViewCount(board.getViewCount());
-            
-            boardList.add(dto);
-        }
-
-        return boardList;
     }
 }

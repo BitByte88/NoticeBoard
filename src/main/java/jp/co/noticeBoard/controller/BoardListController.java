@@ -53,6 +53,8 @@ public class BoardListController {
 		//検索条件DTO
 		BoardListSearchDto boardListsearchDto = new BoardListSearchDto();
 		boardListsearchDto.setOffset(0);
+		//掲示情報の検索条件格納
+		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 
 		//検索条件に合致する掲示情報の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
@@ -71,11 +73,10 @@ public class BoardListController {
 		//掲示情報リスト取得
 		List<Tblboard> list = boardListService.getBoardList(boardListsearchDto);
 		//画面表示項目設定
-		List<BoardListDto> boardList = boardListService.boardListConversion(list,locale);
+		List<BoardListDto> boardList = boardListService.boardListConversion(list);
 		//ページング情報取得
 		PageDto pageDto = boardListService.changeOffset(count, 0);
-		//掲示情報の検索条件格納
-		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
+
 
 		//検索条件Dto格納
 		model.addAttribute("boardListsearchDto", boardListsearchDto);
@@ -92,14 +93,11 @@ public class BoardListController {
 	 * 掲示情報一覧（検索）
 	 *
 	 * @param boardListsearchDto 掲示情報一覧の検索条件Dto
-	 * @param locale ロケール
 	 * @param model　モデル
 	 * @return 画面パス
 	 */
-
 	@RequestMapping("/search")
-	public String boardListSearch(HttpServletRequest request, @ModelAttribute BoardListSearchDto boardListsearchDto,
-			Locale locale, Model model) throws Exception {
+	public String boardListSearch(HttpServletRequest request, @ModelAttribute BoardListSearchDto boardListsearchDto, Model model) throws Exception {
 
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
@@ -107,9 +105,8 @@ public class BoardListController {
 		//画面復元判定
 		String restorationJudgment = "init";
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
-			params = (Map<String, Object>) flashMap.get("params");
+			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
 			restorationJudgment = (String) params.get("restorationJudgment");
 		}
 
@@ -117,33 +114,24 @@ public class BoardListController {
 		if (restorationJudgment.equals("restoration")) {
 			//セッションから検索条件取得
 			boardListsearchDto = sessionManager.getSesBoardListSearchInfo();
-			model.addAttribute("boardListsearchDto", boardListsearchDto);
-		} else { //画面復元判定フラグが「RESTORATION」以外の場合
-			//検索条件チェック
-			messageList = boardListService.searchInputCheck(boardListsearchDto, locale);
-			if (!messageList.isEmpty()) {
-				sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
-				model.addAttribute("messageList", messageList);
-				return "views/board_list";
-			}
 		}
 
 		//検索条件に合致する掲示情報の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
 		//検索結果の件数が0件の場合
 		if (count == 0) {
-            messageList.add(messageSource.getMessage("E00009", new Object[]{}, locale));
-			logger.error(messageSource.getMessage("E00009", new Object[]{}, locale));
+            messageList.add(messageSource.getMessage("E00009", new Object[]{}, null));
+			logger.error(messageSource.getMessage("E00009", new Object[]{}, null));
 			sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 			model.addAttribute("messageList", messageList);
-
+			model.addAttribute("boardListsearchDto", boardListsearchDto);
 			return "views/board_list";
 		}
 
 		//掲示情報リスト取得
 		List<Tblboard> list = boardListService.getBoardList(boardListsearchDto);
 		//画面表示項目設定
-		List<BoardListDto> boardList = boardListService.boardListConversion(list, locale);
+		List<BoardListDto> boardList = boardListService.boardListConversion(list);
 		//ページング情報取得
 		PageDto pageDto = boardListService.changeOffset(count, boardListsearchDto.getOffset());
 		//掲示情報の検索条件格納
