@@ -229,7 +229,7 @@ public class JoinController {
     */
    public boolean checkDate(String strDate)
    {
-       DateFormat format = new SimpleDateFormat("yyyyMMdd");	
+       DateFormat format = new SimpleDateFormat(Const.FORMAT_DATE_YYYYMMDD);	
 
        format.setLenient(false);
        try {

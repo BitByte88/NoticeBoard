@@ -21,7 +21,7 @@ public class Const {
     public static final String TAB = "\t";
     // 改行（CRLF）
     public static final String CRLF = "\r\n";
-    // 改行（LF）
+    // 改行（CR）
     public static final String CR = "\r";
     // 数字フォーマット
     public static final String NUMBER_FORMAT = "^[0-9]+$";
