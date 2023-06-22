@@ -15,7 +15,7 @@ public class BoardEditRegisterService {
 	private static final Logger logger = LoggerFactory.getLogger(BoardDetailService.class);
 
     @Autowired
-    private BoardDetailMapper orderDetailMapper;
+    private BoardDetailMapper boardDetailMapper;
 
 
     /**
@@ -25,7 +25,7 @@ public class BoardEditRegisterService {
      * @return エラーメッセージリスト
      */
     public void registerBoard(BoardDetailDto boardDto) throws Exception {
-    	orderDetailMapper.registerBoard(boardDto);
+    	boardDetailMapper.registerBoard(boardDto);
     }
 
     /**
@@ -35,7 +35,7 @@ public class BoardEditRegisterService {
      * @return エラーメッセージリスト
      */
     public void updateBoard(BoardDetailDto boardDto) throws Exception {
-        orderDetailMapper.updateBoard(boardDto);
+        boardDetailMapper.updateBoard(boardDto);
 
     }
 

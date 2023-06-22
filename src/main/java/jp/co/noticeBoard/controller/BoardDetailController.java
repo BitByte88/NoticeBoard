@@ -58,7 +58,7 @@ public class BoardDetailController {
         List<String> messageList = new ArrayList<>();
 
         //一覧画面から遷移用、掲示No取得
-        String boardNo = request.getParameter("intoOrderNo");
+        String boardNo = request.getParameter("intoBoardNo");
         
 		//コメント登録後、詳細画面再表示用 掲示No取得処理
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);

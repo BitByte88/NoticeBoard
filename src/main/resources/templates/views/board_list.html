@@ -3,8 +3,8 @@
 <html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
 <script th:inline="javascript">
 	function toNoticeDetail(noticeRow) {
-		var orderNo = $(noticeRow).data("list-id");
-		$("#intoOrderNo").val(orderNo);
+		var boardNo = $(noticeRow).data("list-id");
+		$("#intoBoardNo").val(boardNo);
         $("#detailForm").submit();
 	}
 </script>
@@ -91,11 +91,11 @@
           </tr>
         </thead>
         <tbody>
-        <tr th:each="order,index: ${boardList}" th:data-list-id="${order.boardId}" onclick="toNoticeDetail(this)">
-            <td th:text="${order.boardTitle}" class="border-table-td" ></td>
-            <td th:text="${order.registerUserId}" class="border-table-td"></td>
-            <td th:text="${order.registerDate}" class="border-table-td"></td>
-            <td th:text="${order.viewCount}" class="border-table-td"></td>
+        <tr th:each="board,index: ${boardList}" th:data-list-id="${board.boardId}" onclick="toNoticeDetail(this)">
+            <td th:text="${board.boardTitle}" class="border-table-td" ></td>
+            <td th:text="${board.registerUserId}" class="border-table-td"></td>
+            <td th:text="${board.registerDate}" class="border-table-td"></td>
+            <td th:text="${board.viewCount}" class="border-table-td"></td>
         </tr>
         <div th:if="${boardList == null or #lists.isEmpty(boardList)}">
             <tr style="height:35px;" th:each="num: ${#numbers.sequence(1,1)}">
@@ -157,7 +157,7 @@
   </div><!--/.main-->
 </div>
 <form id="detailForm" name="detailForm" th:action="@{/boardDetail}" method="post">
-    <input type="hidden" name="intoOrderNo" id="intoOrderNo">
+    <input type="hidden" name="intoBoardNo" id="intoBoardNo">
 </form>
 
 <script type="text/javascript">
