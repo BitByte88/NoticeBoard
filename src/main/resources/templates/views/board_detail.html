@@ -117,34 +117,10 @@
 <input type="hidden" name="restorationJudgment" id="restorationJudgment">
 </form>
 
-  <div class="overlay" id="cancelModal" style="display:none">
-    <div class="modal">
-      <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.cancel}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
-      </section>
-      <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_cancel"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="cancelModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
-      </section>
-    </div>
-  </div>
-
-  <div class="overlay" id="returnModal" style="display:none">
-    <div class="modal">
-      <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.return}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
-      </section>
-      <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_return"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="returnModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
-      </section>
-    </div>
-  </div>
-
   <div class="overlay" id="updateModal" style="display:none">
     <div class="modal">
       <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.boardDetail.update}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
+        <p><th:block th:text="#{btn.boardDetail.update}"/><th:block th:text="#{label.boardDetail.modal.content}"/></p>
       </section>
       <section class="modal-section buttons">
         <p class="section-block center"><button class="bt bt-green btn_update"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
@@ -159,7 +135,7 @@
     <div class="modal">
 
       <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.delete}"/><th:block th:text="#{label.orderDetail.modal.delete}"/></p>
+        <p><th:block th:text="#{btn.orderDetail.delete}"/><th:block th:text="#{label.boardDetail.modal.content}"/></p>
       </section>
       <section class="modal-section buttons">
         <p class="section-block center"><button class="bt bt-green btn_delete"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>

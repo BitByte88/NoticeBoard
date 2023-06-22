@@ -72,30 +72,6 @@
 </form>
 </th:block>
 
-  <div class="overlay" id="cancelModal" style="display:none">
-    <div class="modal">
-      <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.cancel}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
-      </section>
-      <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_cancel"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="cancelModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
-      </section>
-    </div>
-  </div>
-
-  <div class="overlay" id="returnModal" style="display:none">
-    <div class="modal">
-      <section class="modal-section modal-text">
-        <p><th:block th:text="#{btn.orderDetail.return}"/><th:block th:text="#{label.orderDetail.modal.content}"/></p>
-      </section>
-      <section class="modal-section buttons">
-        <p class="section-block center"><button class="bt bt-green btn_return"><th:block th:text="#{btn.orderDetail.execution}"/></button></p>
-        <p class="section-block center"><button class="bt bt-gray btn_modalExit" th:value="returnModal"><th:block th:text="#{btn.orderDetail.back}"/></button></p>
-      </section>
-    </div>
-  </div>
-
   <div class="overlay" id="createModal" style="display:none">
     <div class="modal">
       <section class="modal-section modal-text">

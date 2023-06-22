@@ -24,7 +24,7 @@
               <p><span th:text="${message}"/></p>
           </th:block>
       </section>
-      <form id="searchForm" th:action="@{/boardList/search}" method="post" th:object="${boardListForm}">
+      <form id="searchForm" th:action="@{/boardList/search}" method="post" th:object="${boardListsearchDto}">
       <section class="main-section">
           <input type="hidden" name="offset" th:value="${session.SesSearchInfo.offset}"/>
           <table class="form-table" style="width:100%;">
@@ -33,9 +33,9 @@
               	<th class="form-table-th">
                   <td width="5%">
 					<select name="searchType" th:field="*{searchType}">
-						<option value="title"><div th:text="#{label.title}"></option>
-						<option value="registerUserId"><div th:text="#{label.register}"></option>
-						<option value="content"><div th:text="#{label.content}"></option>
+						<option value="title"><th:block th:text="#{label.title}"></option>
+						<option value="registerUserId"><th:block th:text="#{label.register}"></option>
+						<option value="content"><th:block th:text="#{label.content}"></option>
 					</select>
 				 </td>
 				 <td width="20%">
