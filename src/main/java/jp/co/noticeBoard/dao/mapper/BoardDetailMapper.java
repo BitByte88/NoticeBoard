@@ -35,29 +35,29 @@ public interface BoardDetailMapper {
     /*
      * 閲覧数をカウントアップする。
      *
-     * @param boardNo 掲示文No
+     * @param boardNo 掲示No
      * @return 件数
      */
     void updateViewCount(@Param("boardNo") String boardNo);    
     
     /*
-     * 掲示情報を登録する。
+     * 掲示内容を登録する。
      *
-     * @param updateDto 掲示文情報
+     * @param updateDto 掲示内容
      */
     void registerBoard(@Param("updateDto") BoardDetailDto updateDto);
 
     /*
-     * 掲示情報を更新する。
+     * 掲示内容を更新する。
      *
-     * @param updateDto 掲示文情報
+     * @param updateDto 掲示内容
      */
     void updateBoard(@Param("updateDto") BoardDetailDto updateDto);
     
     /*
      * 掲示情報を削除する。
      *
-     * @param deleteDto 掲示情報検索変数
+     * @param deleteDto 掲示情報削除条件
      * @return 件数
      */
     void deleteBoard(@Param("deleteDto") BoardDeleteDto deleteDto);
@@ -72,8 +72,7 @@ public interface BoardDetailMapper {
     /*
      * コメントを削除する。
      *
-     * @param deleteDto 掲示情報検索変数
-     * @return 件数
+     * @param deleteDto 掲示情報削除条件
      */
     void deleteComment(@Param("deleteDto") BoardDeleteDto deleteDto);
 }

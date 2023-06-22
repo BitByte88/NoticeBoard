@@ -14,8 +14,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.ibm.icu.util.Calendar;
 
 import jp.co.noticeBoard.common.Const;
+import jp.co.noticeBoard.dto.BoardListSearchDto;
 import jp.co.noticeBoard.dto.UserDto;
-import jp.co.noticeBoard.form.BoardListForm;
 
 /**
  * セッション変数管理.
@@ -74,18 +74,18 @@ public class SessionManager implements InitializingBean {
     /**
      * セッション情報へ「掲示情報の検索条件」を設定する。
      *
-     * @param boardListForm セッション情報「掲示情報の検索条件」
+     * @param boardListsearchDto セッション情報「掲示情報の検索条件」
      */
-    public void setSesBoardListSearchInfo(BoardListForm boardListForm) {
-        this.session.setAttribute(Const.SES_SEARCH_INFO, boardListForm);
+    public void setSesBoardListSearchInfo(BoardListSearchDto boardListsearchDto) {
+        this.session.setAttribute(Const.SES_SEARCH_INFO, boardListsearchDto);
     }
 
     /**
      * セッション情報から「掲示情報の検索条件」を取得する。
      */
-    public BoardListForm getSesBoardListSearchInfo() {
-        BoardListForm boardListForm =(BoardListForm)this.session.getAttribute(Const.SES_SEARCH_INFO);
-        return boardListForm;
+    public BoardListSearchDto getSesBoardListSearchInfo() {
+    	BoardListSearchDto boardListSearchDto =(BoardListSearchDto)this.session.getAttribute(Const.SES_SEARCH_INFO);
+        return boardListSearchDto;
     }
 
     @Override

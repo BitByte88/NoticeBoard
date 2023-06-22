@@ -102,17 +102,6 @@ public class LoginController {
 	}
 
 	/**
-	 * ポータル（初期表示）
-	 *
-	 * @return 画面パス
-	 */
-	@RequestMapping("/portal")
-	public String portal() {
-
-		return "views/admin_portal";
-	}
-
-	/**
 	 * ログアウト
 	 *
 	 * @return 画面パス

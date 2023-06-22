@@ -11,8 +11,8 @@ public class BoardDeleteDto {
 	private String boardId;
 
     /**
-     *コメント作成者
+     *更新者
      */
-	private String RegisterUserId;
+	private String updateUserId;
 
 }

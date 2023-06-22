@@ -22,7 +22,6 @@ import jp.co.noticeBoard.dto.BoardListDto;
 import jp.co.noticeBoard.dto.BoardListSearchDto;
 import jp.co.noticeBoard.dto.PageDto;
 import jp.co.noticeBoard.entitiy.Tblboard;
-import jp.co.noticeBoard.form.BoardListForm;
 import jp.co.noticeBoard.service.BoardListService;
 import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
@@ -51,14 +50,6 @@ public class BoardListController {
 	@RequestMapping("")
 	public String boardList(HttpServletRequest request, Locale locale, Model model) throws Exception {
 
-		//掲示情報一覧の検索条件Formの初期化
-		BoardListForm boardListForm = new BoardListForm();
-
-		//セッション情報へ「掲示情報の検索条件」を設定する。
-		sessionManager.setSesBoardListSearchInfo(boardListForm);
-		//現在時間格納
-		sessionManager.setSesTime();
-
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
 
@@ -66,25 +57,23 @@ public class BoardListController {
 		BoardListSearchDto boardListsearchDto = new BoardListSearchDto();
 		PageDto pageDto = new PageDto();
 		
-		// 初期表示用
-		boardListForm.setOffset(0);
+		//初期表示用
+		boardListsearchDto.setOffset(0);
 		
-		//検索条件DTO生成
-		boardListsearchDto = boardListService.getSearchDto(boardListForm);
 		//条件に合わせた掲示情報の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
 		//検索した件数が０の場合
 		if (count == 0) {
 		    messageList.add(messageSource.getMessage("E00008", new Object[]{}, locale));
 		    model.addAttribute("messageList", messageList);
-		    sessionManager.setSesBoardListSearchInfo(boardListForm);
+		    sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 		    logger.error(messageSource.getMessage("E00008", new Object[]{}, locale));
 		
 		    return "views/board_list";
 		}
 		
 		//ページング情報取得
-		pageDto = boardListService.changeOffset(count,boardListForm.getOffset());
+		pageDto = boardListService.changeOffset(count,boardListsearchDto.getOffset());
 		
 		//掲示情報リスト取得
 		List<Tblboard> list = new ArrayList<>();
@@ -97,14 +86,11 @@ public class BoardListController {
 		//掲示情報リスト格納
 		model.addAttribute("boardList", boardList);
 
-		//検索条件Form格納
-		model.addAttribute("boardListForm", boardListForm);
+		//検索条件Dto格納
+		model.addAttribute("boardListsearchDto", boardListsearchDto);
 		
 		//掲示情報検索条件格納
-		sessionManager.setSesBoardListSearchInfo(boardListForm);
-		
-		//現在時間格納
-		sessionManager.setSesTime();
+		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 		
 		//画面表示_ページング
 		model.addAttribute("pager",pageDto);
@@ -116,23 +102,21 @@ public class BoardListController {
 	/**
 	 * 掲示情報一覧（検索）
 	 *
-	 * @param boardListForm 掲示情報一覧画面のForm
+	 * @param boardListsearchDto 掲示情報一覧の検索条件Dto
 	 * @param locale ロケール
 	 * @param model　モデル
 	 * @return 画面パス
 	 */
 
 	@RequestMapping("/search")
-	public String boardListSearch(HttpServletRequest request, @ModelAttribute BoardListForm boardListForm,
+	public String boardListSearch(HttpServletRequest request, @ModelAttribute BoardListSearchDto boardListsearchDto,
 			Locale locale, Model model) throws Exception {
 
 
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
 		
-
-		//検索条件DTO
-		BoardListSearchDto boardListsearchDto = new BoardListSearchDto();
+		//ページングDTO
 		PageDto pageDto = new PageDto();
 
 		//画面復元判定
@@ -147,34 +131,32 @@ public class BoardListController {
 		//画面復元判定フラグが「RESTORATION」の場合
 		if (restorationJudgment.equals("restoration")) {
 			//セッションから検索条件取得
-			boardListForm = sessionManager.getSesBoardListSearchInfo();
-			model.addAttribute("boardListForm", boardListForm);
+			boardListsearchDto = sessionManager.getSesBoardListSearchInfo();
+			model.addAttribute("boardListsearchDto", boardListsearchDto);
 		} else { //画面復元判定フラグが「RESTORATION」以外の場合
 			//検索条件チェック
-			messageList = boardListService.searchInputCheck(boardListForm, locale);
+			messageList = boardListService.searchInputCheck(boardListsearchDto, locale);
 			if (!messageList.isEmpty()) {
-				sessionManager.setSesBoardListSearchInfo(boardListForm);
+				sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 				model.addAttribute("messageList", messageList);
 				return "views/board_list";
 			}
 		}
 
-		//検索条件DTO生成
-		boardListsearchDto = boardListService.getSearchDto(boardListForm);
-		//条件に合わせた掲示文の件数を取得する。
+		//条件に合わせた掲示情報の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
 		//検索した掲示情報件数が０の場合
 		if (count == 0) {
             messageList.add(messageSource.getMessage("E00009", new Object[]{}, locale));
 			model.addAttribute("messageList", messageList);
-			sessionManager.setSesBoardListSearchInfo(boardListForm);
+			sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
             logger.error(messageSource.getMessage("E00009", new Object[]{}, locale));
 
 			return "views/board_list";
 		}
 
 		//ページング情報取得
-		pageDto = boardListService.changeOffset(count, boardListForm.getOffset());
+		pageDto = boardListService.changeOffset(count, boardListsearchDto.getOffset());
 
 		//掲示情報リスト取得
 		List<Tblboard> list = new ArrayList<>();
@@ -187,11 +169,11 @@ public class BoardListController {
 		//掲示情報リスト格納
 		model.addAttribute("boardList", boardList);
 
-		//掲示情報リスト条件格納
-		sessionManager.setSesBoardListSearchInfo(boardListForm);
+		//掲示情報リスト検索条件格納
+		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 
-		//現在時間格納
-		sessionManager.setSesTime();
+		//検索条件Dto格納
+		model.addAttribute("boardListsearchDto", boardListsearchDto);
 
 		//画面表示_ページング
 		model.addAttribute("pager", pageDto);

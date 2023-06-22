@@ -17,7 +17,6 @@ import jp.co.noticeBoard.dto.BoardListDto;
 import jp.co.noticeBoard.dto.BoardListSearchDto;
 import jp.co.noticeBoard.dto.PageDto;
 import jp.co.noticeBoard.entitiy.Tblboard;
-import jp.co.noticeBoard.form.BoardListForm;
 
 @Service
 public class BoardListService {
@@ -38,10 +37,10 @@ public class BoardListService {
     /**
      * 掲示文条件チェック
      *
-     * @param boardListForm 掲示文条件Form
+     * @param boardListsearchDto 掲示文条件Form
      * @return エラーメッセージリスト
      */
-    public List<String> searchInputCheck(BoardListForm boardListForm, Locale locale) throws Exception {
+    public List<String> searchInputCheck(BoardListSearchDto boardListsearchDto, Locale locale) throws Exception {
 
         // エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
@@ -60,23 +59,6 @@ public class BoardListService {
 
         return messageList;
     }
-
-    /**
-     * 検索条件DTO生成
-     * @param boardListForm 掲示文検索条件Form
-     * @return 掲示文一覧検索条件Dto
-     */
-    public BoardListSearchDto getSearchDto(BoardListForm boardListForm) throws Exception {
-
-        BoardListSearchDto dto = new BoardListSearchDto();
-        dto.setOffset(boardListForm.getOffset());
-        dto.setSearchType(boardListForm.getSearchType());
-        dto.setSearchKeyword(boardListForm.getSearchKeyword());
-
-        return dto;
-    }
-
-
 
     /**
      * 掲示文件数取得.

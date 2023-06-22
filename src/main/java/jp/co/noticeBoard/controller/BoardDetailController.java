@@ -88,11 +88,8 @@ public class BoardDetailController {
         	// ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
         	if (sessionManager.getSesUserInfo().getUserId().equals(boardDetail.getRegisterUserId())) {
         		model.addAttribute("displayEditButtonFlg", "1");
+        	}
         }
-        }
-
-        //現在時間格納
-        sessionManager.setSesTime();
 
         if(!boardNo.isEmpty()) {
     		// コメントリスと取得
@@ -175,7 +172,7 @@ public class BoardDetailController {
 
 		//削除対象設定
 		deleteDto.setBoardId(deleteDto.getBoardId());
-		deleteDto.setRegisterUserId(sessionManager.getSesUserInfo().getUserId());
+		deleteDto.setUpdateUserId(sessionManager.getSesUserInfo().getUserId());
         
         //掲示情報削除
         boardDetailService.deleteBoard(deleteDto);
@@ -210,8 +207,8 @@ public class BoardDetailController {
 		    return "redirect:/boardDetail/";
 		}
 
-		//作成者名設定
-		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getName());
+		//作成者設定
+		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getUserId());
 
 		//改行変換
 		commentDto.setCommentContent(commentDto.getCommentContent().replace(Const.CRLF, Const.CR));
