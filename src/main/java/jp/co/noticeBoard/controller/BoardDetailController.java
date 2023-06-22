@@ -159,26 +159,25 @@ public class BoardDetailController {
      * 掲示情報の詳細表示（コメント登録）
 	 *
      * @param commentDto コメントDto
-     * @param locale　ロケール
      * @param redirectAttributes
      * @return 画面パス
      */
     @RequestMapping("/commentwrite")
-    public String commentwrite(@ModelAttribute BoardCommentDto commentDto, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
+    public String commentwrite(@ModelAttribute BoardCommentDto commentDto, RedirectAttributes redirectAttributes) throws Exception {
 
         List<String> messageList = new ArrayList<>();
 
         // コメント入力チェック
 		if(commentDto.getCommentContent() == null || commentDto.getCommentContent().equals("")){
-		    messageList.add(messageSource.getMessage("E00007", new Object[]{}, locale));
-		    logger.error(messageSource.getMessage("E00007", new Object[]{}, locale));
+		    messageList.add(messageSource.getMessage("E00007", new Object[]{}, null));
+		    logger.error(messageSource.getMessage("E00007", new Object[]{}, null));
 
 		}
         // コメント桁数チェック
         if(commentDto.getCommentContent().length() > Const.MAX_COMMENT_LENGTH){
-            String noteLabel = messageSource.getMessage("label.boardDetail.comment",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, locale));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, locale));
+            String noteLabel = messageSource.getMessage("label.boardDetail.comment",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, null));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, null));
         }
 		
         // 上記のチェックでエラーが存在する場合

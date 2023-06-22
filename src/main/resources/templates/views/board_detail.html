@@ -163,41 +163,39 @@
 
 </body>
 <script>
-       /* 「戻る」ボタン */
+  /* 「戻る」ボタン */
   $('.btn_back').click(function() {
       $("[name='restorationJudgment']").val("restoration");
       $("#backForm").submit();
   });
 
-      /* 「更新」ボタン */
+  /* 「更新」ボタン */
   $('.btn_update').click(function() {
       $("#updateForm").submit();
   });
 
-      /* 「削除」ボタン */
+  /* 「削除」ボタン */
   $('.btn_delete').click(function() {
       $("#deleteForm").submit();
   });
 
-      /* 「コメント登録」ボタン */
+  /* 「コメント登録」ボタン */
   $('.btn_comment').click(function() {
       var commentContent = $("[name='commentTextArea']").val();
       $("[name='commentContent']").val(commentContent);
       $("#commentForm").submit();
   });
 
-      /* 「モーダル」処理 */
+  /* 「モーダル」処理 */
   $('.btn_modal').click(function() {
       var modal = $(this).val();
       $("#" + modal ).show();
-
   });
 
-      /* 「モーダル」終了処理 */
+  /* 「モーダル」終了処理 */
   $('.btn_modalExit').click(function() {
       var modal = $(this).val();
       $('#'+ modal ).hide();
-     });
-
+  });
 </script>
 </html>
