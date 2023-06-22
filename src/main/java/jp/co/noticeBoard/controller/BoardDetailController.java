@@ -52,70 +52,52 @@ public class BoardDetailController {
 	@RequestMapping("")
 	public String boardDetail(HttpServletRequest request, Model model) throws Exception {
 
-
-
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
-
-        //一覧画面から遷移用、掲示No取得
-        String boardNo = request.getParameter("intoBoardId");
+        //一覧画面から遷移用、掲示情報ID取得
+        String boardId = request.getParameter("intoBoardId");
         
-		//コメント登録後、詳細画面再表示用 掲示No取得処理
+		//コメント登録後、掲示No取得（詳細画面再表示用）
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
-			params = (Map<String, Object>) flashMap.get("params");
-			boardNo = (String) params.get("boardNo");
+			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
+			boardId = (String) params.get("boardNo");
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
 		}
 
         //掲示情報取得
-        BoardDetailDto boardDetail = new BoardDetailDto();
-        boardDetail = boardDetailService.getBoardDetail(boardNo);
-
+		BoardDetailDto boardDetail = boardDetailService.getBoardDetail(boardId);
         if(boardDetail == null){
             return "redirect:/error";
         }
+		// コメントリスと取得
+		List<BoardCommentDto> boardCommentList = boardDetailService.getCommentList(boardId);
+		// 閲覧数カウントアップ
+		boardDetailService.updateViewCount(boardId);
+		// ログイン中のみチェック
+		if(sessionManager.getSesUserInfo() != null) {
+			// ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
+			if (sessionManager.getSesUserInfo().getUserId().equals(boardDetail.getRegisterUserId())) {
+				model.addAttribute("displayEditButtonFlg", "1");
+			}
+		}
 
-        model.addAttribute("boardDetail", boardDetail);
-        
-
-        // ログイン中のみチェック
-        if(sessionManager.getSesUserInfo() != null) {
-
-        	// ログインユーザーIDと作成者IDが一致している場合、「修正」、「削除」ボタンを表示
-        	if (sessionManager.getSesUserInfo().getUserId().equals(boardDetail.getRegisterUserId())) {
-        		model.addAttribute("displayEditButtonFlg", "1");
-        	}
-        }
-
-        if(!boardNo.isEmpty()) {
-    		// コメントリスと取得
-    		List<BoardCommentDto> boardCommentList = new ArrayList<BoardCommentDto>();
-    		boardCommentList = boardDetailService.getCommentList(boardNo);
-    		
-    		// コメントリスト格納
-    		model.addAttribute("boardCommentList", boardCommentList);
-    		
-    		// 閲覧数カウントアップ
-        	boardDetailService.updateViewCount(boardNo);
-        }
-
+		model.addAttribute("boardDetail", boardDetail);
+		model.addAttribute("boardCommentList", boardCommentList);
         if(messageList.size()!=0){
             model.addAttribute("messageList", messageList);
         }
 
         return "views/board_detail";
-
 	}
 
 	/**
-	 * 掲示情報一覧表示（戻る）
+	 * 掲示情報の詳細表示（戻る）
 	 *
-	 * @param HttpServletRequest
-	 * @param RedirectAttributes
+	 * @param request
+	 * @param redirectAttributes
 	 * @return 画面パス
 	 */
 	@RequestMapping("/returnBoardList")
