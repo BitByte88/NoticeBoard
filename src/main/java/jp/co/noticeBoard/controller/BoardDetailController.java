@@ -57,7 +57,7 @@ public class BoardDetailController {
         //一覧画面から遷移用、掲示情報ID取得
         String boardId = request.getParameter("intoBoardId");
         
-		//コメント登録後、掲示No取得（詳細画面再表示用）
+		//コメント登録後、掲示情報No取得（詳細画面再表示用）
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if (flashMap != null) {
 			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
@@ -72,7 +72,7 @@ public class BoardDetailController {
         if(boardDetail == null){
             return "redirect:/error";
         }
-		// コメントリスと取得
+		// コメントリス取得
 		List<BoardCommentDto> boardCommentList = boardDetailService.getCommentList(boardId);
 		// 閲覧数カウントアップ
 		boardDetailService.updateViewCount(boardId);
@@ -114,25 +114,19 @@ public class BoardDetailController {
 
 	/**
 	 * 掲示情報の修正表示（更新）
-	 * @param HttpServletRequest
+	 *
+	 * @param request
 	 * @param model　モデル
 	 * @return 画面パス
 	 */
 	@RequestMapping("/update")
 	public String boardupdate(HttpServletRequest request, Model model) throws Exception {
 
-		List<String> messageList = new ArrayList<>();
-		
+		// 掲示情報ID取得
 		String boardId =  request.getParameter("boardId");
 
-		if (messageList.size() != 0) {
-			model.addAttribute("messageList", messageList);
-		}
-
-        //掲示詳細情報リスト取得
-        BoardDetailDto updateDto = new BoardDetailDto();
-        updateDto = (BoardDetailDto) boardDetailService.getBoardDetail(boardId);
-
+		//掲示情報取得
+		BoardDetailDto updateDto = boardDetailService.getBoardDetail(boardId);
         if(updateDto == null){
             return "redirect:/error";
         }
@@ -141,12 +135,12 @@ public class BoardDetailController {
 		model.addAttribute("updateDto", updateDto);
 
 		return "views/board_EditRegister";
-
 	}
 
     /**
-     * 掲示情報削除
-     * @param updateDto 更新情報
+     * 掲示情報の修正表示（削除）
+	 *
+     * @param deleteDto 更新情報
      * @return 画面パス
      */
     @RequestMapping("/delete")
