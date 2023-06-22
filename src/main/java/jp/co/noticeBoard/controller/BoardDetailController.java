@@ -113,7 +113,7 @@ public class BoardDetailController {
     }
 
 	/**
-	 * 掲示情報の修正表示（更新）
+	 * 掲示情報の詳細表示（修正）
 	 *
 	 * @param request
 	 * @param model　モデル
@@ -138,7 +138,7 @@ public class BoardDetailController {
 	}
 
     /**
-     * 掲示情報の修正表示（削除）
+     * 掲示情報の詳細表示（削除）
 	 *
      * @param deleteDto 更新情報
      * @return 画面パス
@@ -152,7 +152,6 @@ public class BoardDetailController {
         
         //掲示情報削除
         boardDetailService.deleteBoard(deleteDto);
-
         //コメント削除
         boardDetailService.deleteComment(deleteDto);
 

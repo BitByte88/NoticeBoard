@@ -19,10 +19,10 @@ public interface BoardDetailMapper {
     /*
      * 掲示情報を取得する。
      *
-     * @param boardNo 掲示No
+     * @param boardId 掲示情報ID
      * @return BoardDetailDto
      */
-    BoardDetailDto getBoardDetail(@Param("boardNo") String boardNo);
+    BoardDetailDto getBoardDetail(@Param("boardId") String boardNo);
 
     /*
      * 掲示情報を取得する。

@@ -36,7 +36,7 @@
         FROM
         t_board
         WHERE
-        t_board.board_id = #{boardNo} AND
+        t_board.board_id = #{boardId} AND
         t_board.delete_flag != 1
     </select>
 
