@@ -124,7 +124,6 @@ public class BoardDetailController {
 
 		// 掲示情報ID取得
 		String boardId =  request.getParameter("boardId");
-
 		//掲示情報取得
 		BoardDetailDto updateDto = boardDetailService.getBoardDetail(boardId);
         if(updateDto == null){
@@ -146,11 +145,8 @@ public class BoardDetailController {
     @RequestMapping("/delete")
     public String boardDelete(@ModelAttribute BoardDeleteDto deleteDto) throws Exception {
 
-		//削除対象設定
-		deleteDto.setBoardId(deleteDto.getBoardId());
+		//掲示情報削除
 		deleteDto.setUpdateUserId(sessionManager.getSesUserInfo().getUserId());
-        
-        //掲示情報削除
         boardDetailService.deleteBoard(deleteDto);
         //コメント削除
         boardDetailService.deleteComment(deleteDto);
@@ -160,10 +156,11 @@ public class BoardDetailController {
 
 
     /**
-     * コメント登録
+     * 掲示情報の詳細表示（コメント登録）
+	 *
      * @param commentDto コメントDto
      * @param locale　ロケール
-     * @param RedirectAttributes
+     * @param redirectAttributes
      * @return 画面パス
      */
     @RequestMapping("/commentwrite")
@@ -210,8 +207,5 @@ public class BoardDetailController {
 		redirectAttributes.addFlashAttribute("params", params);
 		
         return "redirect:/boardDetail/";
-
     }
-
-
 }
