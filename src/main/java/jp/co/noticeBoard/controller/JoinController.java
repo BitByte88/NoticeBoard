@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import jp.co.noticeBoard.common.Const;
 import jp.co.noticeBoard.dto.UserDto;
 import jp.co.noticeBoard.dto.UserJoinDto;
 import jp.co.noticeBoard.form.JoinForm;
@@ -87,17 +88,17 @@ public class JoinController {
         //ID入力チェック
         if(joinForm.getUserId() == null || joinForm.getUserId().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.id",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.userId",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
         }
 
         //ID桁数チェック
-        if(joinForm.getUserId().length() <  4 || joinForm.getUserId().length() > 18)
+        if(joinForm.getUserId().length() <  Const.MIN_ID_LENGTH || joinForm.getUserId().length() > Const.MAX_ID_LENGTH)
         {
-        	String noteLabel = messageSource.getMessage("label.id",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "18"}, locale));
-            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "18"}, locale));
+        	String noteLabel = messageSource.getMessage("label.join.userId",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_ID_LENGTH, Const.MAX_ID_LENGTH}, locale));
+            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_ID_LENGTH, Const.MAX_ID_LENGTH}, locale));
         }
 
         //ID重複チェック
@@ -110,39 +111,39 @@ public class JoinController {
         //パスワード入力チェック
         if(joinForm.getPassword() == null || joinForm.getPassword().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.password",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.password",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
         }
 
         //パスワード桁数チェック
-        if(joinForm.getPassword().length() <  4 || joinForm.getPassword().length() > 18)
+        if(joinForm.getPassword().length() <  Const.MIN_PW_LENGTH || joinForm.getPassword().length() > Const.MAX_PW_LENGTH)
         {
-            String noteLabel = messageSource.getMessage("label.password",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "14"}, locale));
-            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, "4", "14"}, locale));
+            String noteLabel = messageSource.getMessage("label.join.password",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_PW_LENGTH, Const.MAX_PW_LENGTH}, locale));
+            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_PW_LENGTH, Const.MAX_PW_LENGTH}, locale));
         }
 
         //名前入力チェック
         if(joinForm.getName() == null || joinForm.getName().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.name",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.name",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
         }
 
         //名前桁数チェック
-        if(joinForm.getName().length() > 18)
+        if(joinForm.getName().length() > Const.MAX_NAME_LENGTH)
         {
-            String noteLabel = messageSource.getMessage("label.name",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, "30	"}, locale));
+            String noteLabel = messageSource.getMessage("label.join.name",new Object[]{},locale);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_NAME_LENGTH}, locale));
             logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel}, locale));
         }
 
         //生年月日入力チェック
         if(joinForm.getBirthday() == null || joinForm.getBirthday().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.birthday",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.birthday",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
         }
@@ -150,7 +151,7 @@ public class JoinController {
         //生年月日妥当性チェック
         if(!checkDate(joinForm.getBirthday()))
         {
-            String noteLabel = messageSource.getMessage("label.birthday",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.birthday",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00003", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00003", new Object[]{noteLabel}, locale));
         }
@@ -158,7 +159,7 @@ public class JoinController {
         //性別入力チェック
         if(joinForm.getGender() == null || joinForm.getGender().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.gender",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.gender",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
         }
@@ -166,14 +167,14 @@ public class JoinController {
         //メール入力チェック
         if(joinForm.getMail() == null || joinForm.getMail().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.mail",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.mail",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
         }
 
         //メール形式チェック
         if (!checkMail(joinForm.getMail())) {
-            String noteLabel = messageSource.getMessage("label.mail",new Object[]{},locale);
+            String noteLabel = messageSource.getMessage("label.join.mail",new Object[]{},locale);
             messageList.add(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
             logger.error(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
         }

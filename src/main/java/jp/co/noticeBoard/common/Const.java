@@ -41,8 +41,20 @@ public class Const {
     //セッション「現在時間」のキー
     public static final String SES_TIME = "SesTime";
 
-    // ID 最大桁数 : 4
-    public static final String MAX_ID_LENGTH = "4";
+    // ID 最小桁数 : 4
+    public static final int MIN_ID_LENGTH = 4;
+    
+    // ID 最大桁数 : 18
+    public static final int MAX_ID_LENGTH = 18;
+    
+    // PW 最大桁数 : 4
+    public static final int MIN_PW_LENGTH = 4;
+    
+    // PW 最大桁数 : 14
+    public static final int MAX_PW_LENGTH = 14;
+    
+    // 名前 最大桁数；30
+    public static final int MAX_NAME_LENGTH = 30;
     
     
 }
