@@ -57,6 +57,8 @@ public class BoardDetailController {
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
 
+        BoardCommentDto commentDto = new BoardCommentDto();
+
         //一覧画面から遷移用、掲示No取得
         String boardNo = request.getParameter("intoBoardNo");
         
@@ -66,6 +68,7 @@ public class BoardDetailController {
 		if (flashMap != null) {
 			params = (Map<String, Object>) flashMap.get("params");
 			boardNo = (String) params.get("boardNo");
+			commentDto =(BoardCommentDto) flashMap.get("commentDto");
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
@@ -81,7 +84,6 @@ public class BoardDetailController {
 
         model.addAttribute("boardDetail", boardDetail);
         
-
         // ログイン中のみチェック
         if(sessionManager.getSesUserInfo() != null) {
 
@@ -102,10 +104,17 @@ public class BoardDetailController {
     		// 閲覧数カウントアップ
         	boardDetailService.updateViewCount(boardNo);
         }
+        
+        
 
         if(messageList.size()!=0){
             model.addAttribute("messageList", messageList);
+            model.addAttribute("commentDto", commentDto);
+            return "views/board_detail";
         }
+
+        //コメントDto初期化
+        model.addAttribute("commentDto", new BoardCommentDto());
 
         return "views/board_detail";
 
@@ -209,13 +218,14 @@ public class BoardDetailController {
             messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, locale));
             logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, locale));
         }
-		
+        
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
 		    Map<String,Object> params = new HashMap<>();
 		    params.put("messageList", messageList);
 		    params.put("boardNo", commentDto.getBoardId());
 		    redirectAttributes.addFlashAttribute("params", params);
+		    redirectAttributes.addFlashAttribute("commentDto", commentDto);
 
 		    return "redirect:/boardDetail/";
         }
@@ -228,7 +238,7 @@ public class BoardDetailController {
 
 		// コメント情報更新
 		boardDetailService.commentUpdate(commentDto);
-		
+
 		//掲示Noリダイレクト
 		Map<String,Object> params = new HashMap<>();
 		params.put("boardNo", commentDto.getBoardId());

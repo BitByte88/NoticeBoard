@@ -62,13 +62,14 @@
       </section><!--/.main-section-->
       <section class="main-section gray-top-border">
       <table class="form-table" style="width:100%;">
-      	<tbody>
+      	<thead>
       		<tr class="form-table-row">
           		<th class="form-table-th"><th:block th:text="#{label.boardDetail.comment}"/></th>
         	</tr>
+        </thead>
         </table>
         <table class="border-table">
-        	<thead>
+        	<tbody>
         	<th:block th:if="${boardCommentList.size() > 0}">
         	<tr>
           		<th width="10%" class="border-table-th"><th:block th:text="#{label.commentRegister}"/></th>
@@ -81,34 +82,36 @@
 		        <td th:text="${comment.commentRegisterDate}" class="border-table-td"></td>
         	</tr>
         	</th:block>
-        	</thead>
+        	</tbody>
         </table>
         </section><!--/.main-section-->
+        <form id="commentForm" th:action="@{/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
+        <input type="hidden" name="boardId" th:value="${boardDetail.boardId}"/>
         <th:block th:if="${session.SesUserInfo != null}">
-        <table class="form-table" style="width:100%;">
-       		<tr class="form-table-row">
-        		<td class="form-table-td">
-          			<textarea rows="3" name="commentTextArea"></textarea>
-          			<button class="bt bt-green btn_comment"><th:block th:text="#{btn.regist}"/></button>
-          		</td>
-        	</tr>
-        </tbody>
-      </table>
-    </th:block>
-    <section class="main-section gray-top-border buttons buttons-4">
-    <th:block th:if="${session.SesUserInfo != null}">
-    	<th:block th:if="${'1' == displayEditButtonFlg}">
-      		<p class="section-block center"><button class="bt bt-green btn_modal" th:value="deleteModal"><th:block th:text="#{btn.boardDetail.delete}"/></button></p>
-      		<p class="section-block center"><button class="bt bt-green btn_update" th:value="updateModal"><th:block th:text="#{btn.boardDetail.edit}"/></button></p>
+            <table class="form-table" style="width:100%;">
+                <tr class="form-table-row">
+        			<td class="form-table-td">
+          				<textarea rows="3" name="commentTextArea" th:field="*{commentContent}"></textarea>
+          				<button class="bt bt-green btn_comment"><th:block th:text="#{btn.regist}"/></button>
+          			</td>
+        		</tr>
+      		</table>
+    	</th:block>
+    	</form>
+    	<section class="main-section gray-top-border buttons buttons-4">
+    	<th:block th:if="${session.SesUserInfo != null}">
+    		<th:block th:if="${'1' == displayEditButtonFlg}">
+      			<p class="section-block center"><button class="bt bt-green btn_modal" th:value="deleteModal"><th:block th:text="#{btn.boardDetail.delete}"/></button></p>
+      			<p class="section-block center"><button class="bt bt-green btn_update" th:value="updateModal"><th:block th:text="#{btn.boardDetail.edit}"/></button></p>
+      			<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
+      		</th:block>
+      		<th:block th:if="${'1' != displayEditButtonFlg}">
+      			<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
+      		</th:block>
+    	</th:block>
+    	<th:block th:if="${session.SesUserInfo == null}">
       		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
-      	</th:block>
-      	<th:block th:if="${'1' != displayEditButtonFlg}">
-      		<p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
-      	</th:block>
-    </th:block>
-    <th:block th:if="${session.SesUserInfo == null}">
-      <p class="section-block center"><button class="bt bt-gray btn_back"><th:block th:text="#{btn.back}"/></button></p>
-     </th:block>
+     	</th:block>
     </section><!--/.main-section-->
 
   </div><!--/.main-->
@@ -155,10 +158,6 @@
   <input type="hidden" name="RegisterUserId" th:value="${boardDetail.registerUserId}"/>
 </form>
 
-<form id="commentForm" th:action="@{/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
-  <input type="hidden" name="boardId" th:value="${boardDetail.boardId}"/>
-  <input type="hidden" name="commentContent"/>
-</form>
 
 </body>
 <script>
@@ -180,8 +179,6 @@
 
       /* 「コメント登録」ボタン */
   $('.btn_comment').click(function() {
-      var commentContent = $("[name='commentTextArea']").val();
-      $("[name='commentContent']").val(commentContent);
       $("#commentForm").submit();
   });
 
