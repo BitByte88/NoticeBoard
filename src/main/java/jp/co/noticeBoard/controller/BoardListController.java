@@ -125,6 +125,7 @@ public class BoardListController {
 			sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 			model.addAttribute("messageList", messageList);
 			model.addAttribute("boardListsearchDto", boardListsearchDto);
+
 			return "views/board_list";
 		}
 

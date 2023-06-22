@@ -61,7 +61,7 @@ public class BoardDetailController {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if (flashMap != null) {
 			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
-			boardId = (String) params.get("boardNo");
+			boardId = (String) params.get("boardId");
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
@@ -174,7 +174,6 @@ public class BoardDetailController {
 		    logger.error(messageSource.getMessage("E00007", new Object[]{}, locale));
 
 		}
-
         // コメント桁数チェック
         if(commentDto.getCommentContent().length() > Const.MAX_COMMENT_LENGTH){
             String noteLabel = messageSource.getMessage("label.boardDetail.comment",new Object[]{},locale);
@@ -186,26 +185,24 @@ public class BoardDetailController {
         if(messageList.size()!=0){
 		    Map<String,Object> params = new HashMap<>();
 		    params.put("messageList", messageList);
-		    params.put("boardNo", commentDto.getBoardId());
+		    params.put("boardId", commentDto.getBoardId());
 		    redirectAttributes.addFlashAttribute("params", params);
 
-		    return "redirect:/boardDetail/";
+		    return "redirect:/boardDetail";
         }
 
 		//作成者設定
 		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getUserId());
-
 		//改行変換
 		commentDto.setCommentContent(commentDto.getCommentContent().replace(Const.CRLF, Const.CR));
-
 		// コメント情報更新
 		boardDetailService.commentUpdate(commentDto);
 		
 		//掲示Noリダイレクト
 		Map<String,Object> params = new HashMap<>();
-		params.put("boardNo", commentDto.getBoardId());
+		params.put("boardId", commentDto.getBoardId());
 		redirectAttributes.addFlashAttribute("params", params);
 		
-        return "redirect:/boardDetail/";
+        return "redirect:/boardDetail";
     }
 }
