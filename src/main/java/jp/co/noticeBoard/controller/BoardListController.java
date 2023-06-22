@@ -50,48 +50,39 @@ public class BoardListController {
 	@RequestMapping("")
 	public String boardList(HttpServletRequest request, Locale locale, Model model) throws Exception {
 
-		//エラーメッセージリスト
-		List<String> messageList = new ArrayList<>();
-
 		//検索条件DTO
 		BoardListSearchDto boardListsearchDto = new BoardListSearchDto();
-		PageDto pageDto = new PageDto();
-		
-		//初期表示用
 		boardListsearchDto.setOffset(0);
-		
-		//条件に合わせた掲示情報の件数を取得する。
+
+		//掲示情報の検索条件格納
+		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
+
+		//検索条件に合致する掲示情報の件数を取得する。
 		Integer count = boardListService.getBoardListCount(boardListsearchDto);
-		//検索した件数が０の場合
+		//検索結果の件数が0件の場合
 		if (count == 0) {
+			//エラーメッセージリスト
+			List<String> messageList = new ArrayList<>();
 		    messageList.add(messageSource.getMessage("E00008", new Object[]{}, locale));
-		    model.addAttribute("messageList", messageList);
+			logger.error(messageSource.getMessage("E00008", new Object[]{}, locale));
 		    sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
-		    logger.error(messageSource.getMessage("E00008", new Object[]{}, locale));
+			model.addAttribute("messageList", messageList);
 		
 		    return "views/board_list";
 		}
-		
-		//ページング情報取得
-		pageDto = boardListService.changeOffset(count,boardListsearchDto.getOffset());
-		
+
 		//掲示情報リスト取得
-		List<Tblboard> list = new ArrayList<>();
-		list = boardListService.getBoardList(boardListsearchDto);
-		List<BoardListDto> boardList = new ArrayList<>();
-		
-		//画面表示用文字列取得
-		boardList = boardListService.boardListConversion(list,locale);
-		
-		//掲示情報リスト格納
-		model.addAttribute("boardList", boardList);
+		List<Tblboard> list = boardListService.getBoardList(boardListsearchDto);
+//		List<BoardListDto> boardList = new ArrayList<>();
+		//画面表示項目設定
+		List<BoardListDto> boardList = boardListService.boardListConversion(list,locale);
+		//ページング情報取得
+		PageDto pageDto = boardListService.changeOffset(count, 0);
 
 		//検索条件Dto格納
 		model.addAttribute("boardListsearchDto", boardListsearchDto);
-		
-		//掲示情報検索条件格納
-		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
-		
+		//掲示情報リスト格納
+		model.addAttribute("boardList", boardList);
 		//画面表示_ページング
 		model.addAttribute("pager",pageDto);
 
