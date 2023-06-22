@@ -45,7 +45,7 @@ public class BoardDetailController {
 	/**
 	 * 掲示情報の詳細表示（初期表示）
 	 *
-	 * @param HttpServletRequest
+	 * @param request
 	 * @param model モデル
 	 * @return 画面パス
 	 */
@@ -58,7 +58,7 @@ public class BoardDetailController {
         List<String> messageList = new ArrayList<>();
 
         //一覧画面から遷移用、掲示No取得
-        String boardNo = request.getParameter("intoBoardNo");
+        String boardNo = request.getParameter("intoBoardId");
         
 		//コメント登録後、詳細画面再表示用 掲示No取得処理
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
