@@ -254,6 +254,7 @@ input[type='checkbox']:checked + .checkbox {
   font-size: 1.7rem;
   font-weight: bold;
   float: right;
+  cursor: pointer;
 }
 
 .bt-gray {
