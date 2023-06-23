@@ -53,6 +53,10 @@ public class BoardDetailController {
 
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
+
+        //コメントDto（詳細画面再表示用）
+        BoardCommentDto commentDto = new BoardCommentDto();
+
         //一覧画面から遷移用、掲示情報ID取得
         String boardId = request.getParameter("intoBoardId");
         
@@ -61,6 +65,7 @@ public class BoardDetailController {
 		if (flashMap != null) {
 			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
 			boardId = (String) params.get("boardId");
+			commentDto =(BoardCommentDto) flashMap.get("commentDto");
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
@@ -87,7 +92,12 @@ public class BoardDetailController {
 		model.addAttribute("boardCommentList", boardCommentList);
         if(messageList.size()!=0){
             model.addAttribute("messageList", messageList);
+            model.addAttribute("commentDto", commentDto);
+            return "views/board_detail";
         }
+
+        //コメントDto初期化
+        model.addAttribute("commentDto", new BoardCommentDto());
 
         return "views/board_detail";
 	}
@@ -185,6 +195,7 @@ public class BoardDetailController {
 		    params.put("messageList", messageList);
 		    params.put("boardId", commentDto.getBoardId());
 		    redirectAttributes.addFlashAttribute("params", params);
+		    redirectAttributes.addFlashAttribute("commentDto", commentDto);
 
 		    return "redirect:/boardDetail";
         }
