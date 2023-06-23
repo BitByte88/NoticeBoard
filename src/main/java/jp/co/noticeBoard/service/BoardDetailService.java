@@ -27,51 +27,40 @@ public class BoardDetailService {
     private BoardDetailMapper boardDetailMapper;
 
     /**
-     * 掲示情報の詳細情報を取得する。
+     * 掲示情報を取得する。
      *
-     * @param boardNo 掲示No
+     * @param boardId 掲示情報ID
      */
-    public BoardDetailDto getBoardDetail(String boardNo) throws Exception {
-        return boardDetailMapper.getBoardDetail(boardNo);
+    public BoardDetailDto getBoardDetail(String boardId) throws Exception {
+        return boardDetailMapper.getBoardDetail(boardId);
     }
 
     /**
-     * 掲示文を削除する。
+     * コメント情報を取得する。
      *
-     * @param deleteDto 削除Dto
+     * @param boardId 掲示情報ID
      */
-    public void deleteBoard(BoardDeleteDto deleteDto) throws Exception {
-        boardDetailMapper.deleteBoard(deleteDto);
+    public List<BoardCommentDto> getCommentList(String boardId) throws Exception {
+        return boardDetailMapper.getCommentList(boardId);
 
     }
 
     /**
      * 閲覧数をカウントアップする。
      *
-     * @param boardNo 掲示文No
+     * @param boardId 掲示情報ID
      */
-    public void updateViewCount(String boardNo) throws Exception {
-        boardDetailMapper.updateViewCount(boardNo);
-
+    public void updateViewCount(String boardId) throws Exception {
+        boardDetailMapper.updateViewCount(boardId);
     }
 
     /**
-     * コメント情報を取得する。
+     * 掲示情報を削除する。
      *
-     * @param boardNo 掲示文No
+     * @param deleteDto 削除Dto
      */
-    public List<BoardCommentDto> getCommentList(String boardNo) throws Exception {
-        return boardDetailMapper.getCommentList(boardNo);
-
-    }
-    
-    /**
-     * コメント情報を更新する。
-     * 
-     * @param updateDto コメント更新情報
-     */
-    public void commentUpdate(BoardCommentDto updateDto) throws Exception {
-        boardDetailMapper.commentUpdate(updateDto);
+    public void deleteBoard(BoardDeleteDto deleteDto) throws Exception {
+        boardDetailMapper.deleteBoard(deleteDto);
     }
 
     /**
@@ -81,6 +70,15 @@ public class BoardDetailService {
      */
     public void deleteComment(BoardDeleteDto deleteDto) throws Exception {
         boardDetailMapper.deleteComment(deleteDto);
-
     }
+    
+    /**
+     * コメントを登録する。
+     * 
+     * @param updateDto コメント更新情報
+     */
+    public void commentUpdate(BoardCommentDto updateDto) throws Exception {
+        boardDetailMapper.commentUpdate(updateDto);
+    }
+
 }
