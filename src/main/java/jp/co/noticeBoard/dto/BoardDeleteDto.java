@@ -6,7 +6,7 @@ import lombok.Data;
 public class BoardDeleteDto {
 
     /**
-     *掲示文番号
+     *掲示情報ID
      */
 	private String boardId;
 
