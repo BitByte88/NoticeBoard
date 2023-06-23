@@ -17,7 +17,7 @@
         <id column="delete_flag" jdbcType="VARCHAR" property="deleteFlag" />
     </resultMap>
 
-    <!-- 掲示文件数取得 -->
+    <!-- 掲示情報件数取得 -->
     <select id="getBoardListCount" resultType="Integer">
         SELECT
         COUNT(*)

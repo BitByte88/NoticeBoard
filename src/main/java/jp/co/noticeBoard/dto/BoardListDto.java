@@ -11,27 +11,27 @@ public class BoardListDto {
     private Integer boardId;
 
     /**
-     * 掲示文タイトル
+     * 掲示情報タイトル
      */
     private String boardTitle;
 
     /**
-     * 掲示文内容
+     * 掲示内容
      */
     private String boardContent;
     
     /**
-     * 掲示文作成者
+     * 掲示情報作成者
      */
     private String registerUserId;
 
     /**
-     * 掲示文作成日時
+     * 掲示情報作成日時
      */
     private String registerDate;
 
     /**
-     * 掲示文作成日時
+     * 掲示情報作成日時
      */
     private Integer viewCount;
 

@@ -4,7 +4,6 @@ package jp.co.noticeBoard.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +47,7 @@ public class BoardListService {
      * 掲示情報取得
      *
      * @param boardListSearchDto　掲示情報の検索条件
-     * @return 掲示文リスト
+     * @return 掲示情報リスト
      */
     public List<Tblboard> getBoardList(BoardListSearchDto boardListSearchDto) {
         return boardListMapper.getBoardList(boardListSearchDto, limit);

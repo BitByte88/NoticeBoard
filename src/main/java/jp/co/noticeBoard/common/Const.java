@@ -56,7 +56,7 @@ public class Const {
     // 名前 最大桁数；30
     public static final int MAX_NAME_LENGTH = 30;
 
-    // 掲示タイトル 最大桁数；50
+    // 掲示情報タイトル 最大桁数；50
     public static final int MAX_TITLE_LENGTH = 50;
 
     // 掲示内容 最大桁数；3000
