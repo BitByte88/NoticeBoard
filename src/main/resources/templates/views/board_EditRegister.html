@@ -68,7 +68,7 @@
 </th:block>
 <th:block th:if="${'2' == registerFlg}">
 <form id="backForm" name="backForm" th:action="@{/boardDetail/}" method="post">
-  <input type="hidden" name="intoBoardNo" id="intoBoardNo" th:value="${updateDto.boardId}"/>
+  <input type="hidden" name="intoBoardId" id="intoBoardId" th:value="${updateDto.boardId}"/>
 </form>
 </th:block>
 

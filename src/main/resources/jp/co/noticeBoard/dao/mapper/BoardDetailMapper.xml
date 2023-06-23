@@ -36,7 +36,7 @@
         FROM
         t_board
         WHERE
-        t_board.board_id = #{boardNo} AND
+        t_board.board_id = #{boardId} AND
         t_board.delete_flag != 1
     </select>
 
@@ -50,7 +50,7 @@
         FROM
         t_comment
         WHERE
-        t_comment.board_id = #{boardNo} AND
+        t_comment.board_id = #{boardId} AND
         t_comment.delete_flag != 1
         ORDER BY
         t_comment.register_date asc
@@ -62,26 +62,8 @@
         SET
         t_board.view_number = view_number + 1
         WHERE
-        t_board.board_id = #{boardNo}
+        t_board.board_id = #{boardId}
     </update>
-
-    <!-- コメント登録 -->
-    <insert id="commentUpdate">
-    	INSERT INTO t_comment
-    	(
-    		board_id,
-    		comment_content,
-    		register_user_id,
-    		register_date,
-    		delete_flag
-    	) VALUE (
-    		 #{commentDto.boardId},
-    		 #{commentDto.commentContent},
-    	   	 #{commentDto.commentRegisterUserId},
-    		 NOW(),
-    		 '0'
-    	);
-    </insert>
     
      <!-- 掲示情報登録 -->
     <insert id="registerBoard">
@@ -101,7 +83,7 @@
     	);
     </insert>
     
-     <!-- 掲示情報更新 -->
+     <!-- 掲示情報修正 -->
     <update id="updateBoard">
     	UPDATE t_board
     	SET
@@ -135,4 +117,21 @@
     	t_comment.board_id =  #{deleteDto.boardId}
     </update>
 
+    <!-- コメント登録 -->
+    <insert id="commentUpdate">
+        INSERT INTO t_comment
+        (
+        board_id,
+        comment_content,
+        register_user_id,
+        register_date,
+        delete_flag
+        ) VALUE (
+        #{commentDto.boardId},
+        #{commentDto.commentContent},
+        #{commentDto.commentRegisterUserId},
+        NOW(),
+        '0'
+        );
+    </insert>
 </mapper>

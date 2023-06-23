@@ -41,43 +41,38 @@ public class BoardEditRegisterController {
     private BoardEditRegisterService boardEditRegisterService;
 
     /**
-     * 作成修正画面表示（初期表示）
+     * 掲示情報の登録・修正（初期表示）
      *
      * @param model モデル
-     * @param locale  ロケール
      * @return 画面パス
      */
     @RequestMapping("")
-    public String boardEditRegister(@ModelAttribute BoardDetailDto updateDto, HttpServletRequest request,Model model, Locale locale) throws Exception {
+    public String boardEditRegister(@ModelAttribute BoardDetailDto updateDto, HttpServletRequest request, Model model) throws Exception {
 
 		//エラーメッセージリスト
 		List<String> messageList = new ArrayList<>();
 
 		//requestからエラー情報取得
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		Map<String, Object> params = new HashMap<>();
 		if (flashMap != null) {
-			params = (Map<String, Object>) flashMap.get("params");
+            Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
 			}
 		}
-		
-		model.addAttribute("registerFlg", "1");
 
-		if(messageList.size()!=0){
-		    model.addAttribute("messageList", messageList);
-		}
-
-		updateDto = new BoardDetailDto();
 		model.addAttribute("updateDto", updateDto);
+        model.addAttribute("registerFlg", "1");
+        if(messageList.size()!=0){
+            model.addAttribute("messageList", messageList);
+        }
 
         return "views/board_EditRegister";
 
     }
 
     /**
-     * 作成修正画面表示（再表示）
+     * 掲示情報の登録・修正（再表示）
      *
      * @return 画面パス
      */
@@ -125,7 +120,7 @@ public class BoardEditRegisterController {
     }
 
     /**
-     * 登録・修正処理を行う。
+     * 掲示情報の登録・修正
      * @param updateDto 更新情報
      * @param model モデル
      * @param locale　ロケール

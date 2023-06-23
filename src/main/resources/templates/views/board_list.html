@@ -3,8 +3,8 @@
 <html lang="ja" xmlns:th="http://www.w3.org/1999/xhtml">
 <script th:inline="javascript">
 	function toNoticeDetail(noticeRow) {
-		var boardNo = $(noticeRow).data("list-id");
-		$("#intoBoardNo").val(boardNo);
+		var boardId = $(noticeRow).data("list-id");
+		$("#intoBoardId").val(boardId);
         $("#detailForm").submit();
 	}
 </script>
@@ -91,7 +91,7 @@
           </tr>
         </thead>
         <tbody>
-        <tr th:each="board,index: ${boardList}" th:data-list-id="${board.boardId}" onclick="toNoticeDetail(this)">
+        <tr th:each="board : ${boardList}" th:data-list-id="${board.boardId}" onclick="toNoticeDetail(this)">
             <td th:text="${board.boardTitle}" class="border-table-td" ></td>
             <td th:text="${board.registerUserId}" class="border-table-td"></td>
             <td th:text="${board.registerDate}" class="border-table-td"></td>
@@ -157,28 +157,28 @@
   </div><!--/.main-->
 </div>
 <form id="detailForm" name="detailForm" th:action="@{/boardDetail}" method="post">
-    <input type="hidden" name="intoBoardNo" id="intoBoardNo">
+    <input type="hidden" name="intoBoardId" id="intoBoardId">
 </form>
 
 <script type="text/javascript">
-              /* 「検索」ボタン */
-              $('.btn_search').click(function() {
-                $("input[name='offset']").val(0);
-                 $("#searchForm").submit();
-              });
+  /* 「検索」ボタン */
+  $('.btn_search').click(function() {
+    $("input[name='offset']").val(0);
+     $("#searchForm").submit();
+  });
 
-              /* 「ページング」ボタン */
-              $('.bt-pager').click(function(){
-              if($(this).attr('name')=="sign"){
-                var clickPage = $(this).val();
-              }else{
-                var clickPage = $(this).get(0).innerText;
-              }
-              var maxCount = [[${@environment.getProperty('list.max.count')}]]
-              var offset = (clickPage-1)*maxCount;
-              $("input[name='offset']").val(offset);
-               $("#searchForm").submit();
-              });
+  /* 「ページング」ボタン */
+  $('.bt-pager').click(function(){
+  if($(this).attr('name')=="sign"){
+    var clickPage = $(this).val();
+  }else{
+    var clickPage = $(this).get(0).innerText;
+  }
+  var maxCount = [[${@environment.getProperty('list.max.count')}]]
+  var offset = (clickPage-1)*maxCount;
+  $("input[name='offset']").val(offset);
+   $("#searchForm").submit();
+  });
 </script>
 <footer th:replace="layout/Footer :: Footer"></footer>
 </html>
