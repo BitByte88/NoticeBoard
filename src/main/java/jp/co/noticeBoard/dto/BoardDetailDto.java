@@ -6,7 +6,7 @@ import lombok.Data;
 public class BoardDetailDto {
 
     /**
-     *掲示No
+     *掲示情報ID
      */
 	private String boardId;
 

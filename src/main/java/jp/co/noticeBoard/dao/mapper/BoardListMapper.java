@@ -16,7 +16,7 @@ import jp.co.noticeBoard.entitiy.Tblboard;
 public interface BoardListMapper {
 
     /**
-     * 掲示文件数取得.
+     * 掲示情報件数取得.
      *
      * @param boardListSearchDto 掲示情報リスト検索変数
      * @return 件数
@@ -24,7 +24,7 @@ public interface BoardListMapper {
     Integer getBoardListCount(@Param("boardListSearchDto") BoardListSearchDto boardListSearchDto);
 
     /**
-     * 掲示文情報取得.
+     * 掲示情報取得.
      *
      * @param boardListSearchDto 掲示情報リスト検索変数
      * @param limit 1ページに表示される掲示情報件数

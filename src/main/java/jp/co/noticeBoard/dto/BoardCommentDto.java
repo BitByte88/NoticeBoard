@@ -6,7 +6,7 @@ import lombok.Data;
 public class BoardCommentDto {
 
     /**
-     *掲示文番号
+     *掲示情報ID
      */
 	private String boardId;
 

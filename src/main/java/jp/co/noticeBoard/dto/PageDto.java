@@ -6,8 +6,8 @@ import lombok.Data;
 public class PageDto {
 
     /*
-    * オフセット
-    */
+     * オフセット
+     */
     private Integer offset;
 
     /*
@@ -22,7 +22,7 @@ public class PageDto {
 
 
     /*
-     * 掲示文件数
+     * 掲示情報件数
      */
     private Integer count;
     /*
