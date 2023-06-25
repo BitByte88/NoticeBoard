@@ -207,7 +207,7 @@ public class BoardDetailController {
 		// コメント情報更新
 		boardDetailService.commentUpdate(commentDto);
 		
-		//掲示Noリダイレクト
+		//掲示情報IDリダイレクト
 		Map<String,Object> params = new HashMap<>();
 		params.put("boardId", commentDto.getBoardId());
 		redirectAttributes.addFlashAttribute("params", params);
