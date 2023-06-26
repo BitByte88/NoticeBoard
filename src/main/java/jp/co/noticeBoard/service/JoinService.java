@@ -2,7 +2,12 @@ package jp.co.noticeBoard.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import jp.co.noticeBoard.common.Const;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +26,7 @@ public class JoinService {
 
 
     public void joinUser(UserJoinDto userJoinDto) throws Exception {
-
         joinMapper.insertUserInfo(userJoinDto);
-
     }
 
     public int idCheck(String userId) {
@@ -61,5 +64,42 @@ public class JoinService {
             retVal = hexString.toString();
         return retVal;
     }
-    
+
+    /**
+     * 日付の妥当性チェックを行います。
+     * 指定した日付文字列（yyyyMMdd）が
+     * カレンダーに存在するかどうかを返します。
+     * @param strDate チェック対象の文字列
+     * @return 存在する日付の場合true
+     */
+    public boolean checkDate(String strDate)
+    {
+        DateFormat format = new SimpleDateFormat(Const.FORMAT_DATE_YYYYMMDD);
+
+        format.setLenient(false);
+        try {
+            format.parse(strDate);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * メールアドレスの妥当性チェックを行います。
+     * @param strMail チェック対象の文字列
+     * @return パータンにマッチする場合true
+     */
+    public boolean checkMail(String strMail)
+    {
+        Pattern pattern = Pattern.compile(Const.MAIL_FORMAT);
+        Matcher matcher = pattern.matcher(strMail);
+
+        if (matcher.find()) {
+            return true;
+
+        } else {
+            return false;
+        }
+    }
 }

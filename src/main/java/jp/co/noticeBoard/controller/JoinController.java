@@ -34,7 +34,6 @@ import jp.co.noticeBoard.service.SessionManager;
 import lombok.RequiredArgsConstructor;
 
 
-@RequiredArgsConstructor
 @Controller
 @RequestMapping("/join")
 public class JoinController {
@@ -44,7 +43,6 @@ public class JoinController {
 	@Autowired
 	private SessionManager sessionManager;
 
-	
     @Autowired
     private JoinService joinService;
 
@@ -58,7 +56,7 @@ public class JoinController {
      */
 
     @GetMapping("")
-    public String join(HttpServletRequest request, Model model) throws Exception {
+    public String join(Model model) throws Exception {
 
 		JoinForm joinForm = new JoinForm();
 
@@ -77,111 +75,109 @@ public class JoinController {
      * @param joinForm 会員登録画面のForm
      * @return 画面パス
      */
-    @PostMapping("/register")
-    public String join(@ModelAttribute("joinForm") JoinForm joinForm, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
+    @RequestMapping("/register")
+    public String join(@ModelAttribute("joinForm") JoinForm joinForm, Model model) throws Exception {
 
     	 //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
-
         UserJoinDto userJoinDto = new UserJoinDto();
 
         //ID入力チェック
         if(joinForm.getUserId() == null || joinForm.getUserId().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.join.userId",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.userId",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //ID桁数チェック
         if(joinForm.getUserId().length() <  Const.MIN_ID_LENGTH || joinForm.getUserId().length() > Const.MAX_ID_LENGTH)
         {
-        	String noteLabel = messageSource.getMessage("label.join.userId",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_ID_LENGTH, Const.MAX_ID_LENGTH}, locale));
-            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_ID_LENGTH, Const.MAX_ID_LENGTH}, locale));
+        	String noteLabel = messageSource.getMessage("label.join.userId",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_ID_LENGTH, Const.MAX_ID_LENGTH}, null));
+            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_ID_LENGTH, Const.MAX_ID_LENGTH}, null));
         }
 
         //ID重複チェック
         if(idCheck(joinForm.getUserId()) > 0)
         {
-            messageList.add(messageSource.getMessage("E00004", new Object[]{}, locale));
-            logger.error(messageSource.getMessage("E00004", new Object[]{}, locale));
+            messageList.add(messageSource.getMessage("E00004", new Object[]{}, null));
+            logger.error(messageSource.getMessage("E00004", new Object[]{}, null));
         }
 
         //パスワード入力チェック
         if(joinForm.getPassword() == null || joinForm.getPassword().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.join.password",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.password",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //パスワード桁数チェック
         if(joinForm.getPassword().length() <  Const.MIN_PW_LENGTH || joinForm.getPassword().length() > Const.MAX_PW_LENGTH)
         {
-            String noteLabel = messageSource.getMessage("label.join.password",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_PW_LENGTH, Const.MAX_PW_LENGTH}, locale));
-            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_PW_LENGTH, Const.MAX_PW_LENGTH}, locale));
+            String noteLabel = messageSource.getMessage("label.join.password",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_PW_LENGTH, Const.MAX_PW_LENGTH}, null));
+            logger.error(messageSource.getMessage("E00002", new Object[]{noteLabel, Const.MIN_PW_LENGTH, Const.MAX_PW_LENGTH}, null));
         }
 
         //名前入力チェック
         if(joinForm.getName() == null || joinForm.getName().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.join.name",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.name",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //名前桁数チェック
         if(joinForm.getName().length() > Const.MAX_NAME_LENGTH)
         {
-            String noteLabel = messageSource.getMessage("label.join.name",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_NAME_LENGTH}, locale));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.name",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_NAME_LENGTH}, null));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel}, null));
         }
 
         //生年月日入力チェック
         if(joinForm.getBirthday() == null || joinForm.getBirthday().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.join.birthday",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.birthday",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //生年月日妥当性チェック
-        if(!checkDate(joinForm.getBirthday()))
+        if(!joinService.checkDate(joinForm.getBirthday()))
         {
-            String noteLabel = messageSource.getMessage("label.join.birthday",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00003", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00003", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.birthday",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00003", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00003", new Object[]{noteLabel}, null));
         }
 
         //性別入力チェック
         if(joinForm.getGender() == null || joinForm.getGender().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.join.gender",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.gender",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //メール入力チェック
         if(joinForm.getMail() == null || joinForm.getMail().equals(""))
         {
-            String noteLabel = messageSource.getMessage("label.join.mail",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.join.mail",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //メール形式チェック
-        if (!checkMail(joinForm.getMail())) {
-            String noteLabel = messageSource.getMessage("label.join.mail",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00005", new Object[]{noteLabel}, locale));
+        if (!joinService.checkMail(joinForm.getMail())) {
+            String noteLabel = messageSource.getMessage("label.join.mail",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00005", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00005", new Object[]{noteLabel}, null));
         }
 
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
-            
             model.addAttribute("messageList", messageList);
             model.addAttribute("joinForm", joinForm);
 
@@ -209,52 +205,12 @@ public class JoinController {
         sessionManager.setSesUserInfo(sesUserDto);
 
         return "redirect:/boardList";
-
     }
 
-    @PostMapping("/idCheck")
+    @RequestMapping("/idCheck")
     @ResponseBody
     public int idCheck(@RequestParam("userId") String userId) {
         int cnt = joinService.idCheck(userId);
         return cnt;
-
     }
-
-   /**
-    * 日付の妥当性チェックを行います。
-    * 指定した日付文字列（yyyyMMdd）が
-    * カレンダーに存在するかどうかを返します。
-    * @param strDate チェック対象の文字列
-    * @return 存在する日付の場合true
-    */
-   public boolean checkDate(String strDate)
-   {
-       DateFormat format = new SimpleDateFormat(Const.FORMAT_DATE_YYYYMMDD);	
-
-       format.setLenient(false);
-       try {
-           format.parse(strDate);
-           return true;
-       } catch (Exception e) {
-           return false;
-       }
-   }
-
-   /**
-    * メールアドレスの妥当性チェックを行います。
-    * @param strMail チェック対象の文字列
-    * @return パータンにマッチする場合true
-    */
-   public boolean checkMail(String strMail)
-   {
-       Pattern pattern = Pattern.compile(Const.MAIL_FORMAT);
-       Matcher matcher = pattern.matcher(strMail);
-
-       if (matcher.find()) {
-    	   return true;
-    	   
-       } else {
-    	   return false;
-       }
-   }
 }
