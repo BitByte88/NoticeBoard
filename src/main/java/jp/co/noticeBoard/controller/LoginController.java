@@ -44,7 +44,6 @@ public class LoginController {
 			 sessionManager.clearUserInfo();
 			 return "views/admin_login";
 			}
-			
 
 	/**
 	 * ログイン
@@ -98,7 +97,6 @@ public class LoginController {
 
 			return "redirect:/boardList";
 		}
-
 	}
 
 	/**
@@ -117,7 +115,7 @@ public class LoginController {
 	}
 
 	/**
-	 * セッションタイムアウト     *
+	 * セッションタイムアウト
 	 * @param model モデル
 	 * @return 画面パス
 	 */
@@ -131,5 +129,4 @@ public class LoginController {
 		redirectAttributes.addFlashAttribute("messageList", messageList);
 		return "redirect:/logout";
 	}
-
 }

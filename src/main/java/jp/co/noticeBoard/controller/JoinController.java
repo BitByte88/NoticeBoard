@@ -1,20 +1,5 @@
 package jp.co.noticeBoard.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import jp.co.noticeBoard.common.Const;
 import jp.co.noticeBoard.dto.UserDto;
 import jp.co.noticeBoard.dto.UserJoinDto;
@@ -22,6 +7,16 @@ import jp.co.noticeBoard.form.JoinForm;
 import jp.co.noticeBoard.service.JoinService;
 import jp.co.noticeBoard.service.LoginService;
 import jp.co.noticeBoard.service.SessionManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Controller
