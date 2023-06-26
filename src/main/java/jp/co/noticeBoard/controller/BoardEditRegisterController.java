@@ -68,7 +68,6 @@ public class BoardEditRegisterController {
         }
 
         return "views/board_EditRegister";
-
     }
 
     /**
@@ -77,13 +76,11 @@ public class BoardEditRegisterController {
      * @return 画面パス
      */
     @RequestMapping("/returnBoardEdit")
-    public String boardDetailBackButton(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) throws Exception {
+    public String boardDetailBackButton(HttpServletRequest request, Model model) throws Exception {
 
         //エラーメッセージリスト
         List<String> messageList = new ArrayList<>();
-
         BoardDetailDto updateDto = new BoardDetailDto();
-
     	String boardId = null;
     	
 		//画面再表示の為、値取得
@@ -102,19 +99,15 @@ public class BoardEditRegisterController {
         if(messageList.size()!=0){
             model.addAttribute("messageList", messageList);
         }
-
     	// 新規作成の場合
     	if (boardId == null || boardId.equals(""))
     	{
     		model.addAttribute("registerFlg", "1");
     		model.addAttribute("updateDto", updateDto);
-
-    	// 修正の場合
-    	} else {
+    	} else { // 修正の場合
     		model.addAttribute("registerFlg", "2");
     		model.addAttribute("updateDto", updateDto);
     	}
-
 
         return "views/board_EditRegister";
     }
@@ -122,44 +115,41 @@ public class BoardEditRegisterController {
     /**
      * 掲示情報の登録・修正
      * @param updateDto 更新情報
-     * @param model モデル
-     * @param locale　ロケール
      * @return 画面パス
      */
     @RequestMapping("/toProcess")
-    public String toBoardEditRegisterProcess(HttpServletRequest request, @ModelAttribute BoardDetailDto updateDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
+    public String toBoardEditRegisterProcess(HttpServletRequest request, @ModelAttribute BoardDetailDto updateDto, RedirectAttributes redirectAttributes) throws Exception {
 
     	// 修正画面から遷移した場合
     	String boardId = request.getParameter("boardId");
-    	
         List<String> messageList = new ArrayList<>();
 
         //タイトル入力チェック
         if(updateDto.getBoardTitle() == null || updateDto.getBoardTitle().equals("")){
-            String noteLabel = messageSource.getMessage("label.title",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.title",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //タイトル桁数チェック
         if(updateDto.getBoardTitle().length() > Const.MAX_TITLE_LENGTH){
-            String noteLabel = messageSource.getMessage("label.title",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_TITLE_LENGTH}, locale));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_TITLE_LENGTH}, locale));
+            String noteLabel = messageSource.getMessage("label.title",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_TITLE_LENGTH}, null));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_TITLE_LENGTH}, null));
         }
 
         //内容入力チェック
         if(updateDto.getBoardContent() == null || updateDto.getBoardContent().equals("")){
-            String noteLabel = messageSource.getMessage("label.content",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
-            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, locale));
+            String noteLabel = messageSource.getMessage("label.content",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
+            logger.error(messageSource.getMessage("E00001", new Object[]{noteLabel}, null));
         }
 
         //内容桁数チェック
         if(updateDto.getBoardContent().length() > Const.MAX_CONTENT_LENGTH){
-            String noteLabel = messageSource.getMessage("label.content",new Object[]{},locale);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_CONTENT_LENGTH}, locale));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_CONTENT_LENGTH}, locale));
+            String noteLabel = messageSource.getMessage("label.content",new Object[]{}, null);
+            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_CONTENT_LENGTH}, null));
+            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_CONTENT_LENGTH}, null));
         }
 
         // 上記のチェックでエラーが存在する場合
@@ -176,23 +166,17 @@ public class BoardEditRegisterController {
 
         if(sessionManager.getSesUserInfo() == null)
         	return "views/admin_login";
-
         //改行処理
         updateDto.setBoardContent(updateDto.getBoardContent().replace(Const.CRLF, Const.CR));
-
         //新規の場合
         if(updateDto.getBoardId() == null || updateDto.getBoardId().equals("")) {
         	//作成者設定
             updateDto.setRegisterUserId(sessionManager.getSesUserInfo().getUserId());
-
         	//登録処理
         	boardEditRegisterService.registerBoard(updateDto);
-
-        //修正の場合
-    	} else { 
+    	} else { //修正の場合
     		//更新者設定
             updateDto.setUpdateUserId(sessionManager.getSesUserInfo().getUserId());
-
         	//更新処理
     		boardEditRegisterService.updateBoard(updateDto);
     	}
@@ -203,6 +187,5 @@ public class BoardEditRegisterController {
         redirectAttributes.addFlashAttribute("params", params);
 
         return "redirect:/boardList";
-
     }
 }
