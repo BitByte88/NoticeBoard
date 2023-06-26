@@ -60,7 +60,7 @@ public class BoardDetailController {
         //一覧画面から遷移用、掲示情報ID取得
         String boardId = request.getParameter("intoBoardId");
         
-		//コメント登録後、掲示情報No取得（詳細画面再表示用）
+		//コメント登録後、掲示情報ID取得（詳細画面再表示用）
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		if (flashMap != null) {
 			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
