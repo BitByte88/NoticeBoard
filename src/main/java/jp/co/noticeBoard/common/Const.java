@@ -27,6 +27,8 @@ public class Const {
     public static final String NUMBER_FORMAT = "^[0-9]+$";
     // 英字数字記号フォーマット
     public static final String ENG_NUM_SYM_FORMAT = "^[0-9a-zA-Z+－＝＄％＆＊＃？／]+$";
+    // メールアドレスフォーマット
+    public static final String MAIL_FORMAT = "^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]";
 
     //日付フォーマット
     public static final String DATE_FORMAT  = "YYYY/MM/DD";

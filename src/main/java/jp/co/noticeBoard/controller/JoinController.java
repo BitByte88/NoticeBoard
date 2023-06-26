@@ -247,7 +247,7 @@ public class JoinController {
     */
    public boolean checkMail(String strMail)
    {
-       Pattern pattern = Pattern.compile("^[A-Za-z0-9_\\.\\-]+@[A-Za-z0-9\\-]+\\.[A-Za-z0-9\\-]");
+       Pattern pattern = Pattern.compile(Const.MAIL_FORMAT);
        Matcher matcher = pattern.matcher(strMail);
 
        if (matcher.find()) {
