@@ -10,9 +10,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
-/**
- * Created by NSW00_008421 on 2019/04/15.
- */
 @SpringBootApplication
 public class ServerApplication extends SpringBootServletInitializer {
 
