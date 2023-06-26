@@ -22,7 +22,7 @@ public interface BoardDetailMapper {
      * @param boardId 掲示情報ID
      * @return BoardDetailDto
      */
-    BoardDetailDto getBoardDetail(@Param("boardId") String boardNo);
+    BoardDetailDto getBoardDetail(@Param("boardId") String boardId);
 
     /*
      * コメント情報を取得する。
@@ -30,7 +30,7 @@ public interface BoardDetailMapper {
      * @param boardId 掲示情報ID
      * @return コメントリスト
      */
-    List<BoardCommentDto> getCommentList(@Param("boardId") String boardNo);
+    List<BoardCommentDto> getCommentList(@Param("boardId") String boardId);
 
     /*
      * 閲覧数をカウントアップする。
@@ -38,7 +38,7 @@ public interface BoardDetailMapper {
      * @param boardId 掲示情報ID
      * @return 件数
      */
-    void updateViewCount(@Param("boardId") String boardNo);
+    void updateViewCount(@Param("boardId") String boardId);
     
     /*
      * 掲示内容を登録する。

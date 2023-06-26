@@ -84,7 +84,7 @@ public class BoardEditRegisterController {
 
         BoardDetailDto updateDto = new BoardDetailDto();
 
-    	String boardNo = null;
+    	String boardId = null;
     	
 		//画面再表示の為、値取得
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
@@ -92,7 +92,7 @@ public class BoardEditRegisterController {
 		if (flashMap != null) {
 			params = (Map<String, Object>) flashMap.get("params");
 			updateDto =(BoardDetailDto) flashMap.get("updateDto");
-			boardNo =(String) flashMap.get("boardNo");
+			boardId =(String) flashMap.get("boardId");
 
 			if ((ArrayList) params.get("messageList") != null) {
 				messageList = (ArrayList) params.get("messageList");
@@ -104,7 +104,7 @@ public class BoardEditRegisterController {
         }
 
     	// 新規作成の場合
-    	if (boardNo == null || boardNo.equals(""))
+    	if (boardId == null || boardId.equals(""))
     	{
     		model.addAttribute("registerFlg", "1");
     		model.addAttribute("updateDto", updateDto);
@@ -130,7 +130,7 @@ public class BoardEditRegisterController {
     public String toBoardEditRegisterProcess(HttpServletRequest request, @ModelAttribute BoardDetailDto updateDto, Model model, Locale locale, RedirectAttributes redirectAttributes) throws Exception {
 
     	// 修正画面から遷移した場合
-    	String boardNo = request.getParameter("boardId");
+    	String boardId = request.getParameter("boardId");
     	
         List<String> messageList = new ArrayList<>();
 
@@ -164,7 +164,7 @@ public class BoardEditRegisterController {
 
         // 上記のチェックでエラーが存在する場合
         if(messageList.size()!=0){
-        	redirectAttributes.addFlashAttribute("boardNo", boardNo);
+        	redirectAttributes.addFlashAttribute("boardId", boardId);
         	redirectAttributes.addFlashAttribute("updateDto", updateDto);
         	
         	Map<String,Object> params = new HashMap<>();
