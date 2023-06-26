@@ -49,7 +49,7 @@ public class Const {
     // ID 最大桁数 : 18
     public static final int MAX_ID_LENGTH = 18;
     
-    // PW 最大桁数 : 4
+    // PW 最小桁数 : 4
     public static final int MIN_PW_LENGTH = 4;
     
     // PW 最大桁数 : 14
