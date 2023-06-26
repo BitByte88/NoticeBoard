@@ -3,7 +3,9 @@ package jp.co.noticeBoard.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +67,9 @@ public class BoardListService {
             BoardListDto dto = new BoardListDto();
 
             //日付フォーマット変換
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC+9"));
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            dateFormat.setTimeZone(cal.getTimeZone());
             String boardDate = dateFormat.format(board.getRegisterDate());
 
             dto.setBoardId(board.getBoardId());
