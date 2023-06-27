@@ -17,26 +17,26 @@
 
     <section class="main-section">
     <table class="form-table" style="width:100%;">
+        <colgroup>
+            <col style="width:10%;">
+            <col style="width:40%;">
+            <col style="width:10%;">
+            <col style="width:40%;">
+        </colgroup>
+        <tbody>
+        <tr class="form-table-row" style="background-color:#009a59; color:#fff">
+            <th class="form-table-th"><th:block th:text="#{label.boardList.registerDate}"></th:block></th>
+            <td class="form-table-td"><th:block th:text="${boardDetail.registerDate}"/></td>
+            <th class="form-table-th"><th:block th:text="#{label.boardRegister}"/></th>
+            <td class="form-table-td"><th:block th:text="${boardDetail.registerUserId}"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="form-table" style="width:100%;">
         <tbody>
         	<tr class="form-table-row">
 		  		<td class="form-table-th board-title"><th:block th:text="${boardDetail.boardTitle}"/></td>
         	</tr>
-        </tbody>
-      </table>
-      <table class="form-table" style="width:100%;">
-        <colgroup>
-        	<col style="width:10%;">
-          	<col style="width:40%;">
-          	<col style="width:10%;">
-          	<col style="width:40%;">
-        </colgroup>
-        <tbody>
-       		<tr class="form-table-row">
-       			<th class="form-table-th"><th:block th:text="#{label.boardList.registerDate}"></th:block></th>
-		      	<td class="form-table-td"><th:block th:text="${boardDetail.registerDate}"/></td>
-		      	<th class="form-table-th"><th:block th:text="#{label.boardRegister}"/></th>
-		      	<td class="form-table-td"><th:block th:text="${boardDetail.registerUserId}"/></td>
-	    	</tr>
         </tbody>
       </table>
     </section><!--/.main-section-->
@@ -62,10 +62,10 @@
       </section><!--/.main-section-->
       <section class="main-section gray-top-border">
       <table class="form-table" style="width:100%;">
-      	<thead>
-      		<tr class="form-table-row">
-          		<th class="form-table-th"><th:block th:text="#{label.boardDetail.comment}"/></th>
-        	</tr>
+        <thead>
+            <tr class="form-table-row">
+                <th class="form-table-th"><th:block th:text="#{label.boardDetail.comment}"/></th>
+            </tr>
         </thead>
       </table>
       <table class="border-table">
@@ -95,8 +95,8 @@
           			<button class="bt bt-green btn_comment" style="width:5%;"><th:block th:text="#{btn.regist}"/></button>
           		</td>
         	</tr>
-      	</table>
-    	</th:block>
+        </table>
+        </th:block>
     </form>
     <section class="main-section gray-top-border buttons buttons-4">
     <th:block th:if="${session.SesUserInfo != null}">
