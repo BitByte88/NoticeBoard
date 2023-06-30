@@ -184,6 +184,7 @@
       var modal = $(this).val();
       $('#'+ modal ).hide();
      });
+
 function getAllComment() {
     const boardId = /*[[${boardDetail.boardId}]]*/;
 
@@ -197,13 +198,13 @@ function getAllComment() {
                 
                 if ( !response.length ) {
                 	return;
-                } 
+                }
 
                 commentHtml += `
                 <tr>
-                    <th width="10%" class="border-table-th">[[#{label.commentRegister}]]</th>
-                    <td width="80%" class="border-table-th">[[#{label.commentContent}]]</td>
-                    <th width="10%" class="border-table-th">[[#{label.boardList.registerDate}]]</th>
+                    <th width="10%" class="border-table-th">作成者</th>
+                    <td width="80%" class="border-table-th">内容</td>
+                    <th width="10%" class="border-table-th">作成日時</th>
                 </tr>
                 <tr>
                 `;
@@ -257,6 +258,7 @@ function writeComment() {
                     })
                     document.querySelector('.error-message').innerHTML = ErrorHtml;
                     document.querySelector('.error-message').style.display ="block";
+                    window.scrollTo({top:0});
                     return;
                 }
                 
