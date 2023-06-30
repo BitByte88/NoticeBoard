@@ -44,7 +44,5 @@
         NOW(),
         '0'
         );
-        <selectKey keyProperty="comment_no" resultType="int" order="AFTER">
-        </selectKey>
     </insert>
 </mapper>
