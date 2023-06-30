@@ -116,22 +116,4 @@
     	WHERE
     	t_comment.board_id =  #{deleteDto.boardId}
     </update>
-
-    <!-- コメント登録 -->
-    <insert id="commentUpdate">
-        INSERT INTO t_comment
-        (
-        board_id,
-        comment_content,
-        register_user_id,
-        register_date,
-        delete_flag
-        ) VALUE (
-        #{commentDto.boardId},
-        #{commentDto.commentContent},
-        #{commentDto.commentRegisterUserId},
-        NOW(),
-        '0'
-        );
-    </insert>
 </mapper>

@@ -8,11 +8,7 @@
 <div class="wrapper">
   <div class="main">
     <h2 class="page-title"><strong><th:block th:text="#{label.boardTitleDetailHeader}"></th:block></strong></h2>
-    <section class="main-section error-message" th:if="!${messageList == null or #lists.isEmpty(messageList)}">
-      <i class="ico-error"></i>
-      <th:block  th:each="message : ${messageList}">
-        <p><span th:text="${message}"/></p>
-      </th:block>
+    <section class="main-section error-message" style="display:none">
     </section>
 
     <section class="main-section">
@@ -68,7 +64,7 @@
             </tr>
         </thead>
       </table>
-      <table class="border-table">
+      <table class="border-table comment_list">
         <tbody>
         	<th:block th:if="${boardCommentList.size() > 0}">
         	<tr>
@@ -85,19 +81,16 @@
         </tbody>
       </table>
       </section><!--/.main-section-->
-    <form id="commentForm" th:action="@{/boardDetail/commentwrite}" method="post" th:object="${commentDto}">
-        <input type="hidden" name="boardId" th:value="${boardDetail.boardId}"/>
         <th:block th:if="${session.SesUserInfo != null}">
         <table class="form-table" style="width:100%;">
        		<tr class="form-table-row">
         		<td class="form-table-td">
-          			<textarea rows="3" name="commentTextArea" th:field="*{commentContent}"></textarea>
-          			<button class="bt bt-green btn_comment" style="width:5%;"><th:block th:text="#{btn.regist}"/></button>
+          			<textarea rows="3" id="commentTextArea"></textarea>
+          			<button class="bt bt-green btn_comment" style="width:5%;" onClick="writeComment()"><th:block th:text="#{btn.regist}"/></button>
           		</td>
         	</tr>
         </table>
         </th:block>
-    </form>
     <section class="main-section gray-top-border buttons buttons-4">
     <th:block th:if="${session.SesUserInfo != null}">
     	<th:block th:if="${'1' == displayEditButtonFlg}">
@@ -160,8 +153,10 @@
 
 
 </body>
-<script>
-       /* 「戻る」ボタン */
+<script th:inline="javascript">
+/*<![CDATA[*/
+
+      /* 「戻る」ボタン */
   $('.btn_back').click(function() {
       $("[name='restorationJudgment']").val("restoration");
       $("#backForm").submit();
@@ -177,11 +172,6 @@
       $("#deleteForm").submit();
   });
 
-      /* 「コメント登録」ボタン */
-  $('.btn_comment').click(function() {
-      $("#commentForm").submit();
-  });
-
       /* 「モーダル」処理 */
   $('.btn_modal').click(function() {
       var modal = $(this).val();
@@ -194,6 +184,91 @@
       var modal = $(this).val();
       $('#'+ modal ).hide();
      });
+function getAllComment() {
+    const boardId = /*[[${boardDetail.boardId}]]*/;
 
+     $.ajax({
+            url : `/boardDetail/comments/${boardId}`,
+            type : 'get',
+            dataType : 'json',
+            async : false,
+            success : function (response) {
+                let commentHtml = ``;
+                
+                if ( !response.length ) {
+                	return;
+                } 
+
+                commentHtml += `
+                <tr>
+                    <th width="10%" class="border-table-th">[[#{label.commentRegister}]]</th>
+                    <td width="80%" class="border-table-th">[[#{label.commentContent}]]</td>
+                    <th width="10%" class="border-table-th">[[#{label.boardList.registerDate}]]</th>
+                </tr>
+                <tr>
+                `;
+
+                response.forEach(row => {
+                    commentHtml += `
+                        <th width="10%" class="border-table-td">${row.commentRegisterUserId}</th>
+                        <td width="80%" class="border-table-td board-comment">${row.commentContent}</td>
+                        <th width="10%" class="border-table-td">${row.commentRegisterDate}</th>
+                    `;
+                    commentHtml += "</tr>";
+                })
+                document.querySelector('.comment_list').innerHTML = commentHtml;
+            },
+            error : function (request, status, error) {
+                console.log(error)
+            }
+        })
+}
+
+function writeComment() {
+    const boardId = /*[[${boardDetail.boardId}]]*/;
+    const content = document.getElementById('commentTextArea');
+
+    const params = {
+            boardId : boardId,
+            commentContent : content.value
+        }
+
+    $.ajax({
+            url : `/boardDetail/writeComment`,
+            type : `post`,
+            contentType : `application/json; charset=utf-8`,
+            dataType : `json`,
+            data : JSON.stringify(params),
+            async : false,
+            success : function (response) {
+            	document.querySelector('.error-message').style.display ="none";
+                let ErrorHtml = ``;
+                let commentHtml = ``;
+                ErrorHtml += `
+                    <i class="ico-error"></i>
+                `;
+            
+                if( response.length > 0 )
+                {
+                    response.forEach(row => {
+                    ErrorHtml += `
+                        <span>${row}</span>
+                    `;
+                    })
+                    document.querySelector('.error-message').innerHTML = ErrorHtml;
+                    document.querySelector('.error-message').style.display ="block";
+                    return;
+                }
+                
+            },
+            error : function (request, status, error) {
+                console.log(error);
+            }
+        })
+        content.value = "";
+        getAllComment();
+}
+
+/*]]>*/
 </script>
 </html>

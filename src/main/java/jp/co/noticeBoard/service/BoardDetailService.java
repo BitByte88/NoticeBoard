@@ -66,14 +66,4 @@ public class BoardDetailService {
     public void deleteComment(BoardDeleteDto deleteDto) throws Exception {
         boardDetailMapper.deleteComment(deleteDto);
     }
-    
-    /**
-     * コメントを登録する。
-     * 
-     * @param updateDto コメント更新情報
-     */
-    public void commentUpdate(BoardCommentDto updateDto) throws Exception {
-        boardDetailMapper.commentUpdate(updateDto);
-    }
-
 }

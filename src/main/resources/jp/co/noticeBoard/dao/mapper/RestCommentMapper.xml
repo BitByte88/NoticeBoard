@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jp.co.noticeBoard.dao.mapper.RestCommentMapper">
+
+    <resultMap id="boardCommentMap" type="jp.co.noticeBoard.dto.BoardCommentDto">
+        <id column="board_id" jdbcType="INTEGER" property="boardId" />
+        <id column="comment_content" jdbcType="VARCHAR" property="commentContent" />
+        <id column="register_user_id" jdbcType="VARCHAR" property="commentRegisterUserId" />
+        <id column="register_date" jdbcType="TIMESTAMP" property="commentRegisterDate" />
+    </resultMap>
+
+    <!-- コメント情報取得 -->
+    <select id="getCommentList" resultMap="boardCommentMap">
+        SELECT
+        t_comment.board_id,
+        t_comment.comment_content,
+        t_comment.register_user_id,
+        DATE_FORMAT(t_comment.register_date,'%Y/%m/%d %H:%i') as register_date
+        FROM
+        t_comment
+        WHERE
+        t_comment.board_id = #{boardId} AND
+        t_comment.delete_flag != 1
+        ORDER BY
+        t_comment.register_date asc
+    </select>
+
+    <!-- コメント登録 -->
+    <insert id="writeComment">
+        INSERT INTO t_comment
+        (
+        board_id,
+        comment_content,
+        register_user_id,
+        register_date,
+        delete_flag
+        ) VALUE (
+        #{commentDto.boardId},
+        #{commentDto.commentContent},
+        #{commentDto.commentRegisterUserId},
+        NOW(),
+        '0'
+        );
+        <selectKey keyProperty="comment_no" resultType="int" order="AFTER">
+        </selectKey>
+    </insert>
+</mapper>

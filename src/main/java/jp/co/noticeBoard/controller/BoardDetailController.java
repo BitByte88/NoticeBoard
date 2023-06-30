@@ -59,24 +59,13 @@ public class BoardDetailController {
 
         //一覧画面から遷移用、掲示情報ID取得
         String boardId = request.getParameter("intoBoardId");
-        
-		//コメント登録後、掲示情報ID取得（詳細画面再表示用）
-		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
-		if (flashMap != null) {
-			Map<String, Object> params = (Map<String, Object>) flashMap.get("params");
-			boardId = (String) params.get("boardId");
-			commentDto =(BoardCommentDto) flashMap.get("commentDto");
-			if ((ArrayList) params.get("messageList") != null) {
-				messageList = (ArrayList) params.get("messageList");
-			}
-		}
 
         //掲示情報取得
 		BoardDetailDto boardDetail = boardDetailService.getBoardDetail(boardId);
         if(boardDetail == null){
             return "redirect:/error";
         }
-		// コメントリス取得
+		// コメント情報リスト取得
 		List<BoardCommentDto> boardCommentList = boardDetailService.getCommentList(boardId);
 		// 閲覧数カウントアップ
 		boardDetailService.updateViewCount(boardId);
@@ -161,57 +150,5 @@ public class BoardDetailController {
         boardDetailService.deleteComment(deleteDto);
 
         return "redirect:/boardList";
-    }
-
-
-    /**
-     * 掲示情報の詳細表示（コメント登録）
-	 *
-     * @param commentDto コメントDto
-     * @param redirectAttributes
-     * @return 画面パス
-     */
-    @RequestMapping("/commentwrite")
-    public String commentwrite(@ModelAttribute BoardCommentDto commentDto, RedirectAttributes redirectAttributes) throws Exception {
-
-        List<String> messageList = new ArrayList<>();
-
-        // コメント入力チェック
-		if(commentDto.getCommentContent() == null || commentDto.getCommentContent().equals("")){
-		    messageList.add(messageSource.getMessage("E00007", new Object[]{}, null));
-		    logger.error(messageSource.getMessage("E00007", new Object[]{}, null));
-
-		}
-        // コメント桁数チェック
-        if(commentDto.getCommentContent().length() > Const.MAX_COMMENT_LENGTH){
-            String noteLabel = messageSource.getMessage("label.boardDetail.comment",new Object[]{}, null);
-            messageList.add(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, null));
-            logger.error(messageSource.getMessage("E00006", new Object[]{noteLabel, Const.MAX_COMMENT_LENGTH}, null));
-        }
-		
-        // 上記のチェックでエラーが存在する場合
-        if(messageList.size()!=0){
-		    Map<String,Object> params = new HashMap<>();
-		    params.put("messageList", messageList);
-		    params.put("boardId", commentDto.getBoardId());
-		    redirectAttributes.addFlashAttribute("params", params);
-		    redirectAttributes.addFlashAttribute("commentDto", commentDto);
-
-		    return "redirect:/boardDetail";
-        }
-
-		//作成者設定
-		commentDto.setCommentRegisterUserId(sessionManager.getSesUserInfo().getUserId());
-		//改行変換
-		commentDto.setCommentContent(commentDto.getCommentContent().replace(Const.CRLF, Const.CR));
-		// コメント情報更新
-		boardDetailService.commentUpdate(commentDto);
-		
-		//掲示情報IDリダイレクト
-		Map<String,Object> params = new HashMap<>();
-		params.put("boardId", commentDto.getBoardId());
-		redirectAttributes.addFlashAttribute("params", params);
-		
-        return "redirect:/boardDetail";
     }
 }

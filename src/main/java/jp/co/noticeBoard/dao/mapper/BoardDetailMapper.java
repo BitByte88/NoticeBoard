@@ -68,13 +68,6 @@ public interface BoardDetailMapper {
      * @param deleteDto 掲示情報削除条件
      */
     void deleteComment(@Param("deleteDto") BoardDeleteDto deleteDto);
-
-    /*
-     * コメントを登録する。
-     *
-     * @param commentDto 掲示板検索変数
-     */
-    void commentUpdate(@Param("commentDto") BoardCommentDto commentDto);
 }
 
 
