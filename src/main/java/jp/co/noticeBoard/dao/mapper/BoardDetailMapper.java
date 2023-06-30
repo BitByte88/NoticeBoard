@@ -36,7 +36,6 @@ public interface BoardDetailMapper {
      * 閲覧数をカウントアップする。
      *
      * @param boardId 掲示情報ID
-     * @return 件数
      */
     void updateViewCount(@Param("boardId") String boardId);
     
@@ -58,7 +57,6 @@ public interface BoardDetailMapper {
      * 掲示情報を削除する。
      *
      * @param deleteDto 掲示情報削除条件
-     * @return 件数
      */
     void deleteBoard(@Param("deleteDto") BoardDeleteDto deleteDto);
 
