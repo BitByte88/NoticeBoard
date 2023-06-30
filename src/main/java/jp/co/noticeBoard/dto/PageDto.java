@@ -16,10 +16,14 @@ public class PageDto {
     private Integer currentPage ;
 
     /*
+     * ページネーションページ
+     */
+    private Integer paginationStart;
+
+    /*
      * 最大ページ
      */
     private Integer totalPage;
-
 
     /*
      * 掲示情報件数

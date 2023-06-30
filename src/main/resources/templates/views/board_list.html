@@ -60,22 +60,26 @@
               <ul class="pager">
                   <th block th:if="${pager.currentPage != 1}">
                     <li class="pager-item" ><button class="bt bt-pager" name="sign" th:value="1"><div th:text="#{btn.paging.first}"/></button></li>
-                    <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage - 1}"><div th:text="#{btn.paging.prev}"/></button></li>
+                  </th>
+                  <th block th:if="${pager.currentPage > 10}">
+                    <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage - 10}"><div th:text="#{btn.paging.prev}"/></button></li>
                   </th>
                   <th:block th:if="${pager.totalPage < pager.btnCount}">
                       <li class="pager-item" th:each="num: ${#numbers.sequence(1,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
                   </th:block>
                   <th:block th:unless="${pager.totalPage < pager.btnCount}">
                       <th:block th:if="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
-                          <li class="pager-item" th:each="num: ${#numbers.sequence(pager.currentPage,pager.currentPage+ pager.btnCount - 1)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                          <li class="pager-item" th:each="num: ${#numbers.sequence(pager.paginationStart, pager.paginationStart + pager.btnCount - 1)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
                       </th:block>
                       <th:block th:unless="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
                           <li class="pager-item" th:each="num: ${#numbers.sequence(pager.totalPage - pager.btnCount + 1 ,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
                       </th:block>
                   </th:block>
+                  <th block th:if="${pager.paginationStart + 10 < pager.totalPage -1}">
+                    <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.paginationStart + 10}"><div th:text="#{btn.paging.next}"/></button></li>
+                  </th>
                   <th block th:if="${pager.currentPage != pager.totalPage}">
-                  <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage + 1}"><div th:text="#{btn.paging.next}"/></button></li>
-                  <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.totalPage}"><div th:text="#{btn.paging.last}"/></button></li>
+                    <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.totalPage}"><div th:text="#{btn.paging.last}"/></button></li>
                   </th>
               </ul>
           </div>
@@ -126,22 +130,26 @@
           <ul class="pager">
               <th block th:if="${pager.currentPage != 1}">
               <li class="pager-item" ><button class="bt bt-pager" name="sign" th:value="1"><div th:text="#{btn.paging.first}"/></button></li>
-              <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage - 1}"><div th:text="#{btn.paging.prev}"/></button></li>
+              </th>
+              <th block th:if="${pager.currentPage > 10}">
+                <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage - 10}"><div th:text="#{btn.paging.prev}"/></button></li>
               </th>
               <th:block th:if="${pager.totalPage < pager.btnCount}">
                   <li class="pager-item" th:each="num: ${#numbers.sequence(1,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
               </th:block>
               <th:block th:unless="${pager.totalPage < pager.btnCount}">
                   <th:block th:if="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
-                      <li class="pager-item" th:each="num: ${#numbers.sequence(pager.currentPage,pager.currentPage+ pager.btnCount - 1)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
+                      <li class="pager-item" th:each="num: ${#numbers.sequence(pager.paginationStart, pager.paginationStart + pager.btnCount - 1)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
                   </th:block>
                   <th:block th:unless="${pager.currentPage + pager.btnCount - 1 < pager.totalPage}">
                       <li class="pager-item" th:each="num: ${#numbers.sequence(pager.totalPage - pager.btnCount + 1 ,pager.totalPage)}"><button class="bt bt-pager" th:classappend="${pager.currentPage eq num} ? active"><th:block th:text="${num}"/></button></li>
                   </th:block>
               </th:block>
+              <th block th:if="${pager.paginationStart + 10 < pager.totalPage -1}">
+                <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.paginationStart + 10}"><div th:text="#{btn.paging.next}"/></button></li>
+              </th>
               <th block th:if="${pager.currentPage != pager.totalPage}">
-              <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.currentPage + 1}"><div th:text="#{btn.paging.next}"/></button></li>
-              <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.totalPage}"><div th:text="#{btn.paging.last}"/></button></li>
+                <li class="pager-item"><button class="bt bt-pager" name="sign" th:value="${pager.totalPage}"><div th:text="#{btn.paging.last}"/></button></li>
               </th>
           </ul>
         </div>

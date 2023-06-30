@@ -1,7 +1,6 @@
 package jp.co.noticeBoard.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -77,6 +76,8 @@ public class BoardListController {
 		//ページング情報取得
 		PageDto pageDto = boardListService.changeOffset(count, 0);
 
+		//ページネーション初期値
+		pageDto.setPaginationStart(1);
 
 		//検索条件Dto格納
 		model.addAttribute("boardListsearchDto", boardListsearchDto);
@@ -134,6 +135,11 @@ public class BoardListController {
 		List<BoardListDto> boardList = boardListService.boardListConversion(list);
 		//ページング情報取得
 		PageDto pageDto = boardListService.changeOffset(count, boardListsearchDto.getOffset());
+
+		//ページネーション設定
+		int startPage = ((pageDto.getCurrentPage() - 1) / pageDto.getBtnCount()) * pageDto.getBtnCount() + 1; 
+		pageDto.setPaginationStart(startPage);
+				
 		//掲示情報の検索条件格納
 		sessionManager.setSesBoardListSearchInfo(boardListsearchDto);
 
